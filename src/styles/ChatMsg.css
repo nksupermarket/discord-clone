@@ -1,0 +1,33 @@
+.chat-message {
+  font-size: 1.4rem;
+  list-style: none;
+}
+
+.chat-message .content {
+  box-sizing: border-box;
+  padding: 0 50px;
+}
+
+.chat-message .avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.chat-message header {
+  margin-bottom: 5px;
+}
+
+.chat-message header span:first-child {
+  margin-right: 20px;
+}
+
+.chat-message header .user {
+  font-size: 1.8rem;
+}
+
+.chat-message header .timestamp {
+  font-size: 1.2rem;
+  opacity: 0.5;
+}

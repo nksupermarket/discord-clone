@@ -1,24 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+
+import fromUnixTime from 'date-fns/fromUnixTime';
+
+import ChatBar from './components/ChatBar';
+import ChatDisplay from './components/ChatDisplay';
+
+import './globalStyles.css';
+import UserList from './components/UserList';
+
+const msgListTest = [
+  {
+    user: 'creamfraiche',
+    msg: 'fdjl;akdflkja;fjka;lfja;',
+    timestamp: 'today',
+  },
+  {
+    user: 'creamfraiche',
+    msg: 'fdjl;akdflkja;fjka;lfja;',
+    timestamp: 'today',
+  },
+  {
+    user: 'creamfraiche',
+    msg: 'fdjl;akdflkja;fjka;lfja;',
+    timestamp: 'today',
+  },
+  {
+    user: 'creamfraiche',
+    msg: 'fdjl;akdflkja;fjka;lfja;',
+    timestamp: 'today',
+  },
+];
+
+const userList = [{ name: 'dfkl;ajflk;ad', img: '' }];
 
 function App() {
+  const [user, setUser] = useState('anon');
+  const [msgList, setMsgList] = useState(msgListTest);
+
+  function submitMsg(msg) {
+    setMsgList((prev) => [
+      ...prev,
+      { user, msg, timestamp: fromUnixTime(Date.now()).toString() },
+    ]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <main>
+        <ChatDisplay msgList={msgList} />
+        <ChatBar submit={submitMsg} />
+      </main>
+      <UserList list={userList} />
+    </>
   );
 }
 
