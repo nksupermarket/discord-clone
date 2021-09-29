@@ -1,9 +1,12 @@
 .users-ctn {
   height: 100vh;
   width: 80%;
+  overflow-y: scroll;
   background-color: gray;
   position: absolute;
+  top: 0;
   right: 0;
+  list-style: none;
 }
 
 @media screen and (min-width: 500px) {

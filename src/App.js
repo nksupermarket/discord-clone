@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
 import fromUnixTime from 'date-fns/fromUnixTime';
+import { createUser, signIn } from './firebaseStuff';
 
 import ChatBar from './components/ChatBar';
 import ChatDisplay from './components/ChatDisplay';
 
 import './globalStyles.css';
 import UserList from './components/UserList';
+import LoginScreen from './components/LoginScreen';
 
 const msgListTest = [
   {
@@ -34,7 +36,7 @@ const msgListTest = [
 const userList = [{ name: 'dfkl;ajflk;ad', img: '' }];
 
 function App() {
-  const [user, setUser] = useState('anon');
+  const [user, setUser] = useState();
   const [msgList, setMsgList] = useState(msgListTest);
 
   function submitMsg(msg) {
@@ -46,6 +48,14 @@ function App() {
 
   return (
     <>
+      {!user && (
+        <LoginScreen
+          createUser={(email, pw, displayName, setError) =>
+            createUser(email, pw, displayName, setUser, setError)
+          }
+          signIn={(email, pw, setError) => signIn(email, pw, setUser, setError)}
+        />
+      )}
       <main>
         <ChatDisplay msgList={msgList} />
         <ChatBar submit={submitMsg} />
