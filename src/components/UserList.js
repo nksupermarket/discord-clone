@@ -9,7 +9,7 @@ const UserList = ({ list }) => {
         <li className="user-wrapper">
           <div className="avatar"></div>
           {/*<img className="avatar" src={user.avatar} alt={user.name} /> */}
-          <span>{user.name}</span>
+          <span>{user.displayName}</span>
         </li>
       ))}
     </aside>

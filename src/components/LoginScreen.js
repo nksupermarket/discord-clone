@@ -6,11 +6,7 @@ import '../styles/LoginScreen.css';
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
 
-const serverInfo = {
-  name: 'The VIP Club',
-};
-
-const LoginScreen = ({ createUser, signIn }) => {
+const LoginScreen = ({ createUser, signIn, serverInfo }) => {
   const [node, setNode] = useState('new user');
   const [displayName, setDisplayName] = useState();
 
