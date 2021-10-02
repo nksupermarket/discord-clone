@@ -4,19 +4,20 @@ import IconBtn from './IconBtn';
 
 import '../styles/ChatBar.css';
 
-const ChatBar = ({ submit }) => {
+const ChatBar = ({ submit, roomName }) => {
   const [msg, setMsg] = useState();
 
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       <div className="chat-wrapper">
         <div className="add-wrapper">
-          <IconBtn icon="add" />
+          <IconBtn icon="flaticon-plus" isCircle={true} />
         </div>
         <div className="input-wrapper">
           <input
             type="text"
             name="chat"
+            placeholder={`message #${roomName}`}
             onChange={(e) => setMsg(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -27,8 +28,8 @@ const ChatBar = ({ submit }) => {
           />
         </div>
         <div className="btn-ctn">
-          <IconBtn icon="gif" />
-          <IconBtn icon="emoji" />
+          <IconBtn icon="flaticon-gif" isRectangle={true} />
+          <IconBtn icon="flaticon-happy" />
         </div>
       </div>
     </form>

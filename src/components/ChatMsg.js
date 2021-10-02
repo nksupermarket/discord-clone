@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { convertTimestampToString } from '../logic/date';
+
 import '../styles/ChatMsg.css';
 
 const ChatMsg = ({ content }) => {
@@ -11,7 +13,9 @@ const ChatMsg = ({ content }) => {
         {/* <img className="avatar" src="" alt={user} /> */}
         <header>
           <span className="user">{displayName}</span>
-          <span className="timestamp">{timestamp}</span>
+          <span className="timestamp">
+            {convertTimestampToString(timestamp)}
+          </span>
         </header>
         <div className="msg">{msg}</div>
       </div>

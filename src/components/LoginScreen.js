@@ -6,7 +6,7 @@ import '../styles/LoginScreen.css';
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
 
-const LoginScreen = ({ createUser, signIn, serverInfo }) => {
+const LoginScreen = ({ createUser, signIn, channel }) => {
   const [node, setNode] = useState('new user');
   const [displayName, setDisplayName] = useState();
 
@@ -18,7 +18,7 @@ const LoginScreen = ({ createUser, signIn, serverInfo }) => {
         )}
         {node === 'new user' && (
           <LoginNewUser
-            serverInfo={serverInfo}
+            channel={channel}
             onContinue={() => setNode('create acc')}
             onReturningUser={() => setNode('returning user')}
             setDisplayName={setDisplayName}

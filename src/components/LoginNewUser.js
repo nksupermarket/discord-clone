@@ -4,7 +4,7 @@ import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
 const LoginNewUser = ({
-  serverInfo,
+  channel,
   setDisplayName,
   onContinue,
   onReturningUser,
@@ -13,7 +13,7 @@ const LoginNewUser = ({
     <form name="new-user-username" onSubmit={(e) => e.preventDefault()}>
       <header>
         <h4>You are invited to join</h4>
-        <h2>{serverInfo.name}</h2>
+        <h2>{channel.name}</h2>
       </header>
       <InputField label="Username" type="text" onChange={setDisplayName} />
       <FlatBtn

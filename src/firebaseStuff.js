@@ -119,6 +119,7 @@ async function getRoomList(channelId, setRoomList) {
     for (const id in data) {
       roomList.push({ ...data[id], id });
     }
+    console.log(roomList);
     setRoomList(roomList);
   });
 }
@@ -169,7 +170,6 @@ async function getMsgList(roomId, setMsgList) {
     for (const id in data) {
       msgList.push(data[id]);
     }
-    console.log({ roomId, data, msgList });
     setMsgList(msgList);
   });
 }

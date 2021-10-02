@@ -8,19 +8,22 @@ import UserList from './UserList';
 import '../styles/Content.css';
 
 const Content = ({
-  channelId,
+  channel,
   roomList,
-  setRoomId,
+  setRoom,
   msgList,
+  roomName,
   submitMsg,
   userList,
 }) => {
   return (
     <div className="content">
-      {channelId && <RoomList list={roomList} setRoomId={setRoomId} />}
+      {channel && (
+        <RoomList channel={channel} list={roomList} setRoom={setRoom} />
+      )}
       <main id="chat">
         <ChatDisplay msgList={msgList} />
-        <ChatBar submit={submitMsg} />
+        <ChatBar submit={submitMsg} roomName={roomName} />
       </main>
       <UserList list={userList} />
     </div>

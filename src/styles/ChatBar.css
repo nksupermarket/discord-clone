@@ -25,3 +25,20 @@
 .chat-bar .input-wrapper input {
   width: 100%;
 }
+
+.chat-bar .add-wrapper {
+  height: 44px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.chat-bar .btn-ctn {
+  height: 44px;
+  margin-right: 4px;
+}
+.chat-bar .btn-ctn .icon-btn {
+  margin: 0 4px;
+  padding: 4px;
+}
