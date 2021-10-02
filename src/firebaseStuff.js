@@ -8,6 +8,7 @@ import {
   get,
   update,
   onValue,
+  onDisconnect,
 } from 'firebase/database';
 import {
   getAuth,
@@ -42,7 +43,6 @@ async function createUser(
   setUser,
   setError
 ) {
-  console.log({ email, password, displayName, channelId, setUser, setError });
   const auth = getAuth();
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -51,17 +51,17 @@ async function createUser(
       password
     );
     updateProfile(userCredential.user, { displayName });
-    addUser();
+    await addUser();
+    setUserOnline(userCredential.user.uid, displayName);
     setUser(userCredential.user);
 
     function addUser() {
       const db = getDatabase();
-      set(ref(db, `users/${userCredential.user.uid}`), {
+      set(ref(db, `users/${userCredential.user.uid}/channels`), {
         [channelId]: true,
       });
       set(ref(db, `Channels/${channelId}/users/${userCredential.user.uid}`), {
         displayName,
-        isOnline: true,
       });
     }
   } catch (error) {
@@ -78,6 +78,7 @@ async function signIn(email, password, setUser, setError) {
       email,
       password
     );
+    setUserOnline(userCredential.user.uid, userCredential.user.displayName);
     setUser(userCredential.user);
   } catch (error) {
     console.log(error);
@@ -88,9 +89,14 @@ async function signIn(email, password, setUser, setError) {
 async function getChannelList(uid) {
   const dbRef = ref(getDatabase());
 
-  const list = await get(child(dbRef, `users/${uid}`));
+  const list = await get(child(dbRef, `users/${uid}/channels`));
+  const data = list.val();
+  let channelList = [];
+  for (const id in data) {
+    channelList.push({ ...data[id], id });
+  }
 
-  return list.val();
+  return channelList;
 }
 
 async function createChannel(name) {
@@ -101,14 +107,19 @@ async function createChannel(name) {
   return newChannelRef.key;
 }
 
-async function getRooms(channelId, setRoomList) {
+async function getRoomList(channelId, setRoomList) {
   const db = getDatabase();
 
   const roomsRef = ref(db, `Channels/${channelId}/rooms`);
 
   onValue(roomsRef, (snapshot) => {
     const data = snapshot.val();
-    console.log(data);
+
+    let roomList = [];
+    for (const id in data) {
+      roomList.push({ ...data[id], id });
+    }
+    setRoomList(roomList);
   });
 }
 
@@ -130,16 +141,16 @@ async function createRoom(channelId, name, setError) {
 
 async function getOnlineUsers(channelId, setUserList) {
   const db = getDatabase();
-  const onlineUsersRef = ref(db, `Channels/${channelId}/users`);
+  const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
 
   try {
     onValue(onlineUsersRef, (snapshot) => {
       let data = snapshot.val();
-      console.log(data);
       let userList = [];
       for (const id in data) {
-        if (data[id].isOnline) userList.push(data[id]);
+        userList.push(data[id]);
       }
+
       setUserList(userList);
     });
   } catch (error) {
@@ -153,13 +164,12 @@ async function getMsgList(roomId, setMsgList) {
 
   onValue(msgListRef, (snapshot) => {
     let data = snapshot.val();
-    console.log(data);
     data = data || {};
     let msgList = [];
     for (const id in data) {
       msgList.push(data[id]);
     }
-
+    console.log({ roomId, data, msgList });
     setMsgList(msgList);
   });
 }
@@ -176,16 +186,42 @@ async function pushToMsgList(roomId, msgObj) {
   }
 }
 
+async function setUserOnline(uid, displayName) {
+  const db = getDatabase();
+  const userRef = ref(db, `users/${uid}`);
+
+  const connectedRef = ref(db, '.info/connected');
+
+  // set user to online
+  const userChannelList = await getChannelList(uid);
+
+  // add user to online_users for all channels in their list
+  userChannelList.forEach((channel) => {
+    const userStatusRef = ref(db, `Channels/${channel.id}/online_users/${uid}`);
+
+    onValue(connectedRef, async function (snapshot) {
+      if (snapshot.val() === false) return;
+
+      await onDisconnect(userStatusRef).remove();
+      await onDisconnect(userRef).update({ isOnline: false });
+
+      set(userStatusRef, { displayName });
+      update(userRef, { isOnline: true });
+    });
+  });
+}
+
 export {
   createUser,
   signIn,
   getChannelList,
   createChannel,
-  getRooms,
+  getRoomList,
   createRoom,
   getMsgList,
   pushToMsgList,
   getOnlineUsers,
+  setUserOnline,
 };
 
 //login user

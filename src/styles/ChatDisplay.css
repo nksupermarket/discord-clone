@@ -1,0 +1,30 @@
+main#chat {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages-ctn {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  z-index: 0;
+}
+
+.messages-ctn .scroller {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.messages-ctn .scroller .scroller-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  align-items: stretch;
+}

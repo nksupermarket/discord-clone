@@ -6,6 +6,7 @@
 .chat-message .content {
   box-sizing: border-box;
   padding: 0 50px;
+  flex-direction: column;
 }
 
 .chat-message .avatar {

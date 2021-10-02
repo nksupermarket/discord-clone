@@ -7,17 +7,19 @@ import {
   getMsgList,
   pushToMsgList,
   getOnlineUsers,
+  getChannelList,
+  getRoomList,
 } from './firebaseStuff';
 
-import ChatBar from './components/ChatBar';
-import ChatDisplay from './components/ChatDisplay';
+import Content from './components/Content';
+import LoginScreen from './components/LoginScreen';
+import ChannelList from './components/ChannelList';
 
 import './globalStyles.css';
-import UserList from './components/UserList';
-import LoginScreen from './components/LoginScreen';
 
 function App() {
   const [user, setUser] = useState();
+  const [channelList, setChannelList] = useState();
   const [channelId, setChannelId] = useState('-MkoRSxTqkrS9mlivGfs');
   const [roomList, setRoomList] = useState([]);
   const [userList, setUserList] = useState([]);
@@ -26,8 +28,28 @@ function App() {
 
   useEffect(() => {
     getMsgList(roomId, setMsgList);
-    getOnlineUsers(channelId, setUserList);
   }, [roomId]);
+
+  useEffect(() => {
+    console.log(channelId);
+    getOnlineUsers(channelId, setUserList);
+  }, [channelId]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetchChannelList();
+    async function fetchChannelList() {
+      const list = await getChannelList(user.uid);
+      setChannelList(list);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!channelId) return;
+
+    getRoomList(channelId, setRoomList);
+  }, [channelId]);
 
   function submitMsg(msg) {
     const msgObj = {
@@ -50,11 +72,17 @@ function App() {
           serverInfo={{ name: 'VIP Club', id: '-MkoRSxTqkrS9mlivGfs' }}
         />
       )}
-      <main>
-        <ChatDisplay msgList={msgList} />
-        <ChatBar submit={submitMsg} />
-      </main>
-      <UserList list={userList} />
+      <div className="ctn">
+        <ChannelList list={channelList} setChannelId={setChannelId} />
+        <Content
+          channelId={channelId}
+          roomList={roomList}
+          setRoomId={setRoomId}
+          msgList={msgList}
+          submitMsg={submitMsg}
+          userList={userList}
+        />
+      </div>
     </>
   );
 }

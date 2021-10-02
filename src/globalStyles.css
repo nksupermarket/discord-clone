@@ -13,9 +13,27 @@ h1,
 h2,
 h3,
 h4,
-h5 {
+h5,
+ul,
+ol {
   margin: 0;
   padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button,
+input[type='submit'],
+input[type='text'] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  outline: inherit;
 }
 
 h1,
@@ -52,4 +70,12 @@ body {
   display: grid;
   place-items: center;
   z-index: 2;
+}
+
+.ctn {
+  display: flex;
+}
+
+.btn-ctn {
+  display: flex;
 }

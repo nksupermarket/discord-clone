@@ -1,0 +1,10 @@
+#channel-list {
+  height: 100vh;
+  width: 80%;
+}
+
+@media screen and (min-width: 500px) {
+  #channel-list {
+    max-width: 50px;
+  }
+}
