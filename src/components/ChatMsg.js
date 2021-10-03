@@ -2,15 +2,16 @@ import React from 'react';
 
 import { convertTimestampToString } from '../logic/date';
 
+import Avatar from './Avatar';
+
 import '../styles/ChatMsg.css';
 
 const ChatMsg = ({ content }) => {
   const { displayName, msg, timestamp } = content;
   return (
     <li className="chat-message">
-      <div className="avatar" style={{ background: 'black' }}></div>
+      <Avatar />
       <div className="content">
-        {/* <img className="avatar" src="" alt={user} /> */}
         <header>
           <span className="user">{displayName}</span>
           <span className="timestamp">

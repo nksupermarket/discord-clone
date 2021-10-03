@@ -90,7 +90,11 @@ function App() {
           />
         )}
         <div className="ctn">
-          <ChannelList list={channelList} setChannel={setChannel} />
+          <ChannelList
+            list={channelList}
+            currentChannel={channel}
+            setChannel={setChannel}
+          />
           <Content
             channel={channel}
             roomList={roomList}

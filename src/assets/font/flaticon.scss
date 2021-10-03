@@ -2,11 +2,11 @@ $flaticon-font: "flaticon";
 
 @font-face {
     font-family: $flaticon-font;
-    src: url("./flaticon.ttf?bf945d016a52723b967a800b226d4b3d") format("truetype"),
-url("./flaticon.woff?bf945d016a52723b967a800b226d4b3d") format("woff"),
-url("./flaticon.woff2?bf945d016a52723b967a800b226d4b3d") format("woff2"),
-url("./flaticon.eot?bf945d016a52723b967a800b226d4b3d#iefix") format("embedded-opentype"),
-url("./flaticon.svg?bf945d016a52723b967a800b226d4b3d#flaticon") format("svg");
+    src: url("./flaticon.ttf?e00e856f7e281bd1a8eef496ef904096") format("truetype"),
+url("./flaticon.woff?e00e856f7e281bd1a8eef496ef904096") format("woff"),
+url("./flaticon.woff2?e00e856f7e281bd1a8eef496ef904096") format("woff2"),
+url("./flaticon.eot?e00e856f7e281bd1a8eef496ef904096#iefix") format("embedded-opentype"),
+url("./flaticon.svg?e00e856f7e281bd1a8eef496ef904096#flaticon") format("svg");
 }
 
 i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
@@ -24,6 +24,7 @@ $flaticon-map: (
     "gif": "\f101",
     "happy": "\f102",
     "plus": "\f103",
+    "explore": "\f104",
 );
 
 .flaticon-gif:before {
@@ -34,4 +35,7 @@ $flaticon-map: (
 }
 .flaticon-plus:before {
     content: map-get($flaticon-map, "plus");
+}
+.flaticon-explore:before {
+    content: map-get($flaticon-map, "explore");
 }

@@ -3,8 +3,31 @@
   width: 80%;
 }
 
+#channel-list .list-item {
+  width: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#channel-list .avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#channel-list .avatar-ctn:hover,
+#channel-list .avatar.selected {
+  border-radius: 10px;
+}
+
+#channel-list .btn-ctn {
+  flex-direction: column;
+}
+
 @media screen and (min-width: 500px) {
   #channel-list {
-    max-width: 50px;
+    max-width: 72px;
   }
 }
