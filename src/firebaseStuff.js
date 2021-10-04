@@ -52,13 +52,13 @@ async function createUser(
     );
     updateProfile(userCredential.user, { displayName });
     await addUser();
-    setUserOnline(userCredential.user.uid, displayName);
+    updateUserOnline(userCredential.user.uid, displayName);
     setUser(userCredential.user);
 
     function addUser() {
       const db = getDatabase();
       set(ref(db, `users/${userCredential.user.uid}/channels`), {
-        [channelId]: true,
+        [channelId]: false,
       });
       set(ref(db, `Channels/${channelId}/users/${userCredential.user.uid}`), {
         displayName,
@@ -78,7 +78,7 @@ async function signIn(email, password, setUser, setError) {
       email,
       password
     );
-    setUserOnline(userCredential.user.uid, userCredential.user.displayName);
+    updateUserOnline(userCredential.user.uid, userCredential.user.displayName);
     setUser(userCredential.user);
   } catch (error) {
     console.log(error);
@@ -140,6 +140,48 @@ async function createRoom(channelId, name, setError) {
   }
 }
 
+async function getRoomCategories(channelId, setRoomCategories, setError) {
+  const db = getDatabase();
+
+  try {
+    const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
+
+    onValue(roomCategoriesRef, (snap) => {
+      const data = snap.val();
+
+      console.log(data);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function createRoomCategory(channelId, name, setError) {
+  const db = getDatabase();
+
+  try {
+    const channelRoomCategoriesRef = ref(
+      db,
+      `Channels/${channelId}/room_categories`
+    );
+    const newCategoryRef = push(channelRoomCategoriesRef);
+    set(newCategoryRef, { name });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function updateRoomCateogry(channelId, roomId, category, setError) {
+  const db = getDatabase();
+
+  try {
+    const channelRoomRef = ref(db, `Channels/${channelId}/rooms/${roomId}`);
+    update(channelRoomRef, { category });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function getOnlineUsers(channelId, setUserList) {
   const db = getDatabase();
   const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
@@ -186,7 +228,7 @@ async function pushToMsgList(roomId, msgObj) {
   }
 }
 
-async function setUserOnline(uid, displayName) {
+async function updateUserOnline(uid, displayName) {
   const db = getDatabase();
   const userRef = ref(db, `users/${uid}`);
 
@@ -211,17 +253,61 @@ async function setUserOnline(uid, displayName) {
   });
 }
 
+async function createUserRole(channelId, role) {
+  const db = getDatabase();
+
+  try {
+    const channelUserRolesRef = ref(db, `Channels/${channelId}/user_roles`);
+    const newRoleRef = push(channelUserRolesRef);
+    set(newRoleRef, { role });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function updateRoleOfUser(channelId, userId, role, setError) {
+  const db = getDatabase();
+
+  try {
+    const userRef = ref(db, `Channels/${channelId}/users/${userId}`);
+
+    update(userRef, { role });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getRoleOfUser(channelId, userId, setRole, setError) {
+  const db = getDatabase();
+
+  try {
+    const userRoleRef = ref(db, `users/${userId}/channels/${channelId}`);
+    onValue(userRoleRef, (snap) => {
+      const data = snap.val();
+
+      console.log(data);
+      //setRole()
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   createUser,
   signIn,
   getChannelList,
   createChannel,
+  getRoomCategories,
+  createRoomCategory,
+  updateRoomCateogry,
   getRoomList,
   createRoom,
   getMsgList,
   pushToMsgList,
   getOnlineUsers,
-  setUserOnline,
+  createUserRole,
+  updateRoleOfUser,
 };
 
 //login user
