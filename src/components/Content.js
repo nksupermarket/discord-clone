@@ -15,6 +15,7 @@ const Content = ({
   roomName,
   submitMsg,
   userList,
+  userRoles,
 }) => {
   return (
     <div className="content">
@@ -25,7 +26,7 @@ const Content = ({
         <ChatDisplay msgList={msgList} />
         <ChatBar submit={submitMsg} roomName={roomName} />
       </main>
-      <UserList list={userList} />
+      <UserList list={userList} roles={userRoles} />
     </div>
   );
 };

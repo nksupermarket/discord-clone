@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { createChannel, createRoom } from './firebaseStuff';
-
 import App from './App';
+import { updateRoleOfUser } from './logic/channel_firebaseStuff';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,9 +11,12 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+updateRoleOfUser('-MkoRSxTqkrS9mlivGfs', 'VLx4zHOAqsbaXMeG77ZHnn9gxNL2');
+
 //createFirstChannel();
-async function createFirstChannel() {
+/*async function createFirstChannel() {
   const channel = await createChannel('VIP Club');
   createRoom(channel, 'announcements');
   createRoom(channel, 'general');
 }
+*/

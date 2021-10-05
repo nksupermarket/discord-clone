@@ -9,14 +9,29 @@ import {
 
 import getUnixTime from 'date-fns/getUnixTime';
 import {
-  createUser,
-  signIn,
+  getRoomCategories,
+  createRoomCategory,
+  updateRoomCateogry,
+  getRoomList,
+  createRoom,
+  getOnlineUsers,
+  getUserRoles,
+  getRoleOfUser,
+  createUserRole,
+  updateRoleOfUser,
+  detachListenersForChannel,
+} from './logic/channel_firebaseStuff';
+import {
+  detachListenersForRoom,
   getMsgList,
   pushToMsgList,
-  getOnlineUsers,
+} from './logic/room_firebaseStuff';
+import {
+  createUser,
+  signIn,
   getChannelList,
-  getRoomList,
-} from './firebaseStuff';
+  detachListenersforUser,
+} from './logic/user_firebaseStuff';
 
 import Content from './components/Content';
 import LoginScreen from './components/LoginScreen';
@@ -33,6 +48,9 @@ function App() {
     name: 'VIP Club',
     id: '-MkoRSxTqkrS9mlivGfs',
   });
+  const [roleList, setRoleList] = useState([]);
+  const [userRole, setUserRole] = useState();
+  const [roomCategories, setRoomCategories] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [userList, setUserList] = useState([]);
   const [room, setRoom] = useState({
@@ -41,29 +59,27 @@ function App() {
   });
   const [msgList, setMsgList] = useState([]);
 
-  useEffect(() => {
-    getMsgList(room.id, setMsgList);
-  }, [room.id]);
+  const [error, setError] = useState();
 
   useEffect(() => {
-    getOnlineUsers(channel.id, setUserList);
-  }, [channel]);
+    getMsgList(room.id, setMsgList, setError);
+  }, [room.id]);
 
   useEffect(() => {
     if (!user) return;
 
-    updateChannelList();
-    async function updateChannelList() {
-      const list = await getChannelList(user.uid);
-      setChannelList(list);
-    }
+    getChannelList(user.uid, setChannelList, setError);
   }, [user]);
 
   useEffect(() => {
-    if (!channel) return;
+    if (!channel || !user) return;
 
-    getRoomList(channel.id, setRoomList);
-  }, [channel]);
+    getOnlineUsers(channel.id, setUserList, setError);
+    getUserRoles(channel.id, setRoleList, setError);
+    getRoleOfUser(channel.id, user.uid, setUserRole, setError);
+    getRoomCategories(channel.id, setRoomCategories, setError);
+    getRoomList(channel.id, setRoomList, setError);
+  }, [channel, user]);
 
   function submitMsg(msg) {
     const msgObj = {
@@ -72,7 +88,7 @@ function App() {
       msg,
       timestamp: getUnixTime(new Date()),
     };
-    pushToMsgList(room.id, msgObj);
+    pushToMsgList(room.id, msgObj, setError);
   }
 
   return (
@@ -103,6 +119,7 @@ function App() {
             msgList={msgList}
             submitMsg={submitMsg}
             userList={userList}
+            userRoles={roleList}
           />
         </div>
       </Router>
