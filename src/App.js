@@ -30,6 +30,7 @@ import {
   createUser,
   signIn,
   getChannelList,
+  updateUserOnline,
   detachListenersforUser,
 } from './logic/user_firebaseStuff';
 
@@ -48,9 +49,9 @@ function App() {
     name: 'VIP Club',
     id: '-MkoRSxTqkrS9mlivGfs',
   });
-  const [roleList, setRoleList] = useState([]);
+  const [roleList, setRoleList] = useState(['Online']);
   const [userRole, setUserRole] = useState();
-  const [roomCategories, setRoomCategories] = useState([]);
+  const [roomCategories, setRoomCategories] = useState(['none']);
   const [roomList, setRoomList] = useState([]);
   const [userList, setUserList] = useState([]);
   const [room, setRoom] = useState({
@@ -70,6 +71,12 @@ function App() {
 
     getChannelList(user.uid, setChannelList, setError);
   }, [user]);
+
+  useEffect(() => {
+    if (!channelList) return;
+
+    updateUserOnline(user.uid, user.displayName, channelList, setError);
+  }, [user, channelList]);
 
   useEffect(() => {
     if (!channel || !user) return;
@@ -114,6 +121,7 @@ function App() {
           <Content
             channel={channel}
             roomList={roomList}
+            roomCategories={roomCategories}
             roomName={room.name}
             setRoom={setRoom}
             msgList={msgList}

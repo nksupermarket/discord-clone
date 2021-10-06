@@ -35,12 +35,12 @@ async function createRoom(channelId, name, setError) {
       name,
     });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
-    //setError(error);
   }
 }
 
-async function getRoomList(channelId, setRoomList) {
+function getRoomList(channelId, setRoomList) {
   const roomsRef = ref(db, `Channels/${channelId}/rooms`);
 
   onValue(roomsRef, (snapshot) => {
@@ -54,41 +54,45 @@ async function getRoomList(channelId, setRoomList) {
   });
 }
 
-async function getRoomCategories(channelId, setRoomCategories, setError) {
+function getRoomCategories(channelId, setRoomCategories, setError) {
   try {
     const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
 
     onValue(roomCategoriesRef, (snap) => {
       const data = snap.val();
+      const roomCategories = Object.keys(data);
+      setRoomCategories(['none', ...roomCategories]);
     });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
 
-async function createRoomCategory(channelId, name, setError) {
+function createRoomCategory(channelId, name, setError) {
   try {
     const channelRoomCategoriesRef = ref(
       db,
       `Channels/${channelId}/room_categories`
     );
-    const newCategoryRef = push(channelRoomCategoriesRef);
-    set(newCategoryRef, { name });
+    update(channelRoomCategoriesRef, { [name]: true });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
 
-async function updateRoomCateogry(channelId, roomId, category, setError) {
+function updateCategoryOfRoom(channelId, roomId, category, setError) {
   try {
     const channelRoomRef = ref(db, `Channels/${channelId}/rooms/${roomId}`);
     update(channelRoomRef, { category });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
 
-async function getOnlineUsers(channelId, setUserList) {
+async function getOnlineUsers(channelId, setUserList, setError) {
   const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
 
   try {
@@ -102,6 +106,7 @@ async function getOnlineUsers(channelId, setUserList) {
       setUserList(userList);
     });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
@@ -109,9 +114,12 @@ async function getOnlineUsers(channelId, setUserList) {
 async function createUserRole(channelId, role, setError) {
   try {
     const channelUserRolesRef = ref(db, `Channels/${channelId}/user_roles`);
-    const newRoleRef = push(channelUserRolesRef);
-    set(newRoleRef, { role });
+    /* const newRoleRef = push(channelUserRolesRef);
+    set(newRoleRef, { role }); */
+
+    update(channelUserRolesRef, { [role]: true });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
@@ -122,10 +130,12 @@ async function getUserRoles(channelId, setUserRoles, setError) {
 
     onValue(channelUserRolesRef, (snap) => {
       const data = snap.val();
+      const userRoles = Object.keys(data);
 
-      setUserRoles(data);
+      setUserRoles([...userRoles, 'Online']);
     });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
@@ -139,6 +149,7 @@ async function getRoleOfUser(channelId, userId, setRole, setError) {
       setRole(data);
     });
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
@@ -153,6 +164,7 @@ async function updateRoleOfUser(channelId, userId, role, setError) {
 
     update(ref(db), updates);
   } catch (error) {
+    setError && setError(error);
     console.log(error);
   }
 }
@@ -160,7 +172,7 @@ async function updateRoleOfUser(channelId, userId, role, setError) {
 export {
   getRoomCategories,
   createRoomCategory,
-  updateRoomCateogry,
+  updateCategoryOfRoom,
   getRoomList,
   createRoom,
   getOnlineUsers,

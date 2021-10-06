@@ -10,6 +10,7 @@ import '../styles/Content.css';
 const Content = ({
   channel,
   roomList,
+  roomCategories,
   setRoom,
   msgList,
   roomName,
@@ -20,7 +21,12 @@ const Content = ({
   return (
     <div className="content">
       {channel && (
-        <RoomList channel={channel} list={roomList} setRoom={setRoom} />
+        <RoomList
+          channel={channel}
+          categories={roomCategories}
+          list={roomList}
+          setRoom={setRoom}
+        />
       )}
       <main id="chat">
         <ChatDisplay msgList={msgList} />

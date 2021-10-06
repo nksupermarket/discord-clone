@@ -1,11 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactDom from 'react-dom';
 
 import '../styles/UserList.css';
 
 const UserList = ({ list, roles }) => {
   roles = roles || [];
-  const [rolesList] = useState([...roles, 'Online']);
 
   const rolesRef = useRef({});
 
@@ -13,7 +12,7 @@ const UserList = ({ list, roles }) => {
 
   return (
     <aside className="users-ctn">
-      {rolesList.map((role) => (
+      {roles.map((role) => (
         <ul
           ref={(el) => (rolesRef.current[role] = el)}
           className="role-users-wrapper"
@@ -21,6 +20,7 @@ const UserList = ({ list, roles }) => {
           <header>{role}</header>
         </ul>
       ))}
+
       {list.map((user) => {
         const userDisplay = (
           <li className="user-wrapper">
@@ -29,6 +29,7 @@ const UserList = ({ list, roles }) => {
             <span>{user.displayName}</span>
           </li>
         );
+
         if (user.role && roles.includes(user.role))
           return ReactDom.createPortal(
             userDisplay,
