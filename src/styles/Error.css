@@ -1,0 +1,22 @@
+#error-popup {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1em 1.5em;
+  border-radius: 10px;
+  background: var(--fg-color);
+  z-index: 2;
+  text-align: center;
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.error-msg i {
+  font-size: 2.5rem;
+  color: tomato;
+}

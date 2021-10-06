@@ -37,10 +37,12 @@ import {
 import Content from './components/Content';
 import LoginScreen from './components/LoginScreen';
 import ChannelList from './components/ChannelList';
+import Error from './components/Error';
 
 import './globalStyles.css';
 //import icons
 import './assets/font/flaticon.css';
+import './assets/font/remixicon.css';
 
 function App() {
   const [user, setUser] = useState();
@@ -60,7 +62,7 @@ function App() {
   });
   const [msgList, setMsgList] = useState([]);
 
-  const [error, setError] = useState();
+  const [error, setError] = useState('Unable to load page');
 
   useEffect(() => {
     getMsgList(room.id, setMsgList, setError);
@@ -81,12 +83,19 @@ function App() {
   useEffect(() => {
     if (!channel || !user) return;
 
-    getOnlineUsers(channel.id, setUserList, setError);
     getUserRoles(channel.id, setRoleList, setError);
+    getOnlineUsers(channel.id, setUserList, setError);
     getRoleOfUser(channel.id, user.uid, setUserRole, setError);
     getRoomCategories(channel.id, setRoomCategories, setError);
     getRoomList(channel.id, setRoomList, setError);
   }, [channel, user]);
+
+  useEffect(() => {
+    if (error)
+      setTimeout(() => {
+        setError();
+      }, 1500);
+  });
 
   function submitMsg(msg) {
     const msgObj = {
@@ -101,6 +110,7 @@ function App() {
   return (
     <>
       <Router>
+        {error && <Error errorMsg={error} />}
         {!user && (
           <LoginScreen
             createUser={(email, pw, displayName, setError) =>

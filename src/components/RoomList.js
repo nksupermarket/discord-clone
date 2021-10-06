@@ -8,7 +8,7 @@ const RoomList = ({ channel, categories, list, setRoom }) => {
   categories = categories || [];
 
   const categoriesRef = useRef({});
-
+  console.log(categories);
   useEffect(() => console.log(categoriesRef.current));
 
   return (
