@@ -19,7 +19,7 @@ const Content = ({
   userRoles,
 }) => {
   return (
-    <div className="content">
+    <div className="content-main">
       {channel && (
         <RoomList
           channel={channel}

@@ -9,17 +9,16 @@ import {
   off,
   onDisconnect,
 } from 'firebase/database';
+import { db } from '../firebaseStuff';
+import getUnixTime from 'date-fns/getUnixTime';
 
 function detachListenersForRoom(roomId) {
-  const db = getDatabase();
-
   const msgListRef = ref(db, `Rooms/${roomId}/messages`);
 
   off(msgListRef);
 }
 
 async function getMsgList(roomId, setMsgList) {
-  const db = getDatabase();
   const msgListRef = ref(db, `Rooms/${roomId}/messages`);
 
   onValue(msgListRef, (snapshot) => {
@@ -34,7 +33,6 @@ async function getMsgList(roomId, setMsgList) {
 }
 
 async function pushToMsgList(roomId, msgObj) {
-  const db = getDatabase();
   try {
     const roomMsgList = ref(db, `Rooms/${roomId}/messages`);
     const newMsgRef = push(roomMsgList);
@@ -42,6 +40,19 @@ async function pushToMsgList(roomId, msgObj) {
   } catch (error) {
     //setError(error)
     console.log(error);
+  }
+}
+
+async function setRoomExitTimestamp(channelId, roomId, userId, setError) {
+  try {
+    const roomExitTimestampRef = ref(
+      db,
+      `Channels/${channelId}/users/${userId}/room_exit_timestamps`
+    );
+
+    update(roomExitTimestampRef, { [roomId]: getUnixTime(new Date()) });
+  } catch (error) {
+    setError(error);
   }
 }
 

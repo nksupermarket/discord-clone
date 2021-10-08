@@ -92,6 +92,23 @@ function updateCategoryOfRoom(channelId, roomId, category, setError) {
   }
 }
 
+async function unreadMsgsListener(channelId, userId, setUnreadRooms, setError) {
+  try {
+    const unreadRoomsRef = ref(
+      db,
+      `Channels/${channelId}/users/${userId}/rooms_unread`
+    );
+
+    onValue(unreadRoomsRef, (snap) => {
+      const data = snap.val();
+
+      setUnreadRooms(data);
+    });
+  } catch (error) {
+    setError(error);
+  }
+}
+
 async function getOnlineUsers(channelId, setUserList, setError) {
   const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
 

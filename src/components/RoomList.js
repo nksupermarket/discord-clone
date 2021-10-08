@@ -8,8 +8,6 @@ const RoomList = ({ channel, categories, list, setRoom }) => {
   categories = categories || [];
 
   const categoriesRef = useRef({});
-  console.log(categories);
-  useEffect(() => console.log(categoriesRef.current));
 
   return (
     <nav className="channel-nav sidebar">
@@ -20,7 +18,11 @@ const RoomList = ({ channel, categories, list, setRoom }) => {
             ref={(el) => (categoriesRef.current[category] = el)}
             className="category-room-wrapper"
           >
-            {category !== 'none' && <header>{category}</header>}
+            {category !== 'none' && (
+              <header>
+                <h2 className="caps-title">{category}</h2>
+              </header>
+            )}
           </ul>
         ))}
 
@@ -31,12 +33,20 @@ const RoomList = ({ channel, categories, list, setRoom }) => {
                 className="room-link"
                 onClick={() => setRoom({ id: room.id, name: room.name })}
               >
-                {room.name}
+                <div className="unread"></div>
+                <div className="content">
+                  <span>{room.name}</span>
+                </div>
               </li>
             </Link>
           );
 
-          if (room.category && categories.includes(room.category))
+          if (!categoriesRef.current) return null;
+          if (
+            room.category &&
+            categories.includes(room.category) &&
+            categoriesRef.current[room.category]
+          )
             return ReactDom.createPortal(
               roomLink,
               categoriesRef.current[room.category]

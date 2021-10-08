@@ -3,8 +3,68 @@
   width: 80%;
 }
 
+.category-room-wrapper {
+  padding-top: 16px;
+}
+
+.category-room-wrapper header {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 24px;
+  padding-right: 8px;
+  padding-left: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex: 1 1 auto;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  cursor: default;
+  overflow: hidden;
+}
+
+.room-link {
+  border-radius: 4px;
+}
+
+.room-link .content {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 8px;
+  margin-left: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.room-link .content span {
+  padding: 6px 0;
+  font-size: 16px;
+  line-height: 20px;
+  flex: 1 1 auto;
+  white-space: normal;
+}
+
+.room-link:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 @media screen and (min-width: 500px) {
   .sidebar {
-    max-width: 150px;
+    max-width: 240px;
   }
 }
