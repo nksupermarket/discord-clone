@@ -27,7 +27,7 @@ const ChannelList = ({ list, currentChannel, setChannelId }) => {
               return (
                 <Link to={`/channels/${channel.id}`}>
                   <div className="avatar-wrapper list-item">
-                    <Avatar onClick={() => setChannelId(channel.id)} />
+                    <Avatar />
                   </div>
                 </Link>
               );

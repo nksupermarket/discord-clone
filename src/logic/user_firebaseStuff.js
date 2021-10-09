@@ -78,13 +78,13 @@ async function getChannelList(uid, setChannelList, setError) {
 
     let channelList = [];
 
-    return onValue(userChannelListRef, (snap) => {
+    onValue(userChannelListRef, async function (snap) {
       const data = snap.val();
 
       for (const id in data) {
         channelList.push({ role: data[id], id });
       }
-      setChannelList && setChannelList(channelList);
+      setChannelList && (await setChannelList(channelList));
     });
   } catch (error) {
     console.log(error);

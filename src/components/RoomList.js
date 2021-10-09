@@ -29,13 +29,7 @@ const RoomList = ({ channel, categories, list, setRoom, onRoomExit }) => {
 
         {list.map((room) => {
           const roomLink = (
-            <Link
-              to={`/channels/${channel.id}/${room.id}`}
-              onClick={() => {
-                setRoom({ id: room.id, name: room.name });
-                onRoomExit(room);
-              }}
-            >
+            <Link to={`/channels/${channel.id}/${room.id}`}>
               <li className="room-link">
                 <div className="unread"></div>
                 <div className="content">

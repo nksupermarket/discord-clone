@@ -112,6 +112,44 @@ async function setRoomExitTimestamp(channelId, roomId, userId, setError) {
   }
 }
 
+async function setRoomExitTimestampOnDisconnect(
+  channelId,
+  roomId,
+  userId,
+  setError
+) {
+  try {
+    const roomExitTimestampRef = ref(
+      db,
+      `Channels/${channelId}/room_exit_timestamps/users/${userId}`
+    );
+
+    onDisconnect(roomExitTimestampRef).update({
+      [roomId]: getUnixTime(new Date()),
+    });
+  } catch (error) {
+    setError && setError(error);
+  }
+}
+
+async function removeOnDisconnectForRoomExitTimestamp(
+  channelId,
+  roomId,
+  userId,
+  setError
+) {
+  try {
+    const roomExitTimestampRef = ref(
+      db,
+      `Channels/${channelId}/room_exit_timestamps/users/${userId}`
+    );
+
+    onDisconnect(roomExitTimestampRef).cancel();
+  } catch (error) {
+    setError && setError(error);
+  }
+}
+
 async function setCurrentlyInRoom(channelId, roomId, userId, setError) {
   try {
     const updates = {};
@@ -130,6 +168,8 @@ export {
   getMsgList,
   pushToMsgList,
   setRoomExitTimestamp,
+  setRoomExitTimestampOnDisconnect,
+  removeOnDisconnectForRoomExitTimestamp,
   getRoomUnsubscribeStatus,
   attachUnreadMsgsListener,
   setCurrentlyInRoom,
