@@ -25,6 +25,10 @@ import {
   detachListenersForRoom,
   getMsgList,
   pushToMsgList,
+  getRoomUnsubscribeStatus,
+  setRoomExitTimestamp,
+  attachUnreadMsgsListener,
+  setCurrentlyInRoom,
 } from './logic/room_firebaseStuff';
 import {
   createUser,
@@ -88,7 +92,8 @@ function App() {
     getRoleOfUser(channel.id, user.uid, setUserRole, setError);
     getRoomCategories(channel.id, setRoomCategories, setError);
     getRoomList(channel.id, setRoomList, setError);
-  }, [channel, user]);
+    setCurrentlyInRoom(channel.id, room.id, user.uid, setError);
+  }, [channel, user, room]);
 
   useEffect(() => {
     if (error)
@@ -105,6 +110,13 @@ function App() {
       timestamp: getUnixTime(new Date()),
     };
     pushToMsgList(room.id, msgObj, setError);
+  }
+
+  async function onRoomExit(room) {
+    const isRoomUnsubscribed = await getRoomUnsubscribeStatus();
+    if (isRoomUnsubscribed) return;
+    setRoomExitTimestamp(channel.id, room.id, user.uid, setError);
+    attachUnreadMsgsListener(channel.id, room.id, user.uid, setError);
   }
 
   return (
@@ -138,6 +150,7 @@ function App() {
             submitMsg={submitMsg}
             userList={userList}
             userRoles={roleList}
+            onRoomExit={onRoomExit}
           />
         </div>
       </Router>

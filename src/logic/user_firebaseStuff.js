@@ -17,6 +17,7 @@ import {
 } from 'firebase/auth';
 import { getRoleOfUser } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
+import getUnixTime from 'date-fns/getUnixTime';
 
 function detachListenersforUser(uid) {
   const channelListRef = ref(db, `users/${uid}/channels`);
@@ -107,7 +108,10 @@ async function updateUserOnline(uid, displayName, userChannelList) {
       }
 
       await onDisconnect(userStatusRef).remove();
-      await onDisconnect(userRef).update({ isOnline: false });
+      await onDisconnect(userRef).update({
+        isOnline: false,
+        last_logged_in: getUnixTime(new Date()),
+      });
 
       set(userStatusRef, { displayName, role: channel.role });
       update(userRef, { isOnline: true });

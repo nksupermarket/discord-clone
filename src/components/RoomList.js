@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import ReactDom from 'react-dom';
 import { Link } from 'react-router-dom';
+import { setRoomExitTimestamp } from '../logic/room_firebaseStuff';
 
 import '../styles/Sidebar.css';
 
-const RoomList = ({ channel, categories, list, setRoom }) => {
+const RoomList = ({ channel, categories, list, setRoom, onRoomExit }) => {
   categories = categories || [];
 
   const categoriesRef = useRef({});
@@ -28,11 +29,14 @@ const RoomList = ({ channel, categories, list, setRoom }) => {
 
         {list.map((room) => {
           const roomLink = (
-            <Link to={`/channels/${channel.id}/${room.id}`}>
-              <li
-                className="room-link"
-                onClick={() => setRoom({ id: room.id, name: room.name })}
-              >
+            <Link
+              to={`/channels/${channel.id}/${room.id}`}
+              onClick={() => {
+                setRoom({ id: room.id, name: room.name });
+                onRoomExit(room);
+              }}
+            >
+              <li className="room-link">
                 <div className="unread"></div>
                 <div className="content">
                   <span>{room.name}</span>

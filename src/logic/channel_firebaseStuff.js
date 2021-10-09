@@ -92,23 +92,6 @@ function updateCategoryOfRoom(channelId, roomId, category, setError) {
   }
 }
 
-async function unreadMsgsListener(channelId, userId, setUnreadRooms, setError) {
-  try {
-    const unreadRoomsRef = ref(
-      db,
-      `Channels/${channelId}/users/${userId}/rooms_unread`
-    );
-
-    onValue(unreadRoomsRef, (snap) => {
-      const data = snap.val();
-
-      setUnreadRooms(data);
-    });
-  } catch (error) {
-    setError(error);
-  }
-}
-
 async function getOnlineUsers(channelId, setUserList, setError) {
   const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
 
@@ -159,7 +142,7 @@ async function getUserRoles(channelId, setUserRoles, setError) {
 
 async function getRoleOfUser(channelId, userId, setRole, setError) {
   try {
-    const userRoleRef = ref(db, `users/${userId}/channels/${channelId}`);
+    const userRoleRef = ref(db, `users/${userId}/channels/${channelId}/role`);
     onValue(userRoleRef, (snap) => {
       const data = snap.val();
 
@@ -172,19 +155,23 @@ async function getRoleOfUser(channelId, userId, setRole, setError) {
 }
 
 async function updateRoleOfUser(channelId, userId, role, setError) {
-  console.log(userId);
   try {
     let updates = {};
-    updates[`users/${userId}/channels/${channelId}`] = role;
+    updates[`users/${userId}/channels/${channelId}/role`] = role;
     if (isUserOnline(userId))
       updates[`Channels/${channelId}/online_users/${userId}/role`] = role;
 
     update(ref(db), updates);
   } catch (error) {
     setError && setError(error);
-    console.log(error);
   }
 }
+
+// async function getUnreadRooms(channelId, userId, roomList, setError) {
+// try {
+
+// }
+// }
 
 export {
   getRoomCategories,

@@ -17,6 +17,7 @@ const Content = ({
   submitMsg,
   userList,
   userRoles,
+  onRoomExit,
 }) => {
   return (
     <div className="content-main">
@@ -26,6 +27,7 @@ const Content = ({
           categories={roomCategories}
           list={roomList}
           setRoom={setRoom}
+          onRoomExit={onRoomExit}
         />
       )}
       <main id="chat">
