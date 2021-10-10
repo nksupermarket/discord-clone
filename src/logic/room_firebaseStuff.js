@@ -18,6 +18,20 @@ function detachListenersForRoom(roomId) {
   off(msgListRef);
 }
 
+async function getRoomName(id, setRoom, setError) {
+  try {
+    const roomNameRef = ref(db, `Rooms/${id}/name`);
+
+    onValue(roomNameRef, (snap) => {
+      const name = snap.val();
+
+      setRoom({ id, name });
+    });
+  } catch (error) {
+    setError && setError(error);
+  }
+}
+
 async function getMsgList(roomId, setMsgList) {
   const msgListRef = ref(db, `Rooms/${roomId}/messages`);
 
@@ -71,9 +85,12 @@ async function attachUnreadMsgsListener(channelId, roomId, userId, setError) {
         (await getRoomExitTimestamp(channelId, roomId, userId, setError)) || 0;
 
       if (lastMsgTimestamp > roomExitTimestamp) {
-        const roomUnreadRef = ref(db, `Channels/rooms/${roomId}`);
+        const roomUnreadRef = ref(
+          db,
+          `users/${userId}/unread_rooms/${channelId}`
+        );
 
-        update(roomUnreadRef, { unread: true });
+        update(roomUnreadRef, { [roomId]: true });
 
         off(msgListRef);
       }
@@ -92,7 +109,6 @@ async function getRoomExitTimestamp(channelId, roomId, userId, setError) {
 
     const timestamp = await (await get(roomExitTimestampRef)).val();
 
-    console.log(timestamp);
     return timestamp;
   } catch (error) {
     setError(error);
@@ -150,7 +166,7 @@ async function removeOnDisconnectForRoomExitTimestamp(
   }
 }
 
-async function setCurrentlyInRoom(channelId, roomId, userId, setError) {
+/*async function setCurrentlyInRoom(channelId, roomId, userId, setError) {
   try {
     const updates = {};
 
@@ -161,10 +177,11 @@ async function setCurrentlyInRoom(channelId, roomId, userId, setError) {
   } catch (error) {
     setError && setError(error);
   }
-}
+}*/
 
 export {
   detachListenersForRoom,
+  getRoomName,
   getMsgList,
   pushToMsgList,
   setRoomExitTimestamp,
@@ -172,5 +189,5 @@ export {
   removeOnDisconnectForRoomExitTimestamp,
   getRoomUnsubscribeStatus,
   attachUnreadMsgsListener,
-  setCurrentlyInRoom,
+  //setCurrentlyInRoom,
 };

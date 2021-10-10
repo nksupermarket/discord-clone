@@ -6,10 +6,10 @@ import {
   getRoomUnsubscribeStatus,
   setRoomExitTimestamp,
   attachUnreadMsgsListener,
-  setCurrentlyInRoom,
+  //setCurrentlyInRoom,
   setRoomExitTimestampOnDisconnect,
   removeOnDisconnectForRoomExitTimestamp,
-} from './logic/room_firebaseStuff';
+} from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
 export default function useOnRoomEnter(user, channel, room, setError) {
@@ -19,7 +19,7 @@ export default function useOnRoomEnter(user, channel, room, setError) {
     if (!user || !channel || !room) return;
     setRoomExitTimestampOnDisconnect(channel.id, room.id, user.uid, setError);
     getMsgList(room.id, setMsgList, setError);
-    setCurrentlyInRoom(channel.id, room.id, user.uid, setError);
+    //setCurrentlyInRoom(channel.id, room.id, user.uid, setError);
 
     return async function () {
       detachListenersForRoom(room.id);

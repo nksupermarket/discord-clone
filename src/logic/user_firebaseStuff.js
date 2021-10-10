@@ -19,7 +19,7 @@ import { getRoleOfUser } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
-function detachListenersforUser(uid) {
+function detachListenersForUser(uid) {
   const channelListRef = ref(db, `users/${uid}/channels`);
 
   off(channelListRef);
@@ -40,18 +40,15 @@ async function createUser(
       email,
       password
     );
-    updateProfile(userCredential.user, { displayName });
-    if (channelId) await addChannelToUser();
-    setUser(userCredential.user);
-
-    async function addChannelToUser() {
+    await updateProfile(userCredential.user, { displayName });
+    if (channelId)
       set(ref(db, `users/${userCredential.user.uid}/channels`), {
-        [channelId]: true,
+        [channelId]: '',
       });
-    }
+    setUser(userCredential.user);
   } catch (error) {
     console.log(error);
-    setError && setError(error);
+    setError && setError(error.message);
     //setError(error.code);
   }
 }
@@ -67,7 +64,7 @@ async function signIn(email, password, setUser, setError) {
     setUser(userCredential.user);
   } catch (error) {
     console.log(error);
-    setError && setError(error);
+    setError && setError(error.message);
     //setError(error.code);
   }
 }
@@ -88,7 +85,7 @@ async function getChannelList(uid, setChannelList, setError) {
     });
   } catch (error) {
     console.log(error);
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
@@ -104,7 +101,7 @@ async function updateUserOnline(uid, displayName, userChannelList) {
     onValue(connectedRef, async function (snapshot) {
       if (snapshot.val() === false) {
         off(connectedRef);
-        detachListenersforUser(uid);
+        detachListenersForUser(uid);
       }
 
       await onDisconnect(userStatusRef).remove();
@@ -113,7 +110,10 @@ async function updateUserOnline(uid, displayName, userChannelList) {
         last_logged_in: getUnixTime(new Date()),
       });
 
-      set(userStatusRef, { displayName, role: channel.role });
+      set(userStatusRef, {
+        displayName,
+        role: channel.role || '',
+      });
       update(userRef, { isOnline: true });
     });
   });
@@ -125,4 +125,11 @@ function isUserOnline(uid) {
   return get(userRef);
 }
 
-export { createUser, signIn, isUserOnline, getChannelList, updateUserOnline };
+export {
+  createUser,
+  signIn,
+  isUserOnline,
+  getChannelList,
+  updateUserOnline,
+  detachListenersForUser,
+};

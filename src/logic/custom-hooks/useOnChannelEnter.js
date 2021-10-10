@@ -6,7 +6,7 @@ import {
   getUserRoles,
   getRoleOfUser,
   detachListenersForChannel,
-} from './logic/channel_firebaseStuff';
+} from '../channel_firebaseStuff';
 
 export default function useOnChannelEnter(user, channel, setError) {
   const [roleList, setRoleList] = useState(['Online']);

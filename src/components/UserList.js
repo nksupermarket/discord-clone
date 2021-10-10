@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ReactDom from 'react-dom';
 
 import Avatar from './Avatar';
@@ -10,23 +10,35 @@ const UserList = ({ list, roles }) => {
 
   const rolesRef = useRef({});
 
+  const [userCountStrs, setUserCountStrs] = useState({});
+  useEffect(() => {
+    if (!rolesRef.current) return;
+
+    for (const role in rolesRef.current) {
+      const userCount = rolesRef.current[role]
+        ? rolesRef.current[role].childNodes.length - 1
+        : 0;
+
+      userCount === 0
+        ? rolesRef.current[role].classList.add('hidden')
+        : rolesRef.current[role].classList.remove('hidden');
+
+      setUserCountStrs((prev) => ({ ...prev, [role]: ` - ${userCount}` }));
+    }
+  }, [roles, list]);
+
   return (
     <aside className="users-ctn">
       {roles.map((role) => {
-        const userCount = rolesRef.current[role]
-          ? rolesRef.current[role].childNodes.length - 1
-          : 0;
-        const userCountStr = ` - ${userCount}`;
-
-        let className = 'role-users-wrapper';
-
-        if (userCount === 0) className += ' hidden';
         return (
-          <ul ref={(el) => (rolesRef.current[role] = el)} className={className}>
+          <ul
+            ref={(el) => (rolesRef.current[role] = el)}
+            className="role-users-wrapper"
+          >
             <header>
               <h2 className="caps-title">
                 {role}
-                {userCount > 0 && userCountStr}
+                {userCountStrs[role]}
               </h2>
             </header>
           </ul>
