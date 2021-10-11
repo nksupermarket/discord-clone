@@ -32,6 +32,8 @@
   position: relative;
   overflow: hidden;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
 }
 
 .room-link .content {
@@ -67,6 +69,13 @@
 
 .unread {
   position: absolute;
+  left: -7px;
+}
+
+.unread img {
+  display: block;
+  width: 18px;
+  height: 18px;
 }
 
 @media screen and (min-width: 500px) {

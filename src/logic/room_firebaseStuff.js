@@ -7,6 +7,7 @@ import {
   update,
   onValue,
   off,
+  remove,
   onDisconnect,
 } from 'firebase/database';
 import { db } from '../firebaseStuff';
@@ -36,7 +37,7 @@ async function removeRoomFromUnread(channelId, roomId, uid, setError) {
       db,
       `users/${uid}/unread_rooms/${channelId}/${roomId}`
     );
-    unreadRoomRef.remove();
+    remove(unreadRoomRef);
   } catch (error) {
     setError && setError();
   }
