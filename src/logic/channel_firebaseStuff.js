@@ -13,12 +13,14 @@ import {
 import { db } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
-function detachListenersForChannel(channelId) {
+function detachListenersForChannel(channelId, uid) {
   const userRolesRef = ref(db, `Channels/${channelId}/user_roles`);
   const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
   const roomListRef = ref(db, `Channels/${channelId}/rooms`);
+  const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelId}`);
   const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
 
+  off(unreadRoomsRef);
   off(userRolesRef);
   off(roomCategoriesRef);
   off(roomListRef);
@@ -29,11 +31,9 @@ async function getChannelName(id, setChannel, setError) {
   try {
     const channelNameRef = ref(db, `Channels/${id}/name`);
 
-    onValue(channelNameRef, (snap) => {
-      const name = snap.val();
+    const data = await get(channelNameRef);
 
-      setChannel({ id, name });
-    });
+    return data.val();
   } catch (error) {
     setError && setError(error);
   }
@@ -66,6 +66,23 @@ function getRoomList(channelId, setRoomList) {
     }
     setRoomList(roomList);
   });
+}
+
+async function getUnreadRooms(uid, channelId, setUnreadRooms, setError) {
+  try {
+    const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelId}`);
+
+    onValue(unreadRoomsRef, (snap) => {
+      const data = snap.val();
+      if (!data) return setUnreadRooms([]);
+
+      const unreadRooms = Object.keys(data);
+
+      setUnreadRooms(unreadRooms);
+    });
+  } catch (error) {
+    setError && setError(error);
+  }
 }
 
 function getRoomCategories(channelId, setRoomCategories, setError) {
@@ -192,6 +209,7 @@ export {
   getRoomCategories,
   createRoomCategory,
   updateCategoryOfRoom,
+  getUnreadRooms,
   getRoomList,
   createRoom,
   getOnlineUsers,

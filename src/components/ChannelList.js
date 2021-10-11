@@ -6,7 +6,7 @@ import Avatar from './Avatar';
 
 import '../styles/ChannelList.css';
 
-const ChannelList = ({ list, currentChannel, setChannelId }) => {
+const ChannelList = ({ list, currentChannel, setChannel }) => {
   return (
     <nav id="channel-list" className="sidebar">
       <header>
@@ -18,7 +18,7 @@ const ChannelList = ({ list, currentChannel, setChannelId }) => {
         <ul className="channel-list">
           {list &&
             list.map((channel) => {
-              if (currentChannel.id === channel.id)
+              if (currentChannel && currentChannel.id === channel.id)
                 return (
                   <div className="avatar-wrapper list-item">
                     <Avatar selected={true} />
@@ -27,7 +27,7 @@ const ChannelList = ({ list, currentChannel, setChannelId }) => {
               return (
                 <Link to={`/channels/${channel.id}`}>
                   <div className="avatar-wrapper list-item">
-                    <Avatar />
+                    <Avatar onClick={() => setChannel(channel)} />
                   </div>
                 </Link>
               );

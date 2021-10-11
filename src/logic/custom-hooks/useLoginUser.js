@@ -4,10 +4,19 @@ import {
   updateUserOnline,
   detachListenersForUser,
 } from '../user_firebaseStuff';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function useLoginUser(setError) {
   const [user, setUser] = useState();
   const [channelList, setChannelList] = useState([]);
+
+  useEffect(function getCurrentUser() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      console.log(user);
+      setUser(user);
+    });
+  }, []);
 
   useEffect(
     function onLogin() {

@@ -24,19 +24,11 @@ import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
 
 function App() {
-  const location = useLocation();
-  console.log(location);
   const [error, setError] = useState('Unable to load page');
 
   const { user, setUser, channelList } = useLoginUser(setError);
-  const [channel, setChannel] = useState({
-    name: 'VIP Club',
-    id: '-MkoRSxTqkrS9mlivGfs',
-  });
-  const [room, setRoom] = useState({
-    id: '-MkoRSx_sf_VYQYIXJWK',
-    name: 'general',
-  });
+  const [channel, setChannel] = useState();
+  const [room, setRoom] = useState();
 
   useEffect(() => {
     if (error)
@@ -44,15 +36,33 @@ function App() {
         setError();
       }, 1500);
   });
-  useEffect(() => {
+  useEffect(function getChannelAndRoomInfoFromUrl() {
     const url = window.location.pathname;
     if (url === '/')
       document.location.pathname =
         '/channels/-MkoRSxTqkrS9mlivGfs/-MkoRSxXwWWT4h6EuP3d';
-    const channelId = parseUrl(url, 'channel');
-    const roomId = parseUrl(url, 'room');
-    getChannelName(channelId, setChannel, setError);
-    getRoomName(roomId, setRoom, setError);
+
+    getChannelInfoThenSet();
+    getRoomInfoThenSet();
+
+    async function getChannelInfoThenSet() {
+      const id = parseUrl(url, 'channel');
+      const name = await getChannelName(id, setError);
+      console.log(name);
+      setChannel({
+        name: name,
+        id: id,
+      });
+    }
+    async function getRoomInfoThenSet() {
+      const id = parseUrl(url, 'room');
+      const name = await getRoomName(id, setError);
+
+      setRoom({
+        name: name,
+        id: id,
+      });
+    }
   }, []);
 
   return (
@@ -71,12 +81,23 @@ function App() {
           />
         )}
         <div className="ctn">
-          {user && (
-            <React.Fragment>
-              <ChannelList list={channelList} currentChannel={channel} />
-              <ChannelView user={user} channel={channel} room={room} />
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            {user && (
+              <ChannelList
+                list={channelList}
+                currentChannel={channel}
+                setChannel={setChannel}
+              />
+            )}
+            {channel && (
+              <ChannelView
+                user={user}
+                channel={channel}
+                room={room}
+                setRoom={setRoom}
+              />
+            )}
+          </React.Fragment>
         </div>
       </Router>
     </>

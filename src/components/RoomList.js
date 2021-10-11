@@ -5,7 +5,16 @@ import { setRoomExitTimestamp } from '../logic/room_firebaseStuff';
 
 import '../styles/Sidebar.css';
 
-const RoomList = ({ channel, categories, list, setRoom, onRoomExit }) => {
+import unreadMarker from '../assets/svg/edit-circle-fill.svg';
+
+const RoomList = ({
+  channel,
+  categories,
+  list,
+  unread,
+  setRoom,
+  onRoomExit,
+}) => {
   categories = categories || [];
 
   const categoriesRef = useRef({});
@@ -28,10 +37,18 @@ const RoomList = ({ channel, categories, list, setRoom, onRoomExit }) => {
         ))}
 
         {list.map((room) => {
+          let isUnread = unread.includes(room.id);
           const roomLink = (
-            <Link to={`/channels/${channel.id}/${room.id}`}>
+            <Link
+              to={`/channels/${channel.id}/${room.id}`}
+              onClick={() => setRoom({ id: room.id, name: room.name })}
+            >
               <li className="room-link">
-                <div className="unread"></div>
+                {isUnread && (
+                  <div className="unread">
+                    <img src={unreadMarker} alt="unread room marker" />
+                  </div>
+                )}
                 <div className="content">
                   <span>{room.name}</span>
                 </div>

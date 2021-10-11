@@ -29,6 +29,8 @@
 }
 
 .room-link {
+  position: relative;
+  overflow: hidden;
   border-radius: 4px;
 }
 
@@ -61,6 +63,10 @@
 
 .room-link:hover {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.unread {
+  position: absolute;
 }
 
 @media screen and (min-width: 500px) {

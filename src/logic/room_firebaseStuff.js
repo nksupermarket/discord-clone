@@ -18,17 +18,27 @@ function detachListenersForRoom(roomId) {
   off(msgListRef);
 }
 
-async function getRoomName(id, setRoom, setError) {
+async function getRoomName(id, setError) {
   try {
     const roomNameRef = ref(db, `Rooms/${id}/name`);
 
-    onValue(roomNameRef, (snap) => {
-      const name = snap.val();
+    const data = await get(roomNameRef);
 
-      setRoom({ id, name });
-    });
+    return data.val();
   } catch (error) {
     setError && setError(error);
+  }
+}
+
+async function removeRoomFromUnread(channelId, roomId, uid, setError) {
+  try {
+    const unreadRoomRef = ref(
+      db,
+      `users/${uid}/unread_rooms/${channelId}/${roomId}`
+    );
+    unreadRoomRef.remove();
+  } catch (error) {
+    setError && setError();
   }
 }
 
@@ -77,7 +87,8 @@ async function attachUnreadMsgsListener(channelId, roomId, userId, setError) {
 
     onValue(msgListRef, async function (snap) {
       const data = snap.val();
-      const keys = Object.keys(data);
+      if (!data) return;
+      const keys = Object.keys(data) || null;
       const lastMsgKey = keys[keys.length - 1];
       const lastMsgTimestamp = data[lastMsgKey].timestamp;
 
@@ -182,6 +193,7 @@ async function removeOnDisconnectForRoomExitTimestamp(
 export {
   detachListenersForRoom,
   getRoomName,
+  removeRoomFromUnread,
   getMsgList,
   pushToMsgList,
   setRoomExitTimestamp,

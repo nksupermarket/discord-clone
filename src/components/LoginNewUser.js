@@ -11,10 +11,12 @@ const LoginNewUser = ({
 }) => {
   return (
     <form name="new-user-username" onSubmit={(e) => e.preventDefault()}>
-      <header>
-        <h4>You are invited to join</h4>
-        <h2>{channel.name}</h2>
-      </header>
+      {channel && (
+        <header>
+          <h4>You are invited to join</h4>
+          <h2>{channel.name}</h2>
+        </header>
+      )}
       <InputField label="Username" type="text" onChange={setDisplayName} />
       <FlatBtn
         text="Continue"

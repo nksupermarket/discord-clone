@@ -9,6 +9,7 @@ import {
   //setCurrentlyInRoom,
   setRoomExitTimestampOnDisconnect,
   removeOnDisconnectForRoomExitTimestamp,
+  removeRoomFromUnread,
 } from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
@@ -17,6 +18,8 @@ export default function useOnRoomEnter(user, channel, room, setError) {
 
   useEffect(() => {
     if (!user || !channel || !room) return;
+    detachListenersForRoom(room.id);
+    removeRoomFromUnread(channel.id, room.id, user.uid, setError);
     setRoomExitTimestampOnDisconnect(channel.id, room.id, user.uid, setError);
     getMsgList(room.id, setMsgList, setError);
     //setCurrentlyInRoom(channel.id, room.id, user.uid, setError);

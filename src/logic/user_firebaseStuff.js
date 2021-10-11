@@ -25,14 +25,7 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function createUser(
-  email,
-  password,
-  displayName,
-  channelId,
-  setUser,
-  setError
-) {
+async function createUser(email, password, displayName, channelId, setError) {
   const auth = getAuth();
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -45,7 +38,6 @@ async function createUser(
       set(ref(db, `users/${userCredential.user.uid}/channels`), {
         [channelId]: '',
       });
-    setUser(userCredential.user);
   } catch (error) {
     console.log(error);
     setError && setError(error.message);
@@ -56,12 +48,7 @@ async function createUser(
 async function signIn(email, password, setUser, setError) {
   const auth = getAuth();
   try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    setUser(userCredential.user);
+    await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     console.log(error);
     setError && setError(error.message);
