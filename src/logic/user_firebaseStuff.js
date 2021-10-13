@@ -56,6 +56,24 @@ async function signIn(email, password, setUser, setError) {
   }
 }
 
+async function subscribeToChannel(uid, channelId, roomList, setError) {
+  try {
+    const newChannelRef = ref(db, `users/${uid}/channels/${channelId}`);
+
+    let updates = {};
+
+    roomList.forEach((roomId) => {
+      updates[
+        `users/${uid}/channels/${channelId}/unread_rooms/${roomId}`
+      ] = true;
+    });
+
+    update(ref(db), updates);
+  } catch (error) {
+    setError && setError(error);
+  }
+}
+
 async function getChannelList(uid, setChannelList, setError) {
   try {
     const userChannelListRef = ref(db, `users/${uid}/channels`);

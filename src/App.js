@@ -80,7 +80,7 @@ function App() {
             channel={channel}
           />
         )}
-        <div className="ctn">
+        <div className="app">
           <React.Fragment>
             {user && (
               <ChannelList

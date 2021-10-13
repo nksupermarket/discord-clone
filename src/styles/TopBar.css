@@ -1,0 +1,21 @@
+.top-bar {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  height: 48px;
+  padding: 0 8px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: default;
+  z-index: 2;
+  box-shadow: var(--low-shadow);
+}

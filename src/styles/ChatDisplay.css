@@ -1,8 +1,8 @@
 main#chat {
-  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
 }
 
 .messages-ctn {

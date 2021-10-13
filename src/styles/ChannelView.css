@@ -2,3 +2,15 @@
   width: 100%;
   display: flex;
 }
+
+.channel-view > .content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-view .content .chat-ctn {
+  width: 100%;
+  display: flex;
+  min-height: 0;
+}

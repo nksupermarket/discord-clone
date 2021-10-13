@@ -1,10 +1,13 @@
 :root {
-  --bg-color: #24283b;
-  --fg-color: #1a1b26;
+  --bg-color: #2b3047;
+  --fg-color: #24283b;
+  --main-nav-color: #161823;
   --header-primary: #fff;
   --header-secondary: #b9bbbe;
   --text-normal: #dcddde;
   --text-muted: #72767d;
+  --low-shadow: 0 1px 0 rgba(4, 4, 5, 0.2), 0 1.5px 0 rgba(6, 6, 7, 0.05),
+    0 2px 0 rgba(4, 4, 5, 0.05);
 }
 
 html,
@@ -25,6 +28,17 @@ ul,
 ol,
 li {
   list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+a:visited,
+a:active,
+a:visited:active {
+  color: inherit;
 }
 
 button,
@@ -84,8 +98,13 @@ body {
   z-index: 2;
 }
 
-.ctn {
+.app {
   display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .btn-ctn {

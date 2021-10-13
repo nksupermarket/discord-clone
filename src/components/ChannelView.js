@@ -4,6 +4,7 @@ import RoomList from './RoomList';
 import ChatDisplay from './ChatDisplay';
 import ChatBar from './ChatBar';
 import UserList from './UserList';
+import TopBar from './TopBar';
 
 import '../styles/ChannelView.css';
 import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
@@ -31,12 +32,17 @@ const ChannelView = ({ user, channel, room, setRoom, setError }) => {
         setRoom={setRoom}
       />
       {room && (
-        <main id="chat">
-          <ChatDisplay msgList={msgList} />
-          <ChatBar submit={submitMsg} roomName={room.name} />
-        </main>
+        <div className="content">
+          <TopBar room={room} />
+          <div className="chat-ctn">
+            <main id="chat">
+              <ChatDisplay msgList={msgList} />
+              <ChatBar submit={submitMsg} roomName={room.name} />
+            </main>
+            <UserList list={onlineUsers} roles={roleList} />
+          </div>
+        </div>
       )}
-      <UserList list={onlineUsers} roles={roleList} />
     </div>
   );
 };

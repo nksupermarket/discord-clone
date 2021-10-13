@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import IconBtn from './IconBtn';
@@ -8,11 +8,14 @@ import '../styles/ChannelList.css';
 
 const ChannelList = ({ list, currentChannel, setChannel }) => {
   return (
-    <nav id="channel-list" className="sidebar">
+    <nav id="main-nav">
       <header>
-        <Link to="/">
+        <Link to="/" className="list-item">
           <IconBtn />
         </Link>
+        <div className="header-underline-wrapper list-item">
+          <div className="header-underline"></div>
+        </div>
       </header>
       <div className="scroller">
         <ul className="channel-list">
@@ -33,15 +36,16 @@ const ChannelList = ({ list, currentChannel, setChannel }) => {
               );
             })}
         </ul>
-      </div>
-      <div className="btn-ctn">
-        <IconBtn icon="flaticon-plus" className={'list-item'} isCircle={true} />
-        {/* add a server */}
-        <IconBtn
-          icon="flaticon-explore"
-          className={'list-item'}
-          isCircle={true}
-        />{' '}
+        <div className="btn-ctn">
+          <div className="list-item">
+            <IconBtn icon="flaticon-plus" isCircle={true} />
+          </div>
+          {/* add a server */}
+          <div className="list-item">
+            <IconBtn icon="flaticon-explore" isCircle={true} />
+          </div>
+        </div>
+
         {/* explore servers */}
       </div>
     </nav>
