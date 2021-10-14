@@ -12,10 +12,6 @@ const UserList = ({ list, roles }) => {
 
   const [userCountStrs, setUserCountStrs] = useState({});
   useEffect(() => {
-    if (list.length > 0) {
-      list.length = 50;
-      list.fill(list[0], 1, 50);
-    }
     if (!rolesRef.current) return;
 
     for (const role in rolesRef.current) {

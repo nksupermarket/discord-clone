@@ -1,34 +1,49 @@
-.chat-message {
-  font-size: 1.4rem;
-  list-style: none;
+.chat-msg .msg {
+  margin-top: 1.06rem;
+  min-height: 2.75rem;
+  padding: 0.125rem 48px 0.125rem 72px;
 }
 
-.chat-message .content {
-  box-sizing: border-box;
-  padding: 0 50px;
-  flex-direction: column;
-}
-
-.chat-message .avatar {
+.chat-msg .msg .avatar {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   position: absolute;
+  left: 16px;
+  margin-top: calc(4px - 0.125rem);
 }
 
-.chat-message header {
-  margin-bottom: 5px;
+.chat-msg .msg header {
+  display: block;
+  position: relative;
+  line-height: 1.375rem;
+  min-height: 1.375rem;
+  white-space: break-spaces;
+  font-weight: 500;
 }
 
-.chat-message header span:first-child {
-  margin-right: 20px;
+.chat-msg .msg header .user {
+  margin-right: 0.25rem;
+  color: var(--header-primary);
 }
 
-.chat-message header .user {
-  font-size: 1.8rem;
+.chat-msg .msg header .timestamp {
+  display: inline-block;
+  height: 1.25rem;
+  cursor: default;
+  pointer-events: none;
+  font-size: 0.75rem;
+  vertical-align: baseline;
+  color: var(--text-muted);
 }
 
-.chat-message header .timestamp {
-  font-size: 1.2rem;
-  opacity: 0.5;
+.chat-msg .msg .content .msg-content {
+  margin-left: -72px;
+  padding-left: 72px;
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  white-space: break-spaces;
+  word-wrap: break-word;
+  color: var(--text-normal);
 }

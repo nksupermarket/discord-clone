@@ -6,9 +6,11 @@ const TopBar = ({ user, channel, room }) => {
   return (
     <section className="top-bar">
       {room && (
-        <div className="room-name-wrapper">
-          {room.name}|{room.description}
-        </div>
+        <>
+          <header className="room-name-wrapper">{room.name}</header>
+          <div className="divider"></div>
+          <div className="room-desc">{room.description}</div>
+        </>
       )}
       <div className="toolbar">
         {room && <div className="channel-functions"></div>}

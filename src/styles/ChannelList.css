@@ -30,7 +30,7 @@
 
 #main-nav .scroller {
   flex: 1 1 auto;
-  overflow: scroll;
+  overflow: hidden auto;
 }
 
 #main-nav .avatar {

@@ -2,7 +2,15 @@ import React from 'react';
 
 import '../styles/IconBtn.css';
 
-const IconBtn = ({ onClick, icon, className, isCircle, isRectangle }) => {
+const IconBtn = ({
+  onClick,
+  icon,
+  svg,
+  alt,
+  className,
+  isCircle,
+  isRectangle,
+}) => {
   let iconClassName = icon;
 
   if (isCircle) iconClassName += ' circle';
@@ -11,7 +19,8 @@ const IconBtn = ({ onClick, icon, className, isCircle, isRectangle }) => {
   className = className ? `icon-btn ${className}` : 'icon-btn';
   return (
     <button type="button" className={className} onClick={onClick}>
-      <i className={iconClassName}></i>
+      {icon && <i className={iconClassName}></i>}
+      {svg && <img src={svg} alt={alt} />}
     </button>
   );
 };

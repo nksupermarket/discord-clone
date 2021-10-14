@@ -18,4 +18,21 @@
   cursor: default;
   z-index: 2;
   box-shadow: var(--low-shadow);
+  color: var(--text-normal);
+}
+
+.top-bar .room-name-wrapper {
+  font-weight: 600;
+  color: var(--header-primary);
+  font-size: 16px;
+  line-height: 20px;
+  margin-left: 16px;
+}
+
+.top-bar .divider {
+  width: 1px;
+  height: 24px;
+  margin: 0 8px;
+  flex: 0 0 auto;
+  background-color: var(--header-primary);
 }

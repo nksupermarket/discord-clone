@@ -5,7 +5,11 @@
   --header-primary: #fff;
   --header-secondary: #b9bbbe;
   --text-normal: #dcddde;
+  --text-normal-filter: invert(99%) sepia(6%) saturate(408%) hue-rotate(175deg)
+    brightness(88%) contrast(98%);
   --text-muted: #72767d;
+  --text-muted-filter: invert(50%) sepia(1%) saturate(2278%) hue-rotate(179deg)
+    brightness(90%) contrast(80%);
   --low-shadow: 0 1px 0 rgba(4, 4, 5, 0.2), 0 1.5px 0 rgba(6, 6, 7, 0.05),
     0 2px 0 rgba(4, 4, 5, 0.05);
 }
@@ -69,15 +73,11 @@ h6 {
   font-weight: 400;
 }
 
-html {
-  font-size: 10px;
-}
-
 body {
-  font-size: 1.6rem;
   overflow: hidden;
   color: var(--text-normal);
   background-color: var(--bg-color);
+  font-family: 'Mukta', 'sans-serif';
 }
 
 .hidden {

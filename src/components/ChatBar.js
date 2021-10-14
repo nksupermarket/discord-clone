@@ -4,6 +4,8 @@ import IconBtn from './IconBtn';
 
 import '../styles/ChatBar.css';
 
+import addCircleSvg from '../assets/svg/add-circle-fill.svg';
+
 const ChatBar = ({ submit, roomName }) => {
   const [msg, setMsg] = useState();
 
@@ -11,7 +13,7 @@ const ChatBar = ({ submit, roomName }) => {
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       <div className="chat-wrapper">
         <div className="add-wrapper">
-          <IconBtn icon="flaticon-plus" isCircle={true} />
+          <IconBtn svg={addCircleSvg} alt="upload a file" />
         </div>
         <div className="input-wrapper">
           <input

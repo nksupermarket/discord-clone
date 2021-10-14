@@ -1,8 +1,9 @@
 .users-ctn {
   height: 100vh;
   width: 80%;
-  overflow-y: scroll;
+  overflow: hidden auto;
   background-color: var(--fg-color);
+  font-weight: 500;
 }
 
 .role-users-wrapper {

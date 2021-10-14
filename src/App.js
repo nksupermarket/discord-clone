@@ -19,12 +19,13 @@ import ChannelList from './components/ChannelList';
 import Error from './components/Error';
 
 import './globalStyles.css';
+
 //import icons
 import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
 
 function App() {
-  const [error, setError] = useState('Unable to load page');
+  const [error, setError] = useState();
 
   const { user, setUser, channelList } = useLoginUser(setError);
   const [channel, setChannel] = useState();

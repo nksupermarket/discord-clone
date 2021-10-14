@@ -37,10 +37,14 @@
 .chat-bar .btn-ctn {
   height: 44px;
   margin-right: 4px;
+  align-items: center;
 }
 .chat-bar .btn-ctn .icon-btn {
   margin: 0 4px;
   padding: 4px;
+}
+.chat-bar .btn-ctn .icon-btn i {
+  height: 25px;
 }
 
 .chat-bar .icon-btn:hover i:before {
@@ -51,8 +55,13 @@
   background-color: var(--text-normal);
 }
 .chat-bar .icon-btn i {
-  font-size: 2rem;
-  height: 20px;
+  font-size: 20px;
+}
+.chat-bar .icon-btn img {
+  filter: var(--text-muted-filter);
+}
+.chat-bar .icon-btn:hover img {
+  filter: var(--text-normal-filter);
 }
 
 .chat-bar .icon-btn i:before {
@@ -78,7 +87,7 @@
   width: 30px;
 }
 .chat-bar .icon-btn i.flaticon-plus {
-  font-size: 1.2rem;
+  font-size: 12px;
 }
 .chat-bar .icon-btn i.flaticon-plus:before {
   top: 20%;
