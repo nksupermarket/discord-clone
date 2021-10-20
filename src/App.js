@@ -31,12 +31,13 @@ function App() {
   const [channel, setChannel] = useState();
   const [room, setRoom] = useState();
 
-  useEffect(() => {
+  useEffect(function ifError() {
     if (error)
       setTimeout(() => {
         setError();
       }, 1500);
   });
+
   useEffect(function getChannelAndRoomInfoFromUrl() {
     const url = window.location.pathname;
     if (url === '/')

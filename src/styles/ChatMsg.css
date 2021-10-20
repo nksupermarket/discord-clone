@@ -2,6 +2,7 @@
   margin-top: 1.06rem;
   min-height: 2.75rem;
   padding: 0.125rem 48px 0.125rem 72px;
+  position: relative;
 }
 
 .chat-msg .msg .avatar {

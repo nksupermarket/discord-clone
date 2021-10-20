@@ -1,0 +1,45 @@
+.msg-btns {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.msg-btns .container {
+  position: absolute;
+  top: -16px;
+  right: 0;
+  z-index: 1;
+  padding: 0 14px 0 32px;
+}
+
+.msg-btns .container .wrapper {
+  background-color: var(--bg-color);
+  box-shadow: var(--elevate-shadow);
+  display: flex;
+  box-sizing: border-box;
+  height: 32px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.msg-btns .container .wrapper button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 4px;
+  min-width: 24px;
+  cursor: pointer;
+  position: relative;
+}
+
+.msg-btns .container .wrapper button img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  filter: var(--interactive-normal-filter);
+}

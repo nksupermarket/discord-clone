@@ -3,6 +3,7 @@ import React from 'react';
 import { convertTimestampToString } from '../logic/date';
 
 import Avatar from './Avatar';
+import MsgButtons from './MsgButtons';
 
 import '../styles/ChatMsg.css';
 
@@ -21,6 +22,7 @@ const ChatMsg = ({ content }) => {
             </span>
           </header>
           <div className="msg-content">{msg}</div>
+          <MsgButtons />
         </div>
       </div>
     </li>

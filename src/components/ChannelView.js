@@ -37,7 +37,11 @@ const ChannelView = ({ user, channel, room, setRoom, setError }) => {
           <div className="chat-ctn">
             <main id="chat">
               <ChatDisplay msgList={msgList} />
-              <ChatBar submit={submitMsg} roomName={room.name} />
+              <ChatBar
+                submit={submitMsg}
+                roomName={room.name}
+                replyTo="a string"
+              />
             </main>
             <UserList list={onlineUsers} roles={roleList} />
           </div>

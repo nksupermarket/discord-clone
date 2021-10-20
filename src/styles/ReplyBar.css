@@ -1,0 +1,10 @@
+.reply-bar {
+  background-color: var(--secondary-fg-color);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.reply-bar .container {
+  display: flex;
+  justify-content: space-between;
+}

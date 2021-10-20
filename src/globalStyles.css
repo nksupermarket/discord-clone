@@ -1,7 +1,7 @@
 :root {
   --bg-color: #2b3047;
   --fg-color: #24283b;
-  --main-nav-color: #161823;
+  --secondary-fg-color: #161823;
   --header-primary: #fff;
   --header-secondary: #b9bbbe;
   --text-normal: #dcddde;
@@ -10,8 +10,15 @@
   --text-muted: #72767d;
   --text-muted-filter: invert(50%) sepia(1%) saturate(2278%) hue-rotate(179deg)
     brightness(90%) contrast(80%);
+  --interactive-normal: #b9bbbe;
+  --interactive-hover: #dcddde;
+  --interactive-normal-filter: invert(79%) sepia(6%) saturate(124%)
+    hue-rotate(177deg) brightness(95%) contrast(90%);
+  --interactive-hover-filter: invert(96%) sepia(5%) saturate(42%)
+    hue-rotate(169deg) brightness(94%) contrast(89%);
   --low-shadow: 0 1px 0 rgba(4, 4, 5, 0.2), 0 1.5px 0 rgba(6, 6, 7, 0.05),
     0 2px 0 rgba(4, 4, 5, 0.05);
+  --elevate-shadow: 0 0 0 1px rgba(4, 4, 5, 0.15);
 }
 
 html,
