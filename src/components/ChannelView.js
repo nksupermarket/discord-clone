@@ -32,6 +32,7 @@ const ChannelView = ({ user, channel, room, setRoom, setError }) => {
         list={roomList}
         unread={unreadRooms}
         setRoom={setRoom}
+        currentRoom={room}
       />
       {room && (
         <div className="content">

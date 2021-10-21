@@ -41,7 +41,7 @@ const RoomList = ({
           let isUnread = unread.includes(room.id);
 
           let style = {};
-          if (room.id === currentRoom)
+          if (room.id === currentRoom.id)
             style = { background: 'rgba(201, 201, 201, 0.1)' };
           const roomLink = (
             <li className="room-link-item">
