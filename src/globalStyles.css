@@ -1,5 +1,6 @@
 :root {
   --bg-color: #2b3047;
+  --background-accent: #4f545c;
   --fg-color: #24283b;
   --secondary-fg-color: #161823;
   --header-primary: #fff;
@@ -131,4 +132,12 @@ body {
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
+}
+
+.display-name {
+  font-weight: 500;
+}
+
+.avatar {
+  border-radius: 50%;
 }

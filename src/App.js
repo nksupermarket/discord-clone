@@ -14,8 +14,8 @@ import useLoginUser from './logic/custom-hooks/useLoginUser';
 import parseUrl from './logic/parseUrl';
 
 import ChannelView from './components/ChannelView';
-import LoginScreen from './components/LoginScreen';
-import ChannelList from './components/ChannelList';
+import LoginScreen from './components/Login/LoginScreen';
+import ChannelList from './components/side bars/ChannelList';
 import Error from './components/Error';
 
 import './globalStyles.css';
@@ -50,7 +50,6 @@ function App() {
     async function getChannelInfoThenSet() {
       const id = parseUrl(url, 'channel');
       const name = await getChannelName(id, setError);
-      console.log(name);
       setChannel({
         name: name,
         id: id,

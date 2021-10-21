@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import InputField from './InputField';
-import FlatBtn from './FlatBtn';
-import InputErrorMsg from './InputErrorMsg';
+import InputField from '../InputField';
+import FlatBtn from '../FlatBtn';
+import InputErrorMsg from '../InputErrorMsg';
 
 const LoginEmail = ({ signIn, onRegister }) => {
   const [email, setEmail] = useState();

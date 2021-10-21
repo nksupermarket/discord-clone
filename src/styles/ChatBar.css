@@ -35,38 +35,38 @@
   align-items: center;
 }
 
-.chat-bar .btn-ctn {
+.chat-bar .chat-wrapper .btn-ctn {
   height: 44px;
   margin-right: 4px;
   align-items: center;
 }
-.chat-bar .btn-ctn .icon-btn {
+.chat-bar .chat-wrapper .btn-ctn .icon-btn {
   margin: 0 4px;
   padding: 4px;
 }
-.chat-bar .btn-ctn .icon-btn i {
+.chat-bar .chat-wrapper .btn-ctn .icon-btn i {
   height: 25px;
 }
 
 .chat-bar .icon-btn:hover i:before {
-  color: var(--text-normal);
+  color: var(--interactive-hover);
 }
 .chat-bar .icon-btn:hover i.circle,
 .chat-bar .icon-btn:hover i.rectangle {
-  background-color: var(--text-normal);
+  background-color: var(--interactive-hover);
 }
 .chat-bar .icon-btn i {
   font-size: 20px;
 }
 .chat-bar .icon-btn img {
-  filter: var(--text-muted-filter);
+  filter: var(--interactive-normal-filter);
 }
 .chat-bar .icon-btn:hover img {
-  filter: var(--text-normal-filter);
+  filter: var(--interactive-hover-filter);
 }
 
 .chat-bar .icon-btn i:before {
-  color: var(--text-muted);
+  color: var(--interactive-normal);
 }
 
 .chat-bar .icon-btn i.circle:before,
@@ -77,7 +77,7 @@
 
 .chat-bar .icon-btn i.circle,
 .chat-bar .icon-btn i.rectangle {
-  background-color: var(--text-muted);
+  background-color: var(--interactive-normal);
 }
 
 .chat-bar .icon-btn i.circle {

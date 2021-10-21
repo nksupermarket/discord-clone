@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import IconBtn from './IconBtn';
-import Avatar from './Avatar';
+import IconBtn from '../IconBtn';
+import Avatar from '../Avatar';
 
-import '../styles/ChannelList.css';
+import '../../styles/ChannelList.css';
 
 const ChannelList = ({ list, currentChannel, setChannel }) => {
   return (

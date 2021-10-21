@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import RoomList from './RoomList';
-import ChatDisplay from './ChatDisplay';
-import ChatBar from './ChatBar';
-import UserList from './UserList';
+import RoomList from './side bars/RoomList';
+import ChatDisplay from './Chat/ChatDisplay';
+import ChatBar from './Chat/ChatBar';
+import UserList from './side bars/UserList';
 import TopBar from './TopBar';
 
 import '../styles/ChannelView.css';
@@ -21,6 +21,8 @@ const ChannelView = ({ user, channel, room, setRoom, setError }) => {
   } = useOnChannelEnter(user, channel, setError);
 
   const { msgList, submitMsg } = useOnRoomEnter(user, channel, room, setError);
+  console.log(msgList);
+  const [replyTo, setReplyTo] = useState();
 
   return (
     <div className="channel-view">
@@ -36,11 +38,12 @@ const ChannelView = ({ user, channel, room, setRoom, setError }) => {
           <TopBar room={room} />
           <div className="chat-ctn">
             <main id="chat">
-              <ChatDisplay msgList={msgList} />
+              <ChatDisplay msgList={msgList} setReplyTo={setReplyTo} />
               <ChatBar
                 submit={submitMsg}
                 roomName={room.name}
-                replyTo="a string"
+                replyTo={replyTo}
+                setReplyTo={setReplyTo}
               />
             </main>
             <UserList list={onlineUsers} roles={roleList} />

@@ -2,9 +2,45 @@
   background-color: var(--secondary-fg-color);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  padding-top: 3px;
+  margin-top: -3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .reply-bar .container {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+
+.reply-bar .container .content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-left: 16px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--header-secondary);
+}
+
+.reply-bar .container .content .display-name {
+  font-weight: 600;
+}
+
+.reply-bar .container .actions {
+  display: flex;
+  align-items: center;
+}
+
+.reply-bar .container .actions .close-btn {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+}
+
+.reply-bar .container .actions .close-btn img {
+  width: 16px;
+  height: 16px;
 }

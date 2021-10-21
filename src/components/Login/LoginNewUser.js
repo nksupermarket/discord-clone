@@ -1,7 +1,7 @@
 import React from 'react';
 
-import InputField from './InputField';
-import FlatBtn from './FlatBtn';
+import InputField from '../InputField';
+import FlatBtn from '../FlatBtn';
 
 const LoginNewUser = ({
   channel,

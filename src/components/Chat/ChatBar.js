@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import IconBtn from './IconBtn';
+import IconBtn from '../IconBtn';
 import ReplyBar from './ReplyBar';
 
-import '../styles/ChatBar.css';
+import '../../styles/ChatBar.css';
 
-import addCircleSvg from '../assets/svg/add-circle-fill.svg';
+import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 
-const ChatBar = ({ submit, roomName, replyTo }) => {
+const ChatBar = ({ submit, roomName, replyTo, setReplyTo }) => {
   const [msg, setMsg] = useState();
 
   let style = replyTo
@@ -16,7 +16,12 @@ const ChatBar = ({ submit, roomName, replyTo }) => {
 
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
-      {replyTo && <ReplyBar displayName={replyTo} />}
+      {replyTo && (
+        <ReplyBar
+          displayName={replyTo.displayName}
+          close={() => setReplyTo()}
+        />
+      )}
       <div className="chat-wrapper" style={style}>
         <div className="add-wrapper">
           <IconBtn svg={addCircleSvg} alt="upload a file" />
@@ -29,7 +34,8 @@ const ChatBar = ({ submit, roomName, replyTo }) => {
             onChange={(e) => setMsg(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                submit(msg);
+                setReplyTo();
+                submit(msg, replyTo.msgId);
                 e.target.value = '';
               }
             }}

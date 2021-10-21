@@ -74,7 +74,6 @@ async function getUnreadRooms(uid, channelId, setUnreadRooms, setError) {
 
     onValue(unreadRoomsRef, (snap) => {
       const data = snap.val();
-      console.log(data);
       if (!data) return setUnreadRooms([]);
 
       const unreadRooms = Object.keys(data);

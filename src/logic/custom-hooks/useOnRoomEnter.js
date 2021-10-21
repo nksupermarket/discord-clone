@@ -36,12 +36,15 @@ export default function useOnRoomEnter(user, channel, room, setError) {
 
   return { msgList, submitMsg };
 
-  function submitMsg(msg) {
+  function submitMsg(msg, replyTo) {
+    replyTo = replyTo || '';
+
     const msgObj = {
       user: user.uid,
       displayName: user.displayName,
-      msg,
       timestamp: getUnixTime(new Date()),
+      msg,
+      replyTo,
     };
     pushToMsgList(room.id, msgObj, setError);
   }

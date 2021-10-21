@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { validateEmail, validatePw } from '../logic/formValidation';
+import { validateEmail, validatePw } from '../../logic/formValidation';
 
-import InputField from './InputField';
-import FlatBtn from './FlatBtn';
-import InputErrorMsg from './InputErrorMsg';
+import InputField from '../InputField';
+import FlatBtn from '../FlatBtn';
+import InputErrorMsg from '../InputErrorMsg';
 
 const CreateAcc = ({ serverInfo, createUser }) => {
   const [email, setEmail] = useState();

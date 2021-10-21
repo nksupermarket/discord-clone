@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactDom from 'react-dom';
 
-import Avatar from './Avatar';
+import Avatar from '../Avatar';
 
-import '../styles/UserList.css';
+import '../../styles/UserList.css';
 
 const UserList = ({ list, roles }) => {
   roles = roles || [];

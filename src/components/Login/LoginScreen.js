@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import LoginEmail from './LoginEmail';
 
-import '../styles/LoginScreen.css';
+import '../../styles/LoginScreen.css';
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
 

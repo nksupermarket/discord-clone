@@ -51,9 +51,20 @@ async function getMsgList(roomId, setMsgList) {
     data = data || {};
     let msgList = [];
     for (const id in data) {
+      data[id].msgId = id;
       msgList.push(data[id]);
     }
-    setMsgList(msgList);
+
+    setMsgList(changeReplyFromIDtoMsgObj(msgList));
+
+    function changeReplyFromIDtoMsgObj(arr) {
+      return arr.map((obj, i, thisArr) => {
+        if (!obj.replyTo) return obj;
+
+        obj.replyTo = thisArr.find((msgObj) => msgObj.msgId === obj.replyTo);
+        return obj;
+      });
+    }
   });
 }
 
