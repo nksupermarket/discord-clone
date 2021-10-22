@@ -1,17 +1,15 @@
 import React from 'react';
 
-const Avatar = ({ img, channelName, selected, onClick }) => {
+const Avatar = ({ img, channelName, onClick }) => {
   let filler = channelName ? (
     <span>{createInitials(channelName)}</span>
   ) : (
     <span></span>
   );
 
-  let className = selected ? 'avatar selected' : 'avatar';
-
   const style = img ? { background: `url(${img})` } : { background: 'black' };
   return (
-    <div className={className} style={style} onClick={onClick}>
+    <div className="avatar" style={style} onClick={onClick}>
       {!img && filler}
     </div>
   );

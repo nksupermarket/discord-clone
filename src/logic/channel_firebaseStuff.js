@@ -88,10 +88,9 @@ async function getUnreadRooms(uid, channelId, setUnreadRooms, setError) {
 function getRoomCategories(channelId, setRoomCategories, setError) {
   try {
     const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
-
     onValue(roomCategoriesRef, (snap) => {
       const data = snap.val();
-      const roomCategories = Object.keys(data);
+      const roomCategories = typeof data === 'object' ? Object.keys(data) : {};
       setRoomCategories(['none', ...roomCategories]);
     });
   } catch (error) {

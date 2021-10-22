@@ -91,7 +91,7 @@
 .room-link-item .content:hover {
   background-color: rgba(174, 174, 174, 0.1);
 }
-.room-link-item .content:active {
+.room-link-item .content.active {
   background-color: rgba(201, 201, 201, 0.1);
 }
 

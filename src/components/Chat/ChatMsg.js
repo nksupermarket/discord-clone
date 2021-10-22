@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 
-import { convertTimestampToString } from '../../logic/date';
-
 import Avatar from '../Avatar';
 import MsgButtons from './MsgButtons';
 
 import '../../styles/ChatMsg.css';
+import ReplyContext from './ReplyContext';
+import MsgHeader from './MsgHeader';
 
 const ChatMsg = ({ content, setReplyTo }) => {
   const { displayName, msg, timestamp, msgId, replyTo: replyContext } = content;
 
   const [isShowBtns, setIsShowBtns] = useState(false);
 
-  console.log(isShowBtns, setIsShowBtns);
   function replyToThisMsg() {
     setReplyTo({
       displayName,
@@ -27,22 +26,14 @@ const ChatMsg = ({ content, setReplyTo }) => {
     >
       <div className="msg">
         {replyContext && (
-          <div className="msg-reply-context">
-            <Avatar />
-            <span className="display-name">{replyContext.displayName}</span>
-            <div className="replied-text-preview">
-              <div className="content">{replyContext.msg}</div>
-            </div>
-          </div>
+          <ReplyContext
+            displayName={replyContext.displayName}
+            msg={replyContext.msg}
+          />
         )}
         <div className="content">
           <Avatar />
-          <header>
-            <span className="display-name">{displayName}</span>
-            <span className="timestamp">
-              {convertTimestampToString(timestamp)}
-            </span>
-          </header>
+          <MsgHeader displayName={displayName} timestamp={timestamp} />
           <div className="msg-content">{msg}</div>
           {isShowBtns && (
             <MsgButtons

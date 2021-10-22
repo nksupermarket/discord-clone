@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactDom from 'react-dom';
 
-import Avatar from '../Avatar';
+import '../../styles/OnlineUsers.css';
+import UserRole from './UserRole';
+import UserDisplay from './UserDisplay';
 
-import '../../styles/UserList.css';
-
-const UserList = ({ list, roles }) => {
+const OnlineUsers = ({ list, roles }) => {
   roles = roles || [];
 
   const rolesRef = useRef({});
@@ -31,34 +31,21 @@ const UserList = ({ list, roles }) => {
     <aside className="users-ctn">
       {roles.map((role) => {
         return (
-          <ul
-            ref={(el) => (rolesRef.current[role] = el)}
-            className="role-users-wrapper"
-          >
-            <header>
-              <h2 className="caps-title">
-                {role}
-                {userCountStrs[role]}
-              </h2>
-            </header>
-          </ul>
+          <UserRole
+            rolesRef={rolesRef}
+            role={role}
+            userCountStr={userCountStrs[role]}
+          />
+
+          //each UserRole is given a ref in the rolesRef.current object
         );
       })}
 
       {list.map((user) => {
-        const userDisplay = (
-          <li className="user-wrapper">
-            <Avatar />
-            {/*<img className="avatar" src={user.avatar} alt={user.name} /> */}
-            <div className="content">
-              <span>{user.displayName}</span>
-
-              <span className="subText"></span>
-            </div>
-          </li>
-        );
+        const userDisplay = <UserDisplay displayName={user.displayName} />;
 
         if (
+          //if user has a role, move UserDisplay to corresponding role
           user.role &&
           roles.includes(user.role) &&
           rolesRef.current[user.role]
@@ -73,4 +60,4 @@ const UserList = ({ list, roles }) => {
   );
 };
 
-export default UserList;
+export default OnlineUsers;

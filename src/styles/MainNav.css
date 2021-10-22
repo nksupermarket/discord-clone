@@ -41,7 +41,7 @@
 }
 
 #main-nav .avatar-ctn:hover,
-#main-nav .avatar.selected {
+#main-nav .selected .avatar {
   border-radius: 10px;
 }
 

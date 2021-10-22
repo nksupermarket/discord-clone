@@ -3,6 +3,7 @@ import React from 'react';
 import '../../styles/MsgButtons.css';
 
 import replyIcon from '../../assets/svg/reply-fill.svg';
+import IconBtn from '../IconBtn';
 
 const MsgButtons = ({ setReplyTo, setIsShowBtns }) => {
   return (
@@ -13,9 +14,7 @@ const MsgButtons = ({ setReplyTo, setIsShowBtns }) => {
     >
       <div className="container">
         <div className="wrapper">
-          <button type="button" onClick={setReplyTo}>
-            <img src={replyIcon} alt="reply" />
-          </button>
+          <IconBtn src={replyIcon} alt="reply button" onClick={setReplyTo} />
         </div>
       </div>
     </div>
