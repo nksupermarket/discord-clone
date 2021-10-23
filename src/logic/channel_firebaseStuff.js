@@ -90,7 +90,9 @@ function getRoomCategories(channelId, setRoomCategories, setError) {
     const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
     onValue(roomCategoriesRef, (snap) => {
       const data = snap.val();
-      const roomCategories = typeof data === 'object' ? Object.keys(data) : {};
+      if (!data) return;
+
+      const roomCategories = Object.keys(data);
       setRoomCategories(['none', ...roomCategories]);
     });
   } catch (error) {
@@ -160,6 +162,7 @@ async function getUserRoles(channelId, setUserRoles, setError) {
 
     onValue(channelUserRolesRef, (snap) => {
       const data = snap.val();
+      if (!data) return;
       const userRoles = Object.keys(data);
 
       setUserRoles([...userRoles, 'Online']);

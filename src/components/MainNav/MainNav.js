@@ -17,7 +17,6 @@ const MainNav = ({ list }) => {
           {/* add a server */}
           <MainNavBtn icon="flaticon-explore" />
         </div>
-
         {/* explore servers */}
       </div>
     </nav>

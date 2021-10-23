@@ -22,7 +22,7 @@ const ChatMsg = ({ content, setReplyTo }) => {
     <li
       className="chat-msg"
       onMouseOver={() => setIsShowBtns(true)}
-      onMouseOut={() => setIsShowBtns(false)}
+      onMouseLeave={() => setIsShowBtns(false)}
     >
       <div className="msg">
         {replyContext && (
@@ -36,11 +36,7 @@ const ChatMsg = ({ content, setReplyTo }) => {
           <MsgHeader displayName={displayName} timestamp={timestamp} />
           <div className="msg-content">{msg}</div>
           {isShowBtns && (
-            <MsgButtons
-              msgId={msgId}
-              setReplyTo={replyToThisMsg}
-              setIsShowBtns={setIsShowBtns}
-            />
+            <MsgButtons msgId={msgId} setReplyTo={replyToThisMsg} />
           )}
         </div>
       </div>

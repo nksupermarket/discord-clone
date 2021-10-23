@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 import Avatar from '../Avatar';
 
-const ChannelLink = ({ channel }) => {
+const ChannelLink = ({ channelId }) => {
   return (
-    <NavLink to={`/channels/${channel.id}`} activeClassName="selected">
+    <NavLink to={`/channels/${channelId}`} activeClassName="selected">
       <div className="avatar-wrapper list-item">
         <Avatar />
       </div>

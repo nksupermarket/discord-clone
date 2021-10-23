@@ -7,7 +7,7 @@ const ChannelList = ({ list }) => {
     <ul className="channel-list">
       {list &&
         list.map((channel) => {
-          return <ChannelLink channel={channel} />;
+          return <ChannelLink key={channel.id} channelId={channel.id} />;
         })}
     </ul>
   );

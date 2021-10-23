@@ -14,22 +14,22 @@ import { getRoomName } from '../logic/room_firebaseStuff';
 import ChatWrapper from './Chat/ChatWrapper';
 
 const ChannelView = ({ user, setError }) => {
-  const { id, roomId } = useParams();
+  const { channelId, roomId } = useParams();
   const [channel, setChannel] = useState();
   const [room, setRoom] = useState();
 
   useEffect(() => {
-    getChannelInfoThenSet();
+    getChannelInfoThenSetChannel();
 
-    async function getChannelInfoThenSet() {
-      const name = await getChannelName(id, setError);
+    async function getChannelInfoThenSetChannel() {
+      const name = await getChannelName(channelId, setError);
 
       setChannel({
         name: name,
-        id: id,
+        id: channelId,
       });
     }
-  }, [id, setError]);
+  }, [channelId, setError]);
 
   const {
     roleList,
@@ -40,12 +40,18 @@ const ChannelView = ({ user, setError }) => {
     userRole,
   } = useOnChannelEnter(user, channel, setError);
 
+  // room stuff
   const history = useHistory();
 
   useEffect(() => {
-    getRoomInfoThenSet();
+    if (roomList.length === 0) return;
 
-    async function getRoomInfoThenSet() {
+    if (!roomId && roomList[0])
+      history.push(`/channels/${channel.id}/${roomList[0].id}`); //enter default room for channel
+
+    getRoomInfoThenSetRoom();
+
+    async function getRoomInfoThenSetRoom() {
       const id = roomId || roomList[0].id;
       const name = await getRoomName(id, setError);
 
@@ -54,7 +60,7 @@ const ChannelView = ({ user, setError }) => {
         id: id,
       });
     }
-  }, [roomList, history, id, roomId, setError]);
+  }, [roomList, history, channel, roomId, setError]);
 
   const { msgList, submitMsg } = useOnRoomEnter(user, channel, room, setError);
 

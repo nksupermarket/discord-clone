@@ -4,8 +4,12 @@ import IconBtn from '../IconBtn';
 
 import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 
-const ChatBarWrapper = ({ style, roomName, replyTo, setReplyTo, submit }) => {
+const ChatBarWrapper = ({ roomName, replyTo, setReplyTo, submit }) => {
   const [msg, setMsg] = useState();
+
+  let style = replyTo
+    ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
+    : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
 
   return (
     <div className="chat-wrapper" style={style}>

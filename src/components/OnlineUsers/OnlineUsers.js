@@ -4,51 +4,38 @@ import ReactDom from 'react-dom';
 import '../../styles/OnlineUsers.css';
 import UserRole from './UserRole';
 import UserDisplay from './UserDisplay';
+import useUserCountStrs from '../../logic/custom-hooks/useUserCountStrs';
 
 const OnlineUsers = ({ list, roles }) => {
   roles = roles || [];
 
   const rolesRef = useRef({});
 
-  const [userCountStrs, setUserCountStrs] = useState({});
-  useEffect(() => {
-    if (!rolesRef.current) return;
-
-    for (const role in rolesRef.current) {
-      const userCount = rolesRef.current[role]
-        ? rolesRef.current[role].childNodes.length - 1
-        : 0;
-
-      userCount === 0
-        ? rolesRef.current[role].classList.add('hidden')
-        : rolesRef.current[role].classList.remove('hidden');
-
-      setUserCountStrs((prev) => ({ ...prev, [role]: ` - ${userCount}` }));
-    }
-  }, [roles, list]);
+  const userCountStrs = useUserCountStrs(list, rolesRef);
 
   return (
     <aside className="users-ctn">
-      {roles.map((role) => {
+      {roles.map((role, i) => {
         return (
+          //each UserRole is given a ref in the rolesRef.current object
           <UserRole
+            key={i}
             rolesRef={rolesRef}
             role={role}
             userCountStr={userCountStrs[role]}
           />
-
-          //each UserRole is given a ref in the rolesRef.current object
         );
       })}
 
-      {list.map((user) => {
-        const userDisplay = <UserDisplay displayName={user.displayName} />;
+      {list.map((user, i) => {
+        const userDisplay = (
+          <UserDisplay key={i} displayName={user.displayName} />
+        );
 
+        if (Object.keys(rolesRef.current).length === 0) return <></>;
         if (
           //if user has a role, move UserDisplay to corresponding role
-          user.role &&
-          roles.includes(user.role) &&
-          rolesRef.current[user.role]
+          user.role
         )
           return ReactDom.createPortal(
             userDisplay,

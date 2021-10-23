@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import ChatMsg from './ChatMsg';
 
@@ -10,8 +10,12 @@ const ChatDisplay = ({ msgList, setReplyTo }) => {
       <div className="scroller">
         <div className="scroller-content">
           <ol>
-            {msgList.map((content, i) => (
-              <ChatMsg key={i} content={content} setReplyTo={setReplyTo} />
+            {msgList.map((content) => (
+              <ChatMsg
+                key={content.msgId}
+                content={content}
+                setReplyTo={setReplyTo}
+              />
             ))}
           </ol>
         </div>

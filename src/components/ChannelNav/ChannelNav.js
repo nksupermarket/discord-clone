@@ -15,8 +15,12 @@ const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
     <nav className="channel-nav sidebar">
       <header>{channel.name}</header>
       <div className="room-list">
-        {categories.map((category) => (
-          <RoomCategory categoriesRef={categoriesRef} category={category} />
+        {categories.map((category, i) => (
+          <RoomCategory
+            key={i}
+            categoriesRef={categoriesRef}
+            category={category}
+          />
 
           //each RoomCategory is given a ref in the categoriesRef.current object
         ))}
@@ -25,7 +29,12 @@ const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
           let isUnread = unread.includes(room.id);
 
           const roomLink = (
-            <RoomLink isUnread={isUnread} channel={channel} room={room} />
+            <RoomLink
+              key={room.id}
+              isUnread={isUnread}
+              channel={channel}
+              room={room}
+            />
           );
 
           if (!categoriesRef.current) return null;

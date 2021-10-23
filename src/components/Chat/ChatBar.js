@@ -6,10 +6,6 @@ import '../../styles/ChatBar.css';
 import ChatBarWrapper from './ChatBarWrapper';
 
 const ChatBar = ({ submit, roomName, replyTo, setReplyTo }) => {
-  let style = replyTo
-    ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
-    : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
-
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       {replyTo && (
@@ -19,7 +15,6 @@ const ChatBar = ({ submit, roomName, replyTo, setReplyTo }) => {
         />
       )}
       <ChatBarWrapper
-        style={style}
         submit={submit}
         roomName={roomName}
         setReplyTo={setReplyTo}

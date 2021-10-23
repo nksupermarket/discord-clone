@@ -31,7 +31,7 @@ function App() {
 
   useEffect(() => {
     if (history.location.pathname === '/')
-      history.push('/channels/-MkoRSxTqkrS9mlivGfs/-MkoRSxXwWWT4h6EuP3d');
+      history.push('/channels/-MkoRSxTqkrS9mlivGfs');
   }, [history]);
 
   return (
@@ -52,7 +52,9 @@ function App() {
       {user && (
         <div className="app">
           <ChannelList list={channelList} />
-          <Route path={['/channels/:id/:roomId', '/channels/:id']}>
+          <Route
+            path={['/channels/:channelId/:roomId', '/channels/:channelId']}
+          >
             <ChannelView user={user} />
           </Route>
         </div>
