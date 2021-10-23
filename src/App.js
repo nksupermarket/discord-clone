@@ -24,7 +24,7 @@ function App() {
     if (error)
       setTimeout(() => {
         setError();
-      }, 1500);
+      }, 3500);
   });
 
   const history = useHistory();
@@ -55,7 +55,7 @@ function App() {
           <Route
             path={['/channels/:channelId/:roomId', '/channels/:channelId']}
           >
-            <ChannelView user={user} />
+            <ChannelView user={user} setError={setError} />
           </Route>
         </div>
       )}

@@ -132,11 +132,13 @@ async function updateUserOnline(uid, displayName, userChannelList, setError) {
 }
 
 function updateMentions(uid, channelID, roomID, msgID, setError) {
-  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}/${roomID}`);
-
+  const mentionsRef = ref(
+    db,
+    `users/${uid}/mentions/${channelID}/${roomID}/${msgID}`
+  );
+  console.log(`users/${uid}/mentions/${channelID}/${roomID}/${msgID}`);
   try {
-    const newMentionRef = push(mentionsRef);
-    set(newMentionRef, msgID);
+    set(mentionsRef, true);
   } catch (error) {
     setError(error);
   }

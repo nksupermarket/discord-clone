@@ -13,7 +13,6 @@ const ChatBarWrapper = ({
   mention,
   setMention,
 }) => {
-  console.log('hi');
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       {replyTo && (

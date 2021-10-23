@@ -21,10 +21,9 @@ const ChatBar = ({
   useEffect(() => {
     if (mention) {
       inputRef.current.focus();
-      inputRef.current.selectionStart = inputRef.current.value.length;
-      inputRef.current.selectionEnd = inputRef.current.value.length;
+      setMsg(' ');
     }
-  });
+  }, [mention]);
 
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
@@ -41,7 +40,7 @@ const ChatBar = ({
           ref={inputRef}
           type="text"
           name="chat"
-          defaultValue={mention ? ' ' : ''}
+          value={msg}
           placeholder={mention ? '' : `message #${roomName}`}
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={(e) => {
@@ -51,8 +50,9 @@ const ChatBar = ({
                 const replyToMsgID = replyTo ? replyTo.msgId : null;
                 const mentionObj = mention ? mention : null;
                 setReplyTo();
-                submit(msg, replyToMsgID, mentionObj);
+                submit(e.target.value, replyToMsgID, mentionObj);
                 e.target.value = '';
+                setMsg('');
                 setMention();
                 break;
               }

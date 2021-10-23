@@ -17,10 +17,7 @@ import { updateMentions } from '../user_firebaseStuff';
 export default function useOnRoomEnter(user, channel, room, setError) {
   const [msgList, setMsgList] = useState([]);
 
-  console.log({ isRoom: !!room });
-
   useEffect(() => {
-    console.log({ isRoom: !!room });
     if (!user || !channel || !room) return;
     detachListenersForRoom(room.id);
     removeRoomFromUnread(channel.id, room.id, user.uid, setError);
@@ -38,7 +35,6 @@ export default function useOnRoomEnter(user, channel, room, setError) {
     };
   }, [room, channel, user, setError]);
 
-  console.log('roomLeave');
   return { msgList, submitMsg };
 
   function submitMsg(msg, replyTo, mention) {
@@ -47,7 +43,7 @@ export default function useOnRoomEnter(user, channel, room, setError) {
     const msgObj = {
       msg,
       replyTo,
-      mention: mention.displayName || '',
+      mention: mention ? mention.displayName : '',
       user: user.uid,
       displayName: user.displayName,
       timestamp: getUnixTime(new Date()),

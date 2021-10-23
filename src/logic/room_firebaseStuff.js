@@ -27,7 +27,7 @@ async function getRoomName(id, setError) {
 
     return data.val();
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
@@ -76,7 +76,7 @@ function pushToMsgList(roomId, msgObj, setError) {
 
     return newMsgRef.key;
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -91,7 +91,7 @@ async function getRoomUnsubscribeStatus(roomId, userId, setError) {
 
     return isUnsubscribed;
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -121,7 +121,7 @@ async function attachUnreadMsgsListener(channelId, roomId, userId, setError) {
       }
     });
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -136,7 +136,7 @@ async function getRoomExitTimestamp(channelId, roomId, userId, setError) {
 
     return timestamp;
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -149,7 +149,7 @@ async function setRoomExitTimestamp(channelId, roomId, userId, setError) {
 
     update(roomExitTimestampRef, { [roomId]: getUnixTime(new Date()) });
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -169,7 +169,7 @@ async function setRoomExitTimestampOnDisconnect(
       [roomId]: getUnixTime(new Date()),
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
@@ -187,7 +187,7 @@ async function removeOnDisconnectForRoomExitTimestamp(
 
     onDisconnect(roomExitTimestampRef).cancel();
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
@@ -200,7 +200,7 @@ async function removeOnDisconnectForRoomExitTimestamp(
 
     update(ref(db), updates);
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }*/
 
