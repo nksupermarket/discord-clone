@@ -25,7 +25,7 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function createUser(email, password, displayName, channelId, setError) {
+async function createUser(email, password, displayName, channelID, setError) {
   const auth = getAuth();
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -34,9 +34,9 @@ async function createUser(email, password, displayName, channelId, setError) {
       password
     );
     await updateProfile(userCredential.user, { displayName });
-    if (channelId)
+    if (channelID)
       set(ref(db, `users/${userCredential.user.uid}/channels`), {
-        [channelId]: '',
+        [channelID]: '',
       });
   } catch (error) {
     console.log(error);
@@ -56,15 +56,15 @@ async function signIn(email, password, setUser, setError) {
   }
 }
 
-async function subscribeToChannel(uid, channelId, roomList, setError) {
+async function subscribeToChannel(uid, channelID, roomList, setError) {
   try {
-    const newChannelRef = ref(db, `users/${uid}/channels/${channelId}`);
+    const newChannelRef = ref(db, `users/${uid}/channels/${channelID}`);
 
     let updates = {};
 
-    roomList.forEach((roomId) => {
+    roomList.forEach((roomID) => {
       updates[
-        `users/${uid}/channels/${channelId}/unread_rooms/${roomId}`
+        `users/${uid}/channels/${channelID}/unread_rooms/${roomID}`
       ] = true;
     });
 
@@ -94,34 +94,52 @@ async function getChannelList(uid, setChannelList, setError) {
   }
 }
 
-async function updateUserOnline(uid, displayName, userChannelList) {
+async function updateUserOnline(uid, displayName, userChannelList, setError) {
   const userRef = ref(db, `users/${uid}`);
 
   const connectedRef = ref(db, '.info/connected');
+  try {
+    // add user to online_users for all channels in their list
+    userChannelList.forEach((channel) => {
+      const userStatusRef = ref(
+        db,
+        `Channels/${channel.id}/online_users/${uid}`
+      );
 
-  // add user to online_users for all channels in their list
-  userChannelList.forEach((channel) => {
-    const userStatusRef = ref(db, `Channels/${channel.id}/online_users/${uid}`);
+      onValue(connectedRef, async function (snapshot) {
+        if (snapshot.val() === false) {
+          off(connectedRef);
+          detachListenersForUser(uid);
+        }
 
-    onValue(connectedRef, async function (snapshot) {
-      if (snapshot.val() === false) {
-        off(connectedRef);
-        detachListenersForUser(uid);
-      }
+        await onDisconnect(userStatusRef).remove();
+        await onDisconnect(userRef).update({
+          isOnline: false,
+          last_logged_in: getUnixTime(new Date()),
+        });
 
-      await onDisconnect(userStatusRef).remove();
-      await onDisconnect(userRef).update({
-        isOnline: false,
-        last_logged_in: getUnixTime(new Date()),
+        set(userStatusRef, {
+          displayName,
+          uid,
+          role: channel.role || '',
+        });
+        update(userRef, { isOnline: true });
       });
-
-      set(userStatusRef, {
-        displayName,
-        role: channel.role || '',
-      });
-      update(userRef, { isOnline: true });
     });
-  });
+  } catch (error) {
+    setError(error);
+  }
+}
+
+function updateMentions(uid, channelID, roomID, msgID, setError) {
+  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}/${roomID}`);
+
+  try {
+    const newMentionRef = push(mentionsRef);
+    set(newMentionRef, msgID);
+  } catch (error) {
+    setError(error);
+  }
 }
 
 function isUserOnline(uid) {
@@ -136,5 +154,6 @@ export {
   isUserOnline,
   getChannelList,
   updateUserOnline,
+  updateMentions,
   detachListenersForUser,
 };

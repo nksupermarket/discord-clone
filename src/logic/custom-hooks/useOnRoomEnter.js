@@ -12,6 +12,7 @@ import {
   removeRoomFromUnread,
 } from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
+import { updateMentions } from '../user_firebaseStuff';
 
 export default function useOnRoomEnter(user, channel, room, setError) {
   const [msgList, setMsgList] = useState([]);
@@ -36,16 +37,20 @@ export default function useOnRoomEnter(user, channel, room, setError) {
 
   return { msgList, submitMsg };
 
-  function submitMsg(msg, replyTo) {
+  function submitMsg(msg, replyTo, mention) {
     replyTo = replyTo || '';
 
     const msgObj = {
+      msg,
+      replyTo,
+      mention: mention.displayName || '',
       user: user.uid,
       displayName: user.displayName,
       timestamp: getUnixTime(new Date()),
-      msg,
-      replyTo,
     };
-    pushToMsgList(room.id, msgObj, setError);
+    const msgID = pushToMsgList(room.id, msgObj, setError);
+
+    if (mention)
+      updateMentions(mention.uid, channel.id, room.id, msgID, setError);
   }
 }

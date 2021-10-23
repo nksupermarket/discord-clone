@@ -68,11 +68,13 @@ async function getMsgList(roomId, setMsgList) {
   });
 }
 
-async function pushToMsgList(roomId, msgObj, setError) {
+function pushToMsgList(roomId, msgObj, setError) {
   try {
     const roomMsgList = ref(db, `Rooms/${roomId}/messages`);
     const newMsgRef = push(roomMsgList);
     set(newMsgRef, msgObj);
+
+    return newMsgRef.key;
   } catch (error) {
     setError(error);
   }

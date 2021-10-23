@@ -85,6 +85,20 @@ async function getUnreadRooms(uid, channelId, setUnreadRooms, setError) {
   }
 }
 
+async function getMentions(uid, channelID, setRoomsMentioned, setError) {
+  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}`);
+
+  try {
+    onValue(mentionsRef, (snap) => {
+      const data = snap.val();
+      console.log(data);
+      setRoomsMentioned(data);
+    });
+  } catch (error) {
+    setError(error);
+  }
+}
+
 function getRoomCategories(channelId, setRoomCategories, setError) {
   try {
     const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
@@ -212,6 +226,7 @@ export {
   createRoomCategory,
   updateCategoryOfRoom,
   getUnreadRooms,
+  getMentions,
   getRoomList,
   createRoom,
   getOnlineUsers,

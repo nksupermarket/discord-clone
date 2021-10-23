@@ -7,6 +7,7 @@ import {
   getRoleOfUser,
   detachListenersForChannel,
   getUnreadRooms,
+  getMentions,
 } from '../channel_firebaseStuff';
 
 export default function useOnChannelEnter(user, channel, setError) {
@@ -14,6 +15,7 @@ export default function useOnChannelEnter(user, channel, setError) {
   const [roomCategories, setRoomCategories] = useState(['none']);
   const [roomList, setRoomList] = useState([]);
   const [unreadRooms, setUnreadRooms] = useState([]);
+  const [roomsMentioned, setRoomsMentioned] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const [userRole, setUserRole] = useState();
@@ -27,6 +29,7 @@ export default function useOnChannelEnter(user, channel, setError) {
     getRoomCategories(channel.id, setRoomCategories, setError);
     getRoomList(channel.id, setRoomList, setError);
     getUnreadRooms(user.uid, channel.id, setUnreadRooms, setError);
+    getMentions(user.uid, channel.id, setRoomsMentioned, setError);
 
     return () => detachListenersForChannel(channel.id, user.uid);
   }, [channel, user, setError]);
@@ -34,6 +37,7 @@ export default function useOnChannelEnter(user, channel, setError) {
   return {
     roleList,
     roomCategories,
+    roomsMentioned,
     roomList,
     unreadRooms,
     onlineUsers,

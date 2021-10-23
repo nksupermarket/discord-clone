@@ -1,31 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-import ReplyBar from './ReplyBar';
+import IconBtn from '../IconBtn';
+import MentionWrapper from './MentionWrapper';
 
-import '../../styles/ChatBar.css';
-import ChatBarWrapper from './ChatBarWrapper';
+import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
+import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
-const ChatBar = ({ submit, roomName, replyTo, setReplyTo }) => {
+const ChatBar = ({
+  roomName,
+  replyTo,
+  setReplyTo,
+  submit,
+  mention,
+  setMention,
+}) => {
+  const [msg, setMsg] = useState();
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (mention) {
+      inputRef.current.focus();
+      inputRef.current.selectionStart = inputRef.current.value.length;
+      inputRef.current.selectionEnd = inputRef.current.value.length;
+    }
+  });
+
+  let style = replyTo
+    ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
+    : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
+
   return (
-    <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
-      {replyTo && (
-        <ReplyBar
-          displayName={replyTo.displayName}
-          close={() => setReplyTo()}
+    <div className="chat-wrapper" style={style}>
+      <div className="add-wrapper">
+        <IconBtn svg={addCircleSvg} alt="upload a file" />
+      </div>
+      <div className="input-wrapper">
+        {mention && <MentionWrapper displayName={mention.displayName} />}
+        <input
+          ref={inputRef}
+          type="text"
+          name="chat"
+          defaultValue={mention ? ' ' : ''}
+          placeholder={mention ? '' : `message #${roomName}`}
+          onChange={(e) => setMsg(e.target.value)}
+          onKeyDown={(e) => {
+            switch (e.key) {
+              case 'Enter': {
+                //submit message
+                const replyToMsgID = replyTo ? replyTo.msgId : null;
+                const mentionObj = mention ? mention : null;
+                setReplyTo();
+                submit(msg, replyToMsgID, mentionObj);
+                e.target.value = '';
+                setMention();
+                break;
+              }
+              case 'Backspace' || 'Delete': {
+                if (!e.target.value) setMention();
+                break;
+              }
+              default:
+                return;
+            }
+          }}
         />
-      )}
-      <ChatBarWrapper
-        submit={submit}
-        roomName={roomName}
-        setReplyTo={setReplyTo}
-        replyTo={replyTo}
-      />
-    </form>
+      </div>
+      <div className="btn-ctn">
+        <IconBtn icon="flaticon-gif" isRectangle={true} />
+        <IconBtn icon="flaticon-happy" />
+      </div>
+    </div>
   );
 };
 
 export default ChatBar;
-
-function submitHandler(e) {
-  e.preventDefault();
-}

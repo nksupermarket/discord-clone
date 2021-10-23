@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useUserCountStrs(list, rolesRef) {
+export default function useUserCountStrs(list, rolesRef) {
   const [userCountStrs, setUserCountStrs] = useState({});
   useEffect(() => {
     if (!rolesRef.current) return;
@@ -21,5 +21,3 @@ function useUserCountStrs(list, rolesRef) {
 
   return userCountStrs;
 }
-
-export default useUserCountStrs;

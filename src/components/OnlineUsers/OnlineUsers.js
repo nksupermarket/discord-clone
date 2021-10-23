@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import ReactDom from 'react-dom';
 
 import '../../styles/OnlineUsers.css';
@@ -6,7 +6,7 @@ import UserRole from './UserRole';
 import UserDisplay from './UserDisplay';
 import useUserCountStrs from '../../logic/custom-hooks/useUserCountStrs';
 
-const OnlineUsers = ({ list, roles }) => {
+const OnlineUsers = ({ list, roles, setMention }) => {
   roles = roles || [];
 
   const rolesRef = useRef({});
@@ -27,9 +27,15 @@ const OnlineUsers = ({ list, roles }) => {
         );
       })}
 
-      {list.map((user, i) => {
+      {list.map((user) => {
         const userDisplay = (
-          <UserDisplay key={i} displayName={user.displayName} />
+          <UserDisplay
+            key={user.uid}
+            displayName={user.displayName}
+            onClick={() =>
+              setMention({ displayName: user.displayName, uid: user.uid })
+            }
+          />
         );
 
         if (Object.keys(rolesRef.current).length === 0) return <></>;
