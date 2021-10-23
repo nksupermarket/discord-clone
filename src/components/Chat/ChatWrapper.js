@@ -5,7 +5,6 @@ import ChatBarWrapper from './ChatBarWrapper';
 
 const ChatWrapper = ({ room, msgList, submitMsg, mention, setMention }) => {
   const [replyTo, setReplyTo] = useState();
-
   return (
     <main id="chat">
       <ChatDisplay msgList={msgList} setReplyTo={setReplyTo} />

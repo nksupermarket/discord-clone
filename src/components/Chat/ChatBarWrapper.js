@@ -3,7 +3,7 @@ import React from 'react';
 import ReplyBar from './ReplyBar';
 
 import '../../styles/ChatBar.css';
-import ChatBar from './ChatBarWrapper';
+import ChatBar from './ChatBar';
 
 const ChatBarWrapper = ({
   submit,
@@ -13,6 +13,7 @@ const ChatBarWrapper = ({
   mention,
   setMention,
 }) => {
+  console.log('hi');
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       {replyTo && (

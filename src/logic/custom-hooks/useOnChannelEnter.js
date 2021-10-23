@@ -22,7 +22,6 @@ export default function useOnChannelEnter(user, channel, setError) {
 
   useEffect(() => {
     if (!channel || !user) return;
-
     getUserRoles(channel.id, setRoleList, setError);
     getOnlineUsers(channel.id, setOnlineUsers, setError);
     getRoleOfUser(channel.id, user.uid, setUserRole, setError);
