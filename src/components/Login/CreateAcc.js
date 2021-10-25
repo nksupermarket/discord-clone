@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
 
 import { validateEmail, validatePw } from '../../logic/formValidation';
+import { createUser } from '../../logic/user_firebaseStuff';
 
 import InputField from '../InputField';
 import FlatBtn from '../FlatBtn';
 import InputErrorMsg from '../InputErrorMsg';
 
-const CreateAcc = ({ serverInfo, createUser }) => {
+const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
   const [email, setEmail] = useState();
   const [pw, setPw] = useState();
 
   const { isEmailValid, isPwValid, setValidStatus } = useValidStatus();
 
-  const [error, setError] = useState();
+  const [formError, setFormError] = useState();
 
   function validateForm() {
     const isEmailValid = validateEmail(email);
     const isPwValid = validatePw(pw);
     setValidStatus({ isEmailValid, isPwValid });
     return isEmailValid && isPwValid;
+  }
+
+  function submit() {
+    if (validateForm())
+      createUser(email, pw, displayName, channel || null, setError);
   }
 
   return (
@@ -28,14 +34,14 @@ const CreateAcc = ({ serverInfo, createUser }) => {
         name="create-acc"
         onSubmit={(e) => {
           e.preventDefault();
-          if (validateForm()) createUser(email, pw, setError);
+          submit();
         }}
       >
         <header>
           <h3>Claim your account to chat</h3>
         </header>
         <div className="input-ctn">
-          {error && <InputErrorMsg error={error} />}
+          {formError && <InputErrorMsg error={formError} />}
           <InputField
             label="Email"
             type="email"
@@ -55,13 +61,6 @@ const CreateAcc = ({ serverInfo, createUser }) => {
             <InputErrorMsg error="password must be at 6 characters and contain at least one uppercase letter, number, and special character" />
           )}
         </div>
-        <FlatBtn
-          type="submit"
-          text="Next"
-          onClick={() => {
-            if (validateForm()) createUser(email, pw, setError);
-          }}
-        />
       </form>
     </div>
   );

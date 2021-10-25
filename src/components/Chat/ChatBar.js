@@ -11,19 +11,20 @@ const ChatBar = ({
   replyTo,
   setReplyTo,
   submit,
-  mention,
+  mentions,
   setMention,
 }) => {
   const [msg, setMsg] = useState();
 
   const inputRef = useRef();
 
+  useEffect(() => console.log(msg));
+
   useEffect(() => {
-    if (mention) {
-      inputRef.current.focus();
-      setMsg(' ');
+    if (mentions) {
+      //setMsg((prev) => prev + `@${mention.displayName}`);
     }
-  }, [mention]);
+  }, [mentions]);
 
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
@@ -35,8 +36,18 @@ const ChatBar = ({
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        {mention && <MentionWrapper displayName={mention.displayName} />}
-        <input
+        <div
+          ref={inputRef}
+          className="textarea"
+          contentEditable
+          onInput={(e) => {
+            console.log(e.target.textContent);
+            setMsg(e.target.textContent);
+          }}
+        >
+          {mentions && <MentionWrapper displayName={mentions.displayName} />}
+        </div>
+        {/*<input
           ref={inputRef}
           type="text"
           name="chat"
@@ -47,13 +58,13 @@ const ChatBar = ({
             switch (e.key) {
               case 'Enter': {
                 //submit message
+                if (!msg) return;
                 const replyToMsgID = replyTo ? replyTo.msgId : null;
                 const mentionObj = mention ? mention : null;
                 setReplyTo();
-                submit(e.target.value, replyToMsgID, mentionObj);
-                e.target.value = '';
+                submit(msg, replyToMsgID, mentionObj);
                 setMsg('');
-                setMention();
+                if (mention) setMention();
                 break;
               }
               case 'Backspace' || 'Delete': {
@@ -64,7 +75,7 @@ const ChatBar = ({
                 return;
             }
           }}
-        />
+        />*/}
       </div>
       <div className="btn-ctn">
         <IconBtn icon="flaticon-gif" isRectangle={true} />

@@ -23,9 +23,15 @@
   line-height: 1.375rem;
   font-weight: 400;
 }
-.chat-bar .input-wrapper input {
+.chat-bar .input-wrapper .textarea {
   width: 100%;
-  height: 22px;
+  display: inline;
+  word-break: break-word;
+}
+
+.chat-bar .input-wrapper .textarea:focus {
+  border: none;
+  outline: none;
 }
 
 .chat-bar .add-wrapper {

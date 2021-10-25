@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 
-import { createUser, signIn } from './logic/user_firebaseStuff';
 import useLoginUser from './logic/custom-hooks/useLoginUser';
 
 import ChannelView from './components/ChannelView';
@@ -18,7 +17,7 @@ import './assets/font/remixicon.css';
 function App() {
   const [error, setError] = useState();
 
-  const { user, setUser, channelList } = useLoginUser(setError);
+  const { user, channelList } = useLoginUser(setError);
 
   useEffect(function ifError() {
     if (error)
@@ -37,17 +36,8 @@ function App() {
   return (
     <>
       {error && <Error errorMsg={error} />}
-      <Route path="/login">
-        {!user && (
-          <LoginScreen
-            createUser={(email, pw, displayName, channel, setError) =>
-              createUser(email, pw, displayName, channel.id, setUser, setError)
-            }
-            signIn={(email, pw, setError) =>
-              signIn(email, pw, setUser, setError)
-            }
-          />
-        )}
+      <Route path="/login/:channelID, '/login">
+        {!user && <LoginScreen setError={setError} />}
       </Route>
       {user && (
         <div className="app">

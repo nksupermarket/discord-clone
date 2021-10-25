@@ -5,16 +5,22 @@ import LoginEmail from './LoginEmail';
 import '../../styles/LoginScreen.css';
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
+import { useParams } from 'react-router';
 
-const LoginScreen = ({ createUser, signIn, channel }) => {
+const LoginScreen = ({ setError }) => {
   const [node, setNode] = useState('new user');
   const [displayName, setDisplayName] = useState();
+
+  const { channelID: channel } = useParams();
 
   return (
     <div className="modal">
       <div className="login-wrapper">
         {node === 'returning user' && (
-          <LoginEmail signIn={signIn} onRegister={() => setNode('new user')} />
+          <LoginEmail
+            setError={setError}
+            onRegister={() => setNode('new user')}
+          />
         )}
         {node === 'new user' && (
           <LoginNewUser
@@ -26,9 +32,9 @@ const LoginScreen = ({ createUser, signIn, channel }) => {
         )}
         {node === 'create acc' && (
           <CreateAcc
-            createUser={(email, pw, setError) =>
-              createUser(email, pw, displayName, setError)
-            }
+            displayName={displayName}
+            channel={channel}
+            setError={setError}
           />
         )}
       </div>

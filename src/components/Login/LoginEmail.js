@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
+import { signIn } from '../../logic/user_firebaseStuff';
+
 import InputField from '../InputField';
 import FlatBtn from '../FlatBtn';
 import InputErrorMsg from '../InputErrorMsg';
 
-const LoginEmail = ({ signIn, onRegister }) => {
+const LoginEmail = ({ onRegister, setError }) => {
   const [email, setEmail] = useState();
   const [pw, setPw] = useState();
 
-  const [error, setError] = useState();
+  const [formError, setFormError] = useState();
 
   return (
     <form
@@ -23,7 +25,7 @@ const LoginEmail = ({ signIn, onRegister }) => {
         <h4>Come on in</h4>
       </header>
       <div className="input-ctn">
-        {error && <InputErrorMsg error={error} />}
+        {formError && <InputErrorMsg error={formError} />}
         <InputField label="Email" type="email" onChange={setEmail} />
         <InputField label="Password" type="password" onChange={setPw} />
         <span className="link">Forgot your password?</span>

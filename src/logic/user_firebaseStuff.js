@@ -34,10 +34,19 @@ async function createUser(email, password, displayName, channelID, setError) {
       password
     );
     await updateProfile(userCredential.user, { displayName });
-    if (channelID)
-      set(ref(db, `users/${userCredential.user.uid}/channels`), {
-        [channelID]: '',
-      });
+    if (channelID) {
+      let updates = {};
+
+      updates[`users/${userCredential.user.uid}/channels`] = {
+        [channelID]: true,
+      };
+
+      updates[`Channels/${channelID}/users`] = {
+        [userCredential.user.uid]: displayName,
+      };
+
+      update(ref(db), updates);
+    }
   } catch (error) {
     console.log(error);
     setError && setError(error.message);
@@ -45,7 +54,7 @@ async function createUser(email, password, displayName, channelID, setError) {
   }
 }
 
-async function signIn(email, password, setUser, setError) {
+async function signIn(email, password, setError) {
   const auth = getAuth();
   try {
     await signInWithEmailAndPassword(auth, email, password);
