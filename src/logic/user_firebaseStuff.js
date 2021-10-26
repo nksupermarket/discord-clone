@@ -38,7 +38,7 @@ async function createUser(email, password, displayName, channelID, setError) {
       let updates = {};
 
       updates[`users/${userCredential.user.uid}/channels`] = {
-        [channelID]: true,
+        [channelID]: '',
       };
 
       updates[`Channels/${channelID}/users`] = {
@@ -47,9 +47,12 @@ async function createUser(email, password, displayName, channelID, setError) {
 
       update(ref(db), updates);
     }
+
+    return true;
   } catch (error) {
     console.log(error);
     setError && setError(error.message);
+    return false;
     //setError(error.code);
   }
 }

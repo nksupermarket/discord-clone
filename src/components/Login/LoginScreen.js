@@ -5,13 +5,19 @@ import LoginEmail from './LoginEmail';
 import '../../styles/LoginScreen.css';
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 
 const LoginScreen = ({ setError }) => {
   const [node, setNode] = useState('new user');
   const [displayName, setDisplayName] = useState();
 
   const { channelID: channel } = useParams();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!channel) history.push('/login/-MkoRSxTqkrS9mlivGfs');
+  }, [channel, history]);
 
   return (
     <div className="modal">

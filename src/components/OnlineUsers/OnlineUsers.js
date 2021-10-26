@@ -6,7 +6,7 @@ import UserRole from './UserRole';
 import UserDisplay from './UserDisplay';
 import useUserCountStrs from '../../logic/custom-hooks/useUserCountStrs';
 
-const OnlineUsers = ({ list, roles, setMention }) => {
+const OnlineUsers = ({ list, roles, setMentions }) => {
   roles = roles || [];
 
   const rolesRef = useRef({});
@@ -33,7 +33,10 @@ const OnlineUsers = ({ list, roles, setMention }) => {
             key={user.uid}
             displayName={user.displayName}
             onClick={() =>
-              setMention({ displayName: user.displayName, uid: user.uid })
+              setMentions((prev) => [
+                ...prev,
+                { displayName: user.displayName, uid: user.uid },
+              ])
             }
           />
         );
@@ -42,11 +45,13 @@ const OnlineUsers = ({ list, roles, setMention }) => {
         if (
           //if user has a role, move UserDisplay to corresponding role
           user.role
-        )
+        ) {
+          console.log(user);
           return ReactDom.createPortal(
             userDisplay,
             rolesRef.current[user.role]
           );
+        }
         return ReactDom.createPortal(userDisplay, rolesRef.current.Online);
       })}
     </aside>

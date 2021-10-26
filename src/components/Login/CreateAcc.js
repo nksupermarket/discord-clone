@@ -6,8 +6,11 @@ import { createUser } from '../../logic/user_firebaseStuff';
 import InputField from '../InputField';
 import FlatBtn from '../FlatBtn';
 import InputErrorMsg from '../InputErrorMsg';
+import { useHistory } from 'react-router';
 
 const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
+  const history = useHistory();
+
   const [email, setEmail] = useState();
   const [pw, setPw] = useState();
 
@@ -22,9 +25,17 @@ const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
     return isEmailValid && isPwValid;
   }
 
-  function submit() {
-    if (validateForm())
-      createUser(email, pw, displayName, channel || null, setError);
+  async function submit() {
+    if (!validateForm()) return;
+    const isSuccess = createUser(
+      email,
+      pw,
+      displayName,
+      channel || null,
+      setError
+    );
+
+    if (isSuccess) history.push(`/channels/${channel}`);
   }
 
   return (
@@ -34,8 +45,10 @@ const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
         name="create-acc"
         onSubmit={(e) => {
           e.preventDefault();
+          console.log('submitted');
           submit();
         }}
+        action="#"
       >
         <header>
           <h3>Claim your account to chat</h3>
@@ -61,6 +74,7 @@ const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
             <InputErrorMsg error="password must be at 6 characters and contain at least one uppercase letter, number, and special character" />
           )}
         </div>
+        <input type="submit" style={{ display: 'none' }} />
       </form>
     </div>
   );
@@ -70,8 +84,8 @@ export default CreateAcc;
 
 function useValidStatus() {
   const [validStatus, setValidStatus] = useState({
-    isEmailValid: false,
-    isPwValid: false,
+    isEmailValid: true,
+    isPwValid: true,
   });
   const { isEmailValid, isPwValid } = validStatus;
   return { isEmailValid, isPwValid, setValidStatus };

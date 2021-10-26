@@ -34,6 +34,11 @@
   outline: none;
 }
 
+.chat-bar .input-wrapper .textarea .default-text {
+  position: absolute;
+  pointer-events: none;
+}
+
 .chat-bar .add-wrapper {
   height: 44px;
   padding: 10px 16px;

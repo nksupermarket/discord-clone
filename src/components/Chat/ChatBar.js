@@ -12,7 +12,7 @@ const ChatBar = ({
   setReplyTo,
   submit,
   mentions,
-  setMention,
+  setMentions,
 }) => {
   const [msg, setMsg] = useState();
 
@@ -36,23 +36,12 @@ const ChatBar = ({
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        <div
-          ref={inputRef}
-          className="textarea"
-          contentEditable
-          onInput={(e) => {
-            console.log(e.target.textContent);
-            setMsg(e.target.textContent);
-          }}
-        >
-          {mentions && <MentionWrapper displayName={mentions.displayName} />}
-        </div>
-        {/*<input
+        <input
           ref={inputRef}
           type="text"
           name="chat"
           value={msg}
-          placeholder={mention ? '' : `message #${roomName}`}
+          placeholder={`message #${roomName}`}
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={(e) => {
             switch (e.key) {
@@ -60,22 +49,30 @@ const ChatBar = ({
                 //submit message
                 if (!msg) return;
                 const replyToMsgID = replyTo ? replyTo.msgId : null;
-                const mentionObj = mention ? mention : null;
+                const mentionObj = mentions ? mentions : null;
                 setReplyTo();
                 submit(msg, replyToMsgID, mentionObj);
                 setMsg('');
-                if (mention) setMention();
+                if (mentions) setMentions();
                 break;
               }
               case 'Backspace' || 'Delete': {
-                if (!e.target.value) setMention();
+                if (!mentions) return;
+                const mentionsThatExistInMsg = mentions
+                  .map((mention) => {
+                    if (msg.includes(`@${mention.displayName}`)) return mention;
+                    return null;
+                  })
+                  .filter((val) => val);
+
+                setMentions(mentionsThatExistInMsg);
                 break;
               }
               default:
                 return;
             }
           }}
-        />*/}
+        />
       </div>
       <div className="btn-ctn">
         <IconBtn icon="flaticon-gif" isRectangle={true} />

@@ -36,7 +36,7 @@ function App() {
   return (
     <>
       {error && <Error errorMsg={error} />}
-      <Route path="/login/:channelID, '/login">
+      <Route path={['/login/:channelID', '/login']}>
         {!user && <LoginScreen setError={setError} />}
       </Route>
       {user && (
