@@ -15,18 +15,21 @@ const ChatBar = ({
   setMentions,
 }) => {
   const [msg, setMsg] = useState();
-
+  const [divContent, setDivContent] = useState([]);
   const inputRef = useRef();
 
   useEffect(() => {
-    if (!mentions || mentions.length === 0) return;
+    console.log(msg);
+  });
 
+  useEffect(() => {
+    if (!mentions || mentions.length === 0) return;
     const input = inputRef.current.innerHTML;
 
     const mentionUIDs = mentions.map((mention) => mention.uid);
 
     const uniqueMentions = mentionUIDs.filter(
-      (uid, i, thisArr) => thisArr.indexOf(uid) === thisArr.lastIndexOf(uid)
+      (uid, i, thisArr) => thisArr.indexOf(uid) === i
     );
 
     let mentionCount = {};
@@ -35,29 +38,41 @@ const ChatBar = ({
       let index = mentionUIDs.indexOf(uid);
 
       while (index !== -1) {
-        mentionCount[uid] += 1;
+        mentionCount[uid] ? (mentionCount[uid] += 1) : (mentionCount[uid] = 1);
         index = mentionUIDs.indexOf(uid, index + 1);
       }
     });
 
-    let uidCountInMsg = {};
+    const mentionsInDivContent = divContent
+      .map((obj) => obj.uid || null)
+      .filter((val) => val);
+    let uidCountInDivContent = {};
 
-    for (const uid in uniqueMentions) {
-      let index = input.indexOf(uid);
+    uniqueMentions.forEach((uid) => {
+      let index = mentionsInDivContent.indexOf(uid);
       while (index !== -1) {
-        uidCountInMsg[uid] += 1;
-        index = input.indexOf(uid, index + 1);
+        uidCountInDivContent[uid]
+          ? (uidCountInDivContent[uid] += 1)
+          : (uidCountInDivContent[uid] = 1);
+        index = mentionsInDivContent.indexOf(uid, index + 1);
       }
-
-      if (uidCountInMsg[uid] < mentionCount[uid]) {
+      if (
+        uidCountInDivContent[uid] < mentionCount[uid] ||
+        !uidCountInDivContent[uid]
+      ) {
         const mentionObj = mentions.find((obj) => obj.uid === uid);
-        React.createPortal(
-          <MentionWrapper displayName={mentionObj.displayName} uid={uid} />,
-          inputRef.current
-        );
+        const newDivContent = [...divContent];
+        for (
+          let i = 0;
+          i < mentionCount[uid] - (uidCountInDivContent[uid] || 0);
+          i++
+        ) {
+          newDivContent.push(mentionObj);
+        }
+        setDivContent(newDivContent);
       }
-    }
-  }, [msg, mentions]);
+    });
+  }, [divContent, msg, mentions]);
 
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
@@ -69,16 +84,20 @@ const ChatBar = ({
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        {!msg && <div className="default-text">message {roomName}</div>}
+        {!msg && !mentions && (
+          <div className="default-text">message {roomName}</div>
+        )}
         <div
           ref={inputRef}
           className="textarea"
           contentEditable
-          onInput={(e) => setMsg(e.target.textContent)}
+          suppressContentEditableWarning={true}
+          onInput={(e) => {
+            setMsg(e.target.textContent);
+          }}
           onKeyDown={(e) => {
             switch (e.key) {
               case 'Enter': {
-                console.log('hi');
                 e.preventDefault();
                 //submit message
                 if (!msg) return;
@@ -108,12 +127,18 @@ const ChatBar = ({
             }
           }}
         >
-          {mentions && (
-            <MentionWrapper
-              displayName={mentions[0].displayName}
-              uid={mentions[0].uid}
-            />
-          )}
+          {divContent.map((obj, i) => {
+            return (
+              <>
+                <MentionWrapper
+                  key={i}
+                  displayName={obj.displayName}
+                  uid={obj.uid}
+                />
+                <span>&nbsp;</span>
+              </>
+            );
+          })}
         </div>
         {/*<input
           ref={inputRef}

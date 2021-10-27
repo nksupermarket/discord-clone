@@ -35,7 +35,7 @@ async function getChannelName(id, setError) {
 
     return data.val();
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
@@ -49,7 +49,7 @@ async function createRoom(channelId, name, setError) {
       name,
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -81,7 +81,7 @@ async function getUnreadRooms(uid, channelId, setUnreadRooms, setError) {
       setUnreadRooms(unreadRooms);
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
@@ -95,7 +95,7 @@ async function getMentions(uid, channelID, setRoomsMentioned, setError) {
       setRoomsMentioned(data);
     });
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -110,7 +110,7 @@ function getRoomCategories(channelId, setRoomCategories, setError) {
       setRoomCategories(['none', ...roomCategories]);
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -123,7 +123,7 @@ function createRoomCategory(channelId, name, setError) {
     );
     update(channelRoomCategoriesRef, { [name]: true });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -133,7 +133,7 @@ function updateCategoryOfRoom(channelId, roomId, category, setError) {
     const channelRoomRef = ref(db, `Channels/${channelId}/rooms/${roomId}`);
     update(channelRoomRef, { category });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -152,7 +152,7 @@ async function getOnlineUsers(channelId, setUserList, setError) {
       setUserList(userList);
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -165,7 +165,7 @@ async function createUserRole(channelId, role, setError) {
 
     update(channelUserRolesRef, { [role]: true });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -182,7 +182,7 @@ async function getUserRoles(channelId, setUserRoles, setError) {
       setUserRoles([...userRoles, 'Online']);
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -196,7 +196,7 @@ async function getRoleOfUser(channelId, userId, setRole, setError) {
       setRole(data);
     });
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
     console.log(error);
   }
 }
@@ -210,7 +210,7 @@ async function updateRoleOfUser(channelId, userId, role, setError) {
 
     update(ref(db), updates);
   } catch (error) {
-    setError && setError(error);
+    setError && setError(error.message);
   }
 }
 
