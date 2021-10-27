@@ -64,7 +64,7 @@ const ChannelView = ({ user, setError }) => {
 
   const { msgList, submitMsg } = useOnRoomEnter(user, channel, room, setError);
 
-  const [mentions, setMentions] = useState([]);
+  const [mentions, setMentions] = useState();
 
   return (
     <div className="channel-view">

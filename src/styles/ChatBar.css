@@ -34,9 +34,10 @@
   outline: none;
 }
 
-.chat-bar .input-wrapper .textarea .default-text {
+.chat-bar .input-wrapper .default-text {
   position: absolute;
   pointer-events: none;
+  color: var(--text-muted);
 }
 
 .chat-bar .add-wrapper {

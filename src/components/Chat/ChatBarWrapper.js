@@ -10,8 +10,8 @@ const ChatBarWrapper = ({
   roomName,
   replyTo,
   setReplyTo,
-  mention,
-  setMention,
+  mentions,
+  setMentions,
 }) => {
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
@@ -26,8 +26,8 @@ const ChatBarWrapper = ({
         roomName={roomName}
         setReplyTo={setReplyTo}
         replyTo={replyTo}
-        mention={mention}
-        setMention={setMention}
+        mentions={mentions}
+        setMentions={setMentions}
       />
     </form>
   );

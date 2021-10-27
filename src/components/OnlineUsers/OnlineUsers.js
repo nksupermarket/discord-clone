@@ -33,10 +33,14 @@ const OnlineUsers = ({ list, roles, setMentions }) => {
             key={user.uid}
             displayName={user.displayName}
             onClick={() =>
-              setMentions((prev) => [
-                ...prev,
-                { displayName: user.displayName, uid: user.uid },
-              ])
+              setMentions((prev) => {
+                prev = prev || [];
+
+                return [
+                  ...prev,
+                  { displayName: user.displayName, uid: user.uid },
+                ];
+              })
             }
           />
         );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import IconBtn from '../IconBtn';
 import MentionWrapper from './MentionWrapper';
@@ -18,13 +18,46 @@ const ChatBar = ({
 
   const inputRef = useRef();
 
-  useEffect(() => console.log(msg));
-
   useEffect(() => {
-    if (mentions) {
-      //setMsg((prev) => prev + `@${mention.displayName}`);
+    if (!mentions || mentions.length === 0) return;
+
+    const input = inputRef.current.innerHTML;
+
+    const mentionUIDs = mentions.map((mention) => mention.uid);
+
+    const uniqueMentions = mentionUIDs.filter(
+      (uid, i, thisArr) => thisArr.indexOf(uid) === thisArr.lastIndexOf(uid)
+    );
+
+    let mentionCount = {};
+
+    uniqueMentions.forEach((uid) => {
+      let index = mentionUIDs.indexOf(uid);
+
+      while (index !== -1) {
+        mentionCount[uid] += 1;
+        index = mentionUIDs.indexOf(uid, index + 1);
+      }
+    });
+
+    let uidCountInMsg = {};
+
+    for (const uid in uniqueMentions) {
+      let index = input.indexOf(uid);
+      while (index !== -1) {
+        uidCountInMsg[uid] += 1;
+        index = input.indexOf(uid, index + 1);
+      }
+
+      if (uidCountInMsg[uid] < mentionCount[uid]) {
+        const mentionObj = mentions.find((obj) => obj.uid === uid);
+        React.createPortal(
+          <MentionWrapper displayName={mentionObj.displayName} uid={uid} />,
+          inputRef.current
+        );
+      }
     }
-  }, [mentions]);
+  }, [msg, mentions]);
 
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
@@ -36,7 +69,53 @@ const ChatBar = ({
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        <input
+        {!msg && <div className="default-text">message {roomName}</div>}
+        <div
+          ref={inputRef}
+          className="textarea"
+          contentEditable
+          onInput={(e) => setMsg(e.target.textContent)}
+          onKeyDown={(e) => {
+            switch (e.key) {
+              case 'Enter': {
+                console.log('hi');
+                e.preventDefault();
+                //submit message
+                if (!msg) return;
+                const replyToMsgID = replyTo ? replyTo.msgId : null;
+                const mentionObj = mentions.length > 0 ? mentions : null;
+                setReplyTo();
+                submit(msg, replyToMsgID, mentionObj);
+                e.target.textContent = '';
+                setMsg('');
+                if (mentions) setMentions();
+                break;
+              }
+              case 'Backspace' || 'Delete': {
+                if (!mentions) return;
+                const mentionsThatExistInMsg = mentions
+                  .map((mention) => {
+                    if (msg.includes(`@${mention.displayName}`)) return mention;
+                    return null;
+                  })
+                  .filter((val) => val);
+
+                setMentions(mentionsThatExistInMsg);
+                break;
+              }
+              default:
+                return;
+            }
+          }}
+        >
+          {mentions && (
+            <MentionWrapper
+              displayName={mentions[0].displayName}
+              uid={mentions[0].uid}
+            />
+          )}
+        </div>
+        {/*<input
           ref={inputRef}
           type="text"
           name="chat"
@@ -72,7 +151,7 @@ const ChatBar = ({
                 return;
             }
           }}
-        />
+        />*/}
       </div>
       <div className="btn-ctn">
         <IconBtn icon="flaticon-gif" isRectangle={true} />
