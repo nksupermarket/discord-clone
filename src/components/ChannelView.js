@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory, useParams } from 'react-router';
 
 import ChannelNav from './ChannelNav/ChannelNav';
 import OnlineUsers from './OnlineUsers/OnlineUsers';
 import TopBar from './TopBar';
+import ChatWrapper from './Chat/ChatWrapper';
 
 import '../styles/ChannelView.css';
 
@@ -11,7 +12,6 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getChannelName } from '../logic/channel_firebaseStuff';
 import { getRoomName } from '../logic/room_firebaseStuff';
-import ChatWrapper from './Chat/ChatWrapper';
 
 const ChannelView = ({ user, setError }) => {
   const { channelId, roomId } = useParams();

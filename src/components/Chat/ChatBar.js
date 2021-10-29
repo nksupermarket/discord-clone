@@ -14,65 +14,23 @@ const ChatBar = ({
   mentions,
   setMentions,
 }) => {
-  const [msg, setMsg] = useState();
-  const [divContent, setDivContent] = useState([]);
   const inputRef = useRef();
+  const [msg, setMsg] = useState();
 
   useEffect(() => {
     console.log(msg);
-  });
+    if (mentions && !msg) setMsg(inputRef.current.innerHTML);
+  }, [msg, mentions]);
 
-  useEffect(() => {
-    if (!mentions || mentions.length === 0) return;
-    const input = inputRef.current.innerHTML;
-
-    const mentionUIDs = mentions.map((mention) => mention.uid);
-
-    const uniqueMentions = mentionUIDs.filter(
-      (uid, i, thisArr) => thisArr.indexOf(uid) === i
-    );
-
-    let mentionCount = {};
-
-    uniqueMentions.forEach((uid) => {
-      let index = mentionUIDs.indexOf(uid);
-
-      while (index !== -1) {
-        mentionCount[uid] ? (mentionCount[uid] += 1) : (mentionCount[uid] = 1);
-        index = mentionUIDs.indexOf(uid, index + 1);
-      }
-    });
-
-    const mentionsInDivContent = divContent
-      .map((obj) => obj.uid || null)
-      .filter((val) => val);
-    let uidCountInDivContent = {};
-
-    uniqueMentions.forEach((uid) => {
-      let index = mentionsInDivContent.indexOf(uid);
-      while (index !== -1) {
-        uidCountInDivContent[uid]
-          ? (uidCountInDivContent[uid] += 1)
-          : (uidCountInDivContent[uid] = 1);
-        index = mentionsInDivContent.indexOf(uid, index + 1);
-      }
-      if (
-        uidCountInDivContent[uid] < mentionCount[uid] ||
-        !uidCountInDivContent[uid]
-      ) {
-        const mentionObj = mentions.find((obj) => obj.uid === uid);
-        const newDivContent = [...divContent];
-        for (
-          let i = 0;
-          i < mentionCount[uid] - (uidCountInDivContent[uid] || 0);
-          i++
-        ) {
-          newDivContent.push(mentionObj);
-        }
-        setDivContent(newDivContent);
-      }
-    });
-  }, [divContent, msg, mentions]);
+  function parseHTMLForMentions(html) {
+    return html
+      .split(' ')
+      .filter((str) => str.includes('data-uid'))
+      .map((dataAtt) => {
+        const [, uid] = dataAtt.split('=');
+        return uid;
+      });
+  }
 
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
@@ -87,13 +45,13 @@ const ChatBar = ({
         {!msg && !mentions && (
           <div className="default-text">message {roomName}</div>
         )}
-        <div
+        <span
           ref={inputRef}
           className="textarea"
           contentEditable
           suppressContentEditableWarning={true}
           onInput={(e) => {
-            setMsg(e.target.textContent);
+            setMsg(e.target.innerHTML);
           }}
           onKeyDown={(e) => {
             switch (e.key) {
@@ -102,24 +60,17 @@ const ChatBar = ({
                 //submit message
                 if (!msg) return;
                 const replyToMsgID = replyTo ? replyTo.msgId : null;
-                const mentionObj = mentions.length > 0 ? mentions : null;
+                const mentionArr = parseHTMLForMentions(msg);
+                console.log(mentionArr);
                 setReplyTo();
-                submit(msg, replyToMsgID, mentionObj);
+                //submit(msg, replyToMsgID, mentionArr);
                 e.target.textContent = '';
                 setMsg('');
                 if (mentions) setMentions();
                 break;
               }
               case 'Backspace' || 'Delete': {
-                if (!mentions) return;
-                const mentionsThatExistInMsg = mentions
-                  .map((mention) => {
-                    if (msg.includes(`@${mention.displayName}`)) return mention;
-                    return null;
-                  })
-                  .filter((val) => val);
-
-                setMentions(mentionsThatExistInMsg);
+                console.log(inputRef.current.innerHTML);
                 break;
               }
               default:
@@ -127,19 +78,21 @@ const ChatBar = ({
             }
           }}
         >
-          {divContent.map((obj, i) => {
-            return (
-              <>
-                <MentionWrapper
-                  key={i}
-                  displayName={obj.displayName}
-                  uid={obj.uid}
-                />
-                <span>&nbsp;</span>
-              </>
-            );
-          })}
-        </div>
+          {mentions &&
+            mentions.map((obj, i) => {
+              return (
+                <>
+                  <MentionWrapper
+                    key={i}
+                    displayName={obj.displayName}
+                    uid={obj.uid}
+                    id={obj.id}
+                  />
+                  <span>&nbsp;</span>
+                </>
+              );
+            })}
+        </span>
         {/*<input
           ref={inputRef}
           type="text"
@@ -187,3 +140,43 @@ const ChatBar = ({
 };
 
 export default ChatBar;
+
+function getCaretPosition(el) {
+  let position = 0;
+
+  const isSupported = typeof window.getSelection !== 'undefined';
+  if (!isSupported) return;
+
+  const selection = window.getSelection();
+  if (selection.rangeCount === 0) return;
+
+  const range = selection.getRangeAt(0);
+  console.log(range);
+  const preCaretRange = range.cloneRange();
+  preCaretRange.selectNode(el);
+  preCaretRange.setEnd(range.endContainer, range.endOffset);
+  position = preCaretRange.toString().length;
+
+  return position;
+}
+
+function getCaretCoords() {
+  let x = 0,
+    y = 0;
+
+  const isSupported = typeof window.getSelection !== 'undefined';
+  if (!isSupported) return;
+
+  const selection = window.getSelection();
+  if (selection.rangeCount === 0) return;
+
+  const range = selection.getRangeAt(0).cloneRange();
+  range.collapse(true);
+  const rect = range.getClientRects()[0];
+  if (rect) {
+    x = rect.left;
+    y = rect.top;
+  }
+
+  return { x, y };
+}

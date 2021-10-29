@@ -2,9 +2,14 @@ import React from 'react';
 
 import '../../styles/MentionWrapper.css';
 
-const MentionWrapper = ({ displayName, uid }) => {
+const MentionWrapper = ({ displayName, uid, id }) => {
   return (
-    <span className="mention-wrapper" data-uid={uid} contentEditable={false}>
+    <span
+      className="mention-wrapper"
+      data-uid={uid}
+      data-id={id}
+      contentEditable={false}
+    >
       @{displayName}
     </span>
   );
