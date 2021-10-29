@@ -7,7 +7,7 @@ import UserDisplay from './UserDisplay';
 import useUserCountStrs from '../../logic/custom-hooks/useUserCountStrs';
 import MentionWrapper from '../Chat/MentionWrapper';
 
-const OnlineUsers = ({ list, roles, setMentions }) => {
+const OnlineUsers = ({ list, roles }) => {
   roles = roles || [];
 
   const rolesRef = useRef({});
@@ -30,23 +30,7 @@ const OnlineUsers = ({ list, roles, setMentions }) => {
 
       {list.map((user) => {
         const userDisplay = (
-          <UserDisplay
-            key={user.uid}
-            displayName={user.displayName}
-            onClick={() =>
-              setMentions((prev) => {
-                prev = prev || [];
-
-                return [
-                  ...prev,
-                  {
-                    displayName: user.displayName,
-                    uid: user.uid,
-                  },
-                ];
-              })
-            }
-          />
+          <UserDisplay key={user.uid} displayName={user.displayName} />
         );
 
         if (Object.keys(rolesRef.current).length === 0) return <></>;

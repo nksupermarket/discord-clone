@@ -3,24 +3,16 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import IconBtn from '../IconBtn';
 import MentionWrapper from './MentionWrapper';
 
+import { getUsersForMentions } from '../../logic/channel_firebaseStuff';
+
 import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
-const ChatBar = ({
-  roomName,
-  replyTo,
-  setReplyTo,
-  submit,
-  mentions,
-  setMentions,
-}) => {
+const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
   const inputRef = useRef();
   const [msg, setMsg] = useState();
 
-  useEffect(() => {
-    console.log(msg);
-    if (mentions && !msg) setMsg(inputRef.current.innerHTML);
-  }, [msg, mentions]);
+  const [isMentionPopup, setIsMentionPopup] = useState(false);
 
   function parseHTMLForMentions(html) {
     return html
@@ -42,9 +34,7 @@ const ChatBar = ({
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        {!msg && !mentions && (
-          <div className="default-text">message {roomName}</div>
-        )}
+        {!msg && <div className="default-text">message {roomName}</div>}
         <span
           ref={inputRef}
           className="textarea"
@@ -66,7 +56,14 @@ const ChatBar = ({
                 //submit(msg, replyToMsgID, mentionArr);
                 e.target.textContent = '';
                 setMsg('');
-                if (mentions) setMentions();
+                break;
+              }
+              case '@': {
+                if (isMentionPopup) setIsMentionPopup(true);
+                break;
+              }
+              case ' ': {
+                setIsMentionPopup(false);
                 break;
               }
               case 'Backspace' || 'Delete': {

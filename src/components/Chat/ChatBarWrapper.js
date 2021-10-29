@@ -5,14 +5,7 @@ import ReplyBar from './ReplyBar';
 import '../../styles/ChatBar.css';
 import ChatBar from './ChatBar';
 
-const ChatBarWrapper = ({
-  submit,
-  roomName,
-  replyTo,
-  setReplyTo,
-  mentions,
-  setMentions,
-}) => {
+const ChatBarWrapper = ({ submit, roomName, replyTo, setReplyTo }) => {
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       {replyTo && (
@@ -26,8 +19,6 @@ const ChatBarWrapper = ({
         roomName={roomName}
         setReplyTo={setReplyTo}
         replyTo={replyTo}
-        mentions={mentions}
-        setMentions={setMentions}
       />
     </form>
   );

@@ -64,8 +64,6 @@ const ChannelView = ({ user, setError }) => {
 
   const { msgList, submitMsg } = useOnRoomEnter(user, channel, room, setError);
 
-  const [mentions, setMentions] = useState();
-
   return (
     <div className="channel-view">
       {channel && (
@@ -82,18 +80,8 @@ const ChannelView = ({ user, setError }) => {
         <div className="content">
           <TopBar room={room} />
           <div className="chat-ctn">
-            <ChatWrapper
-              room={room}
-              msgList={msgList}
-              submitMsg={submitMsg}
-              mentions={mentions}
-              setMentions={setMentions}
-            />
-            <OnlineUsers
-              list={onlineUsers}
-              roles={roleList}
-              setMentions={setMentions}
-            />
+            <ChatWrapper room={room} msgList={msgList} submitMsg={submitMsg} />
+            <OnlineUsers list={onlineUsers} roles={roleList} />
           </div>
         </div>
       )}

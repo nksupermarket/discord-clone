@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ChatDisplay from './ChatDisplay';
 import ChatBarWrapper from './ChatBarWrapper';
 
-const ChatWrapper = ({ room, msgList, submitMsg, mentions, setMentions }) => {
+const ChatWrapper = ({ room, msgList, submitMsg }) => {
   const [replyTo, setReplyTo] = useState();
   return (
     <main id="chat">
@@ -13,8 +13,6 @@ const ChatWrapper = ({ room, msgList, submitMsg, mentions, setMentions }) => {
         roomName={room.name}
         replyTo={replyTo}
         setReplyTo={setReplyTo}
-        mentions={mentions}
-        setMentions={setMentions}
       />
     </main>
   );

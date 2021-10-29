@@ -41,8 +41,10 @@ async function createUser(email, password, displayName, channelID, setError) {
         [channelID]: '',
       };
 
-      updates[`Channels/${channelID}/users`] = {
-        [userCredential.user.uid]: displayName,
+      updates[`Channels/${channelID}/users/${userCredential.user.uid}`] = {
+        displayName,
+        uid: userCredential.user.uid,
+        avatar: '',
       };
 
       update(ref(db), updates);

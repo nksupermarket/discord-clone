@@ -8,17 +8,19 @@ import {
   update,
   onValue,
   off,
+  orderByValue,
+  limitToFirst,
   onDisconnect,
 } from 'firebase/database';
 import { db } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
-function detachListenersForChannel(channelId, uid) {
-  const userRolesRef = ref(db, `Channels/${channelId}/user_roles`);
-  const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
-  const roomListRef = ref(db, `Channels/${channelId}/rooms`);
-  const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelId}`);
-  const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
+function detachListenersForChannel(channelID, uid) {
+  const userRolesRef = ref(db, `Channels/${channelID}/user_roles`);
+  const roomCategoriesRef = ref(db, `Channels/${channelID}/room_categories`);
+  const roomListRef = ref(db, `Channels/${channelID}/rooms`);
+  const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
+  const onlineUsersRef = ref(db, `Channels/${channelID}/online_users`);
 
   off(unreadRoomsRef);
   off(userRolesRef);
@@ -39,9 +41,9 @@ async function getChannelName(id, setError) {
   }
 }
 
-async function createRoom(channelId, name, setError) {
+async function createRoom(channelID, name, setError) {
   try {
-    const channelRoomListRef = ref(db, `Channels/${channelId}/rooms`);
+    const channelRoomListRef = ref(db, `Channels/${channelID}/rooms`);
     const newRoomRef = push(channelRoomListRef);
     set(newRoomRef, { name });
 
@@ -54,8 +56,8 @@ async function createRoom(channelId, name, setError) {
   }
 }
 
-function getRoomList(channelId, setRoomList) {
-  const roomsRef = ref(db, `Channels/${channelId}/rooms`);
+function getRoomList(channelID, setRoomList) {
+  const roomsRef = ref(db, `Channels/${channelID}/rooms`);
 
   onValue(roomsRef, (snapshot) => {
     const data = snapshot.val();
@@ -68,9 +70,9 @@ function getRoomList(channelId, setRoomList) {
   });
 }
 
-async function getUnreadRooms(uid, channelId, setUnreadRooms, setError) {
+async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
   try {
-    const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelId}`);
+    const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
 
     onValue(unreadRoomsRef, (snap) => {
       const data = snap.val();
@@ -99,9 +101,9 @@ async function getMentions(uid, channelID, setRoomsMentioned, setError) {
   }
 }
 
-function getRoomCategories(channelId, setRoomCategories, setError) {
+function getRoomCategories(channelID, setRoomCategories, setError) {
   try {
-    const roomCategoriesRef = ref(db, `Channels/${channelId}/room_categories`);
+    const roomCategoriesRef = ref(db, `Channels/${channelID}/room_categories`);
     onValue(roomCategoriesRef, (snap) => {
       const data = snap.val();
       if (!data) return;
@@ -115,11 +117,11 @@ function getRoomCategories(channelId, setRoomCategories, setError) {
   }
 }
 
-function createRoomCategory(channelId, name, setError) {
+function createRoomCategory(channelID, name, setError) {
   try {
     const channelRoomCategoriesRef = ref(
       db,
-      `Channels/${channelId}/room_categories`
+      `Channels/${channelID}/room_categories`
     );
     update(channelRoomCategoriesRef, { [name]: true });
   } catch (error) {
@@ -128,9 +130,9 @@ function createRoomCategory(channelId, name, setError) {
   }
 }
 
-function updateCategoryOfRoom(channelId, roomId, category, setError) {
+function updateCategoryOfRoom(channelID, roomId, category, setError) {
   try {
-    const channelRoomRef = ref(db, `Channels/${channelId}/rooms/${roomId}`);
+    const channelRoomRef = ref(db, `Channels/${channelID}/rooms/${roomId}`);
     update(channelRoomRef, { category });
   } catch (error) {
     setError && setError(error.message);
@@ -138,8 +140,8 @@ function updateCategoryOfRoom(channelId, roomId, category, setError) {
   }
 }
 
-async function getOnlineUsers(channelId, setUserList, setError) {
-  const onlineUsersRef = ref(db, `Channels/${channelId}/online_users`);
+async function getOnlineUsers(channelID, setUserList, setError) {
+  const onlineUsersRef = ref(db, `Channels/${channelID}/online_users`);
 
   try {
     onValue(onlineUsersRef, (snapshot) => {
@@ -157,9 +159,26 @@ async function getOnlineUsers(channelId, setUserList, setError) {
   }
 }
 
-async function createUserRole(channelId, role, setError) {
+async function getUsersForMentions(channelID, query, setError) {
   try {
-    const channelUserRolesRef = ref(db, `Channels/${channelId}/user_roles`);
+    const channelUsersRef = ref(db, `Channels/${channelID}`);
+
+    const results = query(
+      channelUsersRef,
+      orderByValue().startAt(query).limitToFirst(5)
+    );
+
+    const data = await get(results);
+
+    return data.val();
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+
+async function createUserRole(channelID, role, setError) {
+  try {
+    const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
     /* const newRoleRef = push(channelUserRolesRef);
     set(newRoleRef, { role }); */
 
@@ -170,9 +189,9 @@ async function createUserRole(channelId, role, setError) {
   }
 }
 
-async function getUserRoles(channelId, setUserRoles, setError) {
+async function getUserRoles(channelID, setUserRoles, setError) {
   try {
-    const channelUserRolesRef = ref(db, `Channels/${channelId}/user_roles`);
+    const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
 
     onValue(channelUserRolesRef, (snap) => {
       const data = snap.val();
@@ -187,9 +206,9 @@ async function getUserRoles(channelId, setUserRoles, setError) {
   }
 }
 
-async function getRoleOfUser(channelId, userId, setRole, setError) {
+async function getRoleOfUser(channelID, userId, setRole, setError) {
   try {
-    const userRoleRef = ref(db, `users/${userId}/channels/${channelId}`);
+    const userRoleRef = ref(db, `users/${userId}/channels/${channelID}`);
     onValue(userRoleRef, (snap) => {
       const data = snap.val();
 
@@ -201,12 +220,12 @@ async function getRoleOfUser(channelId, userId, setRole, setError) {
   }
 }
 
-async function updateRoleOfUser(channelId, userId, role, setError) {
+async function updateRoleOfUser(channelID, userId, role, setError) {
   try {
     let updates = {};
-    updates[`users/${userId}/channels/${channelId}`] = role;
+    updates[`users/${userId}/channels/${channelID}`] = role;
     if (isUserOnline(userId))
-      updates[`Channels/${channelId}/online_users/${userId}/role`] = role;
+      updates[`Channels/${channelID}/online_users/${userId}/role`] = role;
 
     update(ref(db), updates);
   } catch (error) {
@@ -214,7 +233,7 @@ async function updateRoleOfUser(channelId, userId, role, setError) {
   }
 }
 
-// async function getUnreadRooms(channelId, userId, roomList, setError) {
+// async function getUnreadRooms(channelID, userId, roomList, setError) {
 // try {
 
 // }
@@ -234,5 +253,6 @@ export {
   getRoleOfUser,
   createUserRole,
   updateRoleOfUser,
+  getUsersForMentions,
   detachListenersForChannel,
 };
