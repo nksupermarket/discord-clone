@@ -25,7 +25,14 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function createUser(email, password, displayName, channelID, setError) {
+async function createUser(
+  email,
+  password,
+  displayName,
+  channelID,
+  setUser,
+  setError
+) {
   const auth = getAuth();
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -43,12 +50,13 @@ async function createUser(email, password, displayName, channelID, setError) {
 
       updates[`Channels/${channelID}/users/${userCredential.user.uid}`] = {
         displayName,
-        uid: userCredential.user.uid,
         avatar: '',
       };
 
       update(ref(db), updates);
     }
+
+    setUser(userCredential.user);
 
     return true;
   } catch (error) {
@@ -59,10 +67,10 @@ async function createUser(email, password, displayName, channelID, setError) {
   }
 }
 
-async function signIn(email, password, setError) {
+function signIn(email, password, setError) {
   const auth = getAuth();
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     console.log(error);
     setError && setError(error.message);
@@ -88,60 +96,53 @@ async function subscribeToChannel(uid, channelID, roomList, setError) {
   }
 }
 
-async function getChannelList(uid, setChannelList, setError) {
+function getChannelList(uid, setChannelList, setError) {
   try {
     const userChannelListRef = ref(db, `users/${uid}/channels`);
 
     let channelList = [];
-
-    onValue(userChannelListRef, async function (snap) {
+    onValue(userChannelListRef, (snap) => {
       const data = snap.val();
 
       for (const id in data) {
         channelList.push({ role: data[id], id });
       }
-      setChannelList && (await setChannelList(channelList));
+      setChannelList(channelList);
     });
   } catch (error) {
-    console.log(error);
     setError && setError(error.message);
   }
 }
 
-async function updateUserOnline(uid, displayName, userChannelList, setError) {
-  const userRef = ref(db, `users/${uid}`);
-
-  const connectedRef = ref(db, '.info/connected');
+function updateUserOnline(uid, userChannelList, setError) {
   try {
+    const connectedRef = ref(db, '.info/connected');
+    const userRef = ref(db, `users/${uid}`);
+
     // add user to online_users for all channels in their list
     userChannelList.forEach((channel) => {
-      const userStatusRef = ref(
-        db,
-        `Channels/${channel.id}/online_users/${uid}`
-      );
+      const userStatusRef = ref(db, `Channels/${channel.id}/users/${uid}`);
 
-      onValue(connectedRef, async function (snapshot) {
+      onValue(connectedRef, async (snapshot) => {
         if (snapshot.val() === false) {
           off(connectedRef);
           detachListenersForUser(uid);
         }
 
-        await onDisconnect(userStatusRef).remove();
+        await onDisconnect(userStatusRef).update({ status: 'offline' });
         await onDisconnect(userRef).update({
           isOnline: false,
           last_logged_in: getUnixTime(new Date()),
         });
 
-        set(userStatusRef, {
-          displayName,
-          uid,
-          role: channel.role || '',
+        update(userStatusRef, {
+          status: 'online',
         });
         update(userRef, { isOnline: true });
       });
     });
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 
@@ -150,11 +151,10 @@ function updateMentions(uid, channelID, roomID, msgID, setError) {
     db,
     `users/${uid}/mentions/${channelID}/${roomID}/${msgID}`
   );
-  console.log(`users/${uid}/mentions/${channelID}/${roomID}/${msgID}`);
   try {
     set(mentionsRef, true);
   } catch (error) {
-    setError(error);
+    setError(error.message);
   }
 }
 

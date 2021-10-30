@@ -2,17 +2,21 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import IconBtn from '../IconBtn';
 import MentionWrapper from './MentionWrapper';
+import MentionsPopup from './MentionsPopup';
 
 import { getUsersForMentions } from '../../logic/channel_firebaseStuff';
 
 import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
-const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
+const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   const inputRef = useRef();
   const [msg, setMsg] = useState();
 
   const [isMentionPopup, setIsMentionPopup] = useState(false);
+  const [query, setQuery] = useState('');
+
+  let caretIndex = useRef();
 
   function parseHTMLForMentions(html) {
     return html
@@ -22,6 +26,24 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
         const [, uid] = dataAtt.split('=');
         return uid;
       });
+  }
+
+  function getCaretIndex(el) {
+    let position = 0;
+
+    const isSupported = typeof window.getSelection !== 'undefined';
+    if (!isSupported) return;
+
+    const selection = window.getSelection();
+    if (selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+    const preCaretRange = range.cloneRange();
+    preCaretRange.selectNode(el);
+    preCaretRange.setEnd(range.endContainer, range.endOffset);
+    position = preCaretRange.toString().length;
+
+    return position;
   }
 
   let style = replyTo
@@ -35,13 +57,16 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
       </div>
       <div className="input-wrapper">
         {!msg && <div className="default-text">message {roomName}</div>}
+        {isMentionPopup && <MentionsPopup userList={userList} query={query} />}
         <span
           ref={inputRef}
           className="textarea"
           contentEditable
           suppressContentEditableWarning={true}
           onInput={(e) => {
-            setMsg(e.target.innerHTML);
+            setMsg(e.target.textContent);
+            if (isMentionPopup)
+              setQuery(e.target.textContent.slice(caretIndex.current + 1));
           }}
           onKeyDown={(e) => {
             switch (e.key) {
@@ -50,8 +75,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
                 //submit message
                 if (!msg) return;
                 const replyToMsgID = replyTo ? replyTo.msgId : null;
-                const mentionArr = parseHTMLForMentions(msg);
-                console.log(mentionArr);
+                const mentionArr = parseHTMLForMentions(e.target.innerHTML);
                 setReplyTo();
                 //submit(msg, replyToMsgID, mentionArr);
                 e.target.textContent = '';
@@ -59,7 +83,10 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
                 break;
               }
               case '@': {
-                if (isMentionPopup) setIsMentionPopup(true);
+                if (!msg || msg.charAt(caretIndex.current - 1) === ' ') {
+                  setIsMentionPopup(true);
+                  caretIndex.current = getCaretIndex(inputRef.current);
+                }
                 break;
               }
               case ' ': {
@@ -67,7 +94,8 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
                 break;
               }
               case 'Backspace' || 'Delete': {
-                console.log(inputRef.current.innerHTML);
+                if (getCaretIndex(inputRef.current) === caretIndex.current)
+                  setIsMentionPopup(false);
                 break;
               }
               default:
@@ -75,8 +103,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
             }
           }}
         >
-          {mentions &&
-            mentions.map((obj, i) => {
+          {/*
               return (
                 <>
                   <MentionWrapper
@@ -88,7 +115,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
                   <span>&nbsp;</span>
                 </>
               );
-            })}
+            */}
         </span>
         {/*<input
           ref={inputRef}
@@ -137,25 +164,6 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, submit }) => {
 };
 
 export default ChatBar;
-
-function getCaretPosition(el) {
-  let position = 0;
-
-  const isSupported = typeof window.getSelection !== 'undefined';
-  if (!isSupported) return;
-
-  const selection = window.getSelection();
-  if (selection.rangeCount === 0) return;
-
-  const range = selection.getRangeAt(0);
-  console.log(range);
-  const preCaretRange = range.cloneRange();
-  preCaretRange.selectNode(el);
-  preCaretRange.setEnd(range.endContainer, range.endOffset);
-  position = preCaretRange.toString().length;
-
-  return position;
-}
 
 function getCaretCoords() {
   let x = 0,

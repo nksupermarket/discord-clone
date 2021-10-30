@@ -17,7 +17,7 @@ import './assets/font/remixicon.css';
 function App() {
   const [error, setError] = useState();
 
-  const { user, channelList } = useLoginUser(setError);
+  const { user, setUser, channelList } = useLoginUser(setError);
 
   useEffect(function ifError() {
     if (error)
@@ -37,7 +37,7 @@ function App() {
     <>
       {error && <Error errorMsg={error} />}
       <Route path={['/login/:channelID', '/login']}>
-        {!user && <LoginScreen setError={setError} />}
+        {!user && <LoginScreen setUser={setUser} setError={setError} />}
       </Route>
       {user && (
         <div className="app">

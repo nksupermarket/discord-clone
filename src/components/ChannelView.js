@@ -35,6 +35,7 @@ const ChannelView = ({ user, setError }) => {
     roleList,
     roomCategories,
     roomList,
+    userList,
     onlineUsers,
     unreadRooms,
     userRole,
@@ -80,7 +81,12 @@ const ChannelView = ({ user, setError }) => {
         <div className="content">
           <TopBar room={room} />
           <div className="chat-ctn">
-            <ChatWrapper room={room} msgList={msgList} submitMsg={submitMsg} />
+            <ChatWrapper
+              room={room}
+              msgList={msgList}
+              userList={userList}
+              submitMsg={submitMsg}
+            />
             <OnlineUsers list={onlineUsers} roles={roleList} />
           </div>
         </div>

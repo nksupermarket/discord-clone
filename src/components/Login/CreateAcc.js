@@ -8,7 +8,7 @@ import FlatBtn from '../FlatBtn';
 import InputErrorMsg from '../InputErrorMsg';
 import { useHistory } from 'react-router';
 
-const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
+const CreateAcc = ({ serverInfo, displayName, channel, setUser, setError }) => {
   const history = useHistory();
 
   const [email, setEmail] = useState();
@@ -32,6 +32,7 @@ const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
       pw,
       displayName,
       channel || null,
+      setUser,
       setError
     );
 
@@ -45,7 +46,6 @@ const CreateAcc = ({ serverInfo, displayName, channel, setError }) => {
         name="create-acc"
         onSubmit={(e) => {
           e.preventDefault();
-          console.log('submitted');
           submit();
         }}
         action="#"

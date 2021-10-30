@@ -93,7 +93,6 @@ async function getMentions(uid, channelID, setRoomsMentioned, setError) {
   try {
     onValue(mentionsRef, (snap) => {
       const data = snap.val();
-      console.log(data);
       setRoomsMentioned(data);
     });
   } catch (error) {
@@ -140,22 +139,25 @@ function updateCategoryOfRoom(channelID, roomId, category, setError) {
   }
 }
 
-async function getOnlineUsers(channelID, setUserList, setError) {
-  const onlineUsersRef = ref(db, `Channels/${channelID}/online_users`);
-
+async function getUserList(channelID, setUserList, setOnlineUsers, setError) {
   try {
-    onValue(onlineUsersRef, (snapshot) => {
-      let data = snapshot.val();
+    const userListRef = ref(db, `Channels/${channelID}/users`);
+
+    onValue(userListRef, (snap) => {
+      const data = snap.val();
+
       let userList = [];
       for (const id in data) {
-        userList.push(data[id]);
+        const userInfo = { ...data[id], uid: id };
+        userList.push(userInfo);
       }
-
       setUserList(userList);
+
+      const onlineUsers = userList.filter((user) => user.status === 'online');
+      setOnlineUsers(onlineUsers);
     });
   } catch (error) {
     setError && setError(error.message);
-    console.log(error);
   }
 }
 
@@ -248,7 +250,7 @@ export {
   getMentions,
   getRoomList,
   createRoom,
-  getOnlineUsers,
+  getUserList,
   getUserRoles,
   getRoleOfUser,
   createUserRole,

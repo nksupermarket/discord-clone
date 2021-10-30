@@ -7,7 +7,7 @@ import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
 import { useParams, useHistory } from 'react-router';
 
-const LoginScreen = ({ setError }) => {
+const LoginScreen = ({ setUser, setError }) => {
   const [node, setNode] = useState('new user');
   const [displayName, setDisplayName] = useState();
 
@@ -41,6 +41,7 @@ const LoginScreen = ({ setError }) => {
             displayName={displayName}
             channel={channel}
             setError={setError}
+            setUser={setUser}
           />
         )}
       </div>
