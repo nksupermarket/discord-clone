@@ -2,6 +2,8 @@ import React from 'react';
 
 import UserDisplay from '../OnlineUsers/UserDisplay';
 
+import '../../styles/MentionsPopup.css';
+
 const MentionsPopup = ({ userList, query }) => {
   console.log(query);
   let list = queryUserList(query);
@@ -18,6 +20,9 @@ const MentionsPopup = ({ userList, query }) => {
   return (
     <div className="mentions-popup">
       <ul>
+        <header>
+          <h3>Members</h3>
+        </header>
         {list.map((obj) => (
           <UserDisplay displayName={obj.displayName} />
         ))}

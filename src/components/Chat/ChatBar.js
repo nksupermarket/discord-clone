@@ -16,7 +16,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   const [isMentionPopup, setIsMentionPopup] = useState(false);
   const [query, setQuery] = useState('');
 
-  let caretIndex = useRef();
+  let mentionStart = useRef();
 
   function parseHTMLForMentions(html) {
     return html
@@ -26,6 +26,21 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
         const [, uid] = dataAtt.split('=');
         return uid;
       });
+  }
+
+  function splitHTMLBySpan(el) {
+    const clone = el.cloneNode(true);
+
+    clone.querySelectorAll('span').forEach((span) => {
+      clone.innerHTML = clone.innerHTML.replace(
+        span.outerHTML,
+        '⠀' + span.outerHTML + '⠀'
+      ); // not empty space, special character U+2800
+      console.log(clone.innerHTML);
+    });
+
+    const str = clone.innerHTML.split('⠀'); // not empty space, special character U+2800
+    console.log(str);
   }
 
   function getCaretIndex(el) {
@@ -46,6 +61,37 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
     return position;
   }
 
+  function getHTMLCaretIndex(el) {
+    let textPosition = getCaretIndex(el),
+      htmlContent = el.innerHTML.replace('&nbsp;', ' '),
+      textIndex = 0,
+      htmlIndex = 0,
+      insideHTML = false,
+      htmlBegin = ['<span', '</span'],
+      htmlEnd = '>';
+
+    while (textIndex < textPosition) {
+      const i = htmlIndex; //get around eslint no-loop-func error
+      if (htmlBegin.some((tag) => htmlContent.indexOf(tag, i) === i))
+        //check if character is html, if true iterate with htmlIndex until tag ends
+        insideHTML = true;
+
+      while (insideHTML) {
+        if (htmlContent.indexOf(htmlEnd, htmlIndex) === htmlIndex) {
+          insideHTML = false;
+          break; //need to exit loop otherwise we increment htmlIndex twice
+        }
+        htmlIndex++;
+      }
+
+      htmlIndex++;
+      if (!htmlBegin.some((tag) => htmlContent.indexOf(tag, i) === i))
+        // check if character is html after incrementing eg. </span><span>
+        textIndex++;
+    }
+    return htmlIndex;
+  }
+
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
@@ -64,9 +110,26 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
           contentEditable
           suppressContentEditableWarning={true}
           onInput={(e) => {
+            getHTMLCaretIndex(e.target);
+
             setMsg(e.target.textContent);
-            if (isMentionPopup)
-              setQuery(e.target.textContent.slice(caretIndex.current + 1));
+            if (isMentionPopup) {
+              console.log(e.target.innerHTML);
+              //find end of mention
+              let indexOfNextSpace = e.target.textContent.indexOf(
+                ' ',
+                mentionStart.current
+              );
+              //set query to @ to end of mention
+              indexOfNextSpace === -1
+                ? setQuery(e.target.textContent.slice(mentionStart.current + 1))
+                : setQuery(
+                    e.target.textContent.slice(
+                      mentionStart.current + 1,
+                      indexOfNextSpace
+                    )
+                  );
+            }
           }}
           onKeyDown={(e) => {
             switch (e.key) {
@@ -83,9 +146,9 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
                 break;
               }
               case '@': {
-                if (!msg || msg.charAt(caretIndex.current - 1) === ' ') {
+                if (!msg || msg.charAt(mentionStart.current - 1) === ' ') {
                   setIsMentionPopup(true);
-                  caretIndex.current = getCaretIndex(inputRef.current);
+                  mentionStart.current = getCaretIndex(inputRef.current);
                 }
                 break;
               }
@@ -93,9 +156,14 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
                 setIsMentionPopup(false);
                 break;
               }
-              case 'Backspace' || 'Delete': {
-                if (getCaretIndex(inputRef.current) === caretIndex.current)
+              case 'Delete':
+              case 'Backspace': {
+                console.log(msg);
+                if (getCaretIndex(inputRef.current) === mentionStart.current)
                   setIsMentionPopup(false);
+                break;
+              }
+              case 'Tab': {
                 break;
               }
               default:
@@ -103,6 +171,11 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
             }
           }}
         >
+          <MentionWrapper
+            displayName={userList[0].displayName}
+            uid={userList[0].uid}
+          />
+          <span>&nbsp;</span>
           {/*
               return (
                 <>

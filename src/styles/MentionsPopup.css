@@ -1,0 +1,32 @@
+.mentions-popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+  background-color: var(--fg-color);
+  border-radius: 5px;
+  box-shadow: var(--elevate-shadow), var(--elevation-high);
+}
+
+.mentions-popup ul {
+  overflow: hidden;
+  max-height: 490px;
+  padding-right: 0;
+  padding-bottom: 8px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.mentions-popup ul header {
+  border-radius: 3px;
+  padding: 8px;
+}
+
+.mentions-popup ul header h3 {
+  color: var(--interactive-normal);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  padding: 4px 0;
+}
