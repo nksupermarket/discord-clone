@@ -17,8 +17,13 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   const [isMentionPopup, setIsMentionPopup] = useState(false);
   const [query, setQuery] = useState('');
 
-  let mentionStart = useRef();
-
+  useEffect(function centerChatTextarea() {
+    const scrollHeight = inputRef.current.scrollHeight,
+      currentHeight = inputRef.current.offsetHeight;
+    console.log(scrollHeight, currentHeight);
+    if (scrollHeight > currentHeight)
+      inputRef.current.style.height = `${scrollHeight}px`;
+  });
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
@@ -29,9 +34,10 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        {/*!msg && <div className="default-text">message {roomName}</div>*/}
+        {!msg && <div className="default-text">message {roomName}</div>}
         {isMentionPopup && <MentionsPopup userList={userList} query={query} />}
         <MentionsInput
+          inputRef={inputRef}
           className="textarea"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}

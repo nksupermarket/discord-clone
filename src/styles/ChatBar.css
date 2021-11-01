@@ -43,6 +43,9 @@
 .chat-bar .input-wrapper .textarea textarea {
   line-height: 1.375rem;
   color: inherit;
+  /* need to center chat */
+  top: -2px;
+  left: -2px;
 }
 
 .chat-bar .input-wrapper .textarea .textarea__highlighter {
