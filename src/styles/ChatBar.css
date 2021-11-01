@@ -29,6 +29,24 @@
   width: 100%;
   display: inline;
   word-break: break-word;
+  color: var(--text-normal);
+  caret-color: var(--text-normal);
+}
+
+.chat-bar .input-wrapper .textarea textarea,
+.chat-bar .input-wrapper .textarea textarea:active,
+.chat-bar .input-wrapper .textarea textarea:focus {
+  outline: none;
+  border: none;
+}
+
+.chat-bar .input-wrapper .textarea textarea {
+  line-height: 1.375rem;
+  color: inherit;
+}
+
+.chat-bar .input-wrapper .textarea .textarea__highlighter {
+  border: none !important;
 }
 
 .textarea span {
