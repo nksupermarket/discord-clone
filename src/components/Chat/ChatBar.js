@@ -20,9 +20,11 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   useEffect(function centerChatTextarea() {
     const scrollHeight = inputRef.current.scrollHeight,
       currentHeight = inputRef.current.offsetHeight;
-    console.log(scrollHeight, currentHeight);
-    if (scrollHeight > currentHeight)
-      inputRef.current.style.height = `${scrollHeight}px`;
+    console.log(
+      'heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy' ===
+        'heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'
+    );
+    inputRef.current.style.height = `${scrollHeight}px`;
   });
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
