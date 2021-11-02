@@ -1,29 +1,29 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 
 import { MentionsInput, Mention } from 'react-mentions';
 import IconBtn from '../IconBtn';
 import MentionWrapper from './MentionWrapper';
 import MentionsPopup from './MentionsPopup';
+import UserDisplay from '../OnlineUsers/UserDisplay';
 
 import { getUsersForMentions } from '../../logic/channel_firebaseStuff';
 
 import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
+import '../../styles/MentionsPopup.css';
+
 const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
+  const mentionsPopupRef = useRef();
   const inputRef = useRef();
   const [msg, setMsg] = useState();
-
   const [isMentionPopup, setIsMentionPopup] = useState(false);
   const [query, setQuery] = useState('');
 
   useEffect(function centerChatTextarea() {
-    const scrollHeight = inputRef.current.scrollHeight,
-      currentHeight = inputRef.current.offsetHeight;
-    console.log(
-      'heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy' ===
-        'heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'
-    );
+    const scrollHeight = inputRef.current.scrollHeight;
+    //make sure input is right height
     inputRef.current.style.height = `${scrollHeight}px`;
   });
   let style = replyTo
@@ -36,15 +36,47 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        {!msg && <div className="default-text">message {roomName}</div>}
-        {isMentionPopup && <MentionsPopup userList={userList} query={query} />}
+        <MentionsPopup
+          ref={mentionsPopupRef}
+          userList={userList}
+          query={query}
+        />
+
         <MentionsInput
           inputRef={inputRef}
           className="textarea"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
+          placeholder={`message ${roomName}`}
+          suggestionsPortalHost={mentionsPopupRef.current}
         >
-          <Mention trigger="@" data={userList} />
+          <Mention
+            className="mentions-popup"
+            trigger="@"
+            data={function queryUserList(query) {
+              console.log(query);
+              return userList
+                .sort((a, b) => {
+                  if (a.displayName === b.displayName) return 0;
+                  return a.displayName > b.displayName ? 1 : -1;
+                })
+                .filter((obj) => obj.displayName.includes(query))
+                .filter((obj, i) => i < 5)
+                .map((obj) => ({ id: obj.uid, display: obj.displayName }));
+            }}
+            renderSuggestion={function showMentionSuggestions(entry) {
+              return (
+                <UserDisplay
+                  displayName={entry.displayName}
+                  uid={entry.uid}
+                  avatar={entry.avatar}
+                />
+              );
+            }}
+            displayTransform={function displayMentionInInput(uid, display) {
+              return <MentionWrapper uid={uid} displayName={display} />;
+            }}
+          />
         </MentionsInput>
       </div>
       <div className="btn-ctn">

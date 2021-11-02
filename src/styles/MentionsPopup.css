@@ -1,9 +1,10 @@
+.textarea__suggestions,
 .mentions-popup {
   position: absolute;
-  left: 0;
+  left: 0 !important;
   right: 0;
   bottom: calc(100% + 8px);
-  background-color: var(--fg-color);
+  background-color: var(--fg-color) !important;
   border-radius: 5px;
   box-shadow: var(--elevate-shadow), var(--elevation-high);
 }
