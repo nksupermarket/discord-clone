@@ -1,5 +1,16 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import ReactDOM from 'react-dom';
+import { EditorState } from 'draft-js';
+import Editor from '@draft-js-plugins/editor';
+import createMentionPlugin, {
+  defaultSuggestionsFilter,
+} from '@draft-js-plugins/mention';
 
 import { MentionsInput, Mention } from 'react-mentions';
 import IconBtn from '../IconBtn';
@@ -13,19 +24,30 @@ import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
 import '../../styles/MentionsPopup.css';
+import 'draft-js/dist/Draft.css';
 
 const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
+  const [isMentionPopup, setIsMentionPopup] = useState(false);
+  const [suggestions, setSuggestions] = useState();
+
+  const { MentionSuggestions, plugins } = useMemo(() => {
+    const mentionPlugin = createMentionPlugin();
+    // eslint-disable-next-line no-shadow
+    const { MentionSuggestions } = mentionPlugin;
+    // eslint-disable-next-line no-shadow
+    const plugins = [mentionPlugin];
+    return { plugins, MentionSuggestions };
+  }, []);
+
   const mentionsPopupRef = useRef();
   const inputRef = useRef();
   const [msg, setMsg] = useState();
   const [mentions, setMentions] = useState();
-  const [isMentionPopup, setIsMentionPopup] = useState(false);
 
-  useEffect(function centerChatTextarea() {
-    const scrollHeight = inputRef.current.scrollHeight;
-    //make sure input is right height
-    inputRef.current.style.height = `${scrollHeight}px`;
-  });
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
@@ -33,6 +55,25 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   function handleChange(e, newValue, newPlainTextValue, mentions) {
     setMsg(newValue);
     setMentions(mentions);
+  }
+
+  const onOpenChange = useCallback((isOpen) => {
+    setIsMentionPopup(isOpen);
+  });
+
+  const onQueryChange = useCallback(({ value }) => {
+    setSuggestions(queryUserList(value));
+  });
+
+  function queryUserList(query) {
+    return userList
+      .sort((a, b) => {
+        if (a.displayName === b.displayName) return 0;
+        return a.displayName > b.displayName ? 1 : -1;
+      })
+      .filter((obj) => obj.displayName.includes(query))
+      .filter((obj, i) => i < 5)
+      .map((obj) => ({ id: obj.uid, display: obj.displayName }));
   }
 
   return (
@@ -43,42 +84,22 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
       <div className="input-wrapper">
         <MentionsPopup listRef={mentionsPopupRef} msg={msg} />
 
-        <MentionsInput
-          inputRef={inputRef}
-          className="textarea"
-          value={msg}
-          onChange={handleChange}
-          placeholder={`message ${roomName}`}
-          suggestionsPortalHost={mentionsPopupRef.current}
-        >
-          <Mention
-            className="mentions-popup"
-            trigger="@"
-            data={function queryUserList(query) {
-              return userList
-                .sort((a, b) => {
-                  if (a.displayName === b.displayName) return 0;
-                  return a.displayName > b.displayName ? 1 : -1;
-                })
-                .filter((obj) => obj.displayName.includes(query))
-                .filter((obj, i) => i < 5)
-                .map((obj) => ({ id: obj.uid, display: obj.displayName }));
-            }}
-            renderSuggestion={function showMentionSuggestions(entry) {
-              return (
-                <MentionsListItem
-                  displayName={entry.display}
-                  uid={entry.id}
-                  avatar={entry.avatar}
-                />
-              );
-            }}
-            displayTransform={function displayMentionInInput(uid, display) {
-              return <MentionWrapper uid={uid} displayName={display} />;
-            }}
-            onAdd={() => console.log('hi')}
-          />
-        </MentionsInput>
+        <Editor
+          editorKey={'editor'}
+          editorState={editorState}
+          onChange={setEditorState}
+          plugins={plugins}
+          ref={inputRef}
+        />
+        <MentionSuggestions
+          open={isMentionPopup}
+          onOpenChange={onOpenChange}
+          suggestions={suggestions}
+          onQueryChange={onQueryChange}
+          onAddMention={() => {
+            // get the mention object selected
+          }}
+        />
       </div>
       <div className="btn-ctn">
         <IconBtn icon="flaticon-gif" isRectangle={true} />

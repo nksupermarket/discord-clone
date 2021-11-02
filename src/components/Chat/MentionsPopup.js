@@ -9,11 +9,11 @@ const MentionsPopup = ({ listRef, msg }) => {
 
   const [isActive, setIsActive] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!ref.current) return;
     // duct tape solution to show popup on '@' trigger
     setTimeout(() => setIsActive(!!ref.current.querySelector('li')), 100);
-  }, [msg]);
+  }, [msg]);*/
 
   const style = isActive ? { opacity: 1 } : { opacity: 0 };
 
