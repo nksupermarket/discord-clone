@@ -1,15 +1,22 @@
-.textarea__suggestions,
 .mentions-popup {
   position: absolute;
   left: 0 !important;
   right: 0;
   bottom: calc(100% + 8px);
-  background-color: var(--fg-color) !important;
+  background-color: var(--fg-color);
   border-radius: 5px;
   box-shadow: var(--elevate-shadow), var(--elevation-high);
 }
 
-.mentions-popup ul {
+.textarea__suggestions {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin-top: 0 !important;
+  background-color: var(--fg-color) !important;
+}
+
+.mentions-popup .suggestions-wrapper {
   overflow: hidden;
   max-height: 490px;
   padding-right: 0;
@@ -18,16 +25,55 @@
   box-sizing: border-box;
 }
 
-.mentions-popup ul header {
+.mentions-popup .suggestions-wrapper header {
   border-radius: 3px;
   padding: 8px;
 }
 
-.mentions-popup ul header h3 {
+.mentions-popup .suggestions-wrapper header h3 {
   color: var(--interactive-normal);
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   text-transform: uppercase;
   padding: 4px 0;
+}
+
+.textarea__suggestions__item {
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.textarea__suggestions__item:hover {
+  background-color: black;
+}
+
+.textarea__suggestions__item .avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.textarea__suggestions__item .content {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  min-width: none;
+  flex: 1 1 auto;
+}
+
+.textarea__suggestions__item .content .subText {
+  margin-top: -2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

@@ -1,32 +1,29 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import UserDisplay from '../OnlineUsers/UserDisplay';
 
 import '../../styles/MentionsPopup.css';
 
-const MentionsPopup = ({ userList, query }) => {
-  console.log(query);
-  let list = queryUserList(query);
+const MentionsPopup = ({ listRef, msg }) => {
+  const ref = useRef();
 
-  function queryUserList(query) {
-    return userList
-      .sort((a, b) => {
-        if (a.displayName === b.displayName) return 0;
-        return a.displayName > b.displayName ? 1 : -1;
-      })
-      .filter((obj) => obj.displayName.includes(query))
-      .filter((obj, i) => i < 5);
-  }
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    // duct tape solution to show popup on '@' trigger
+    setTimeout(() => setIsActive(!!ref.current.querySelector('li')), 100);
+  }, [msg]);
+
+  const style = isActive ? { opacity: 1 } : { opacity: 0 };
+
   return (
-    <div className="mentions-popup">
-      <ul>
+    <div className="mentions-popup" ref={ref} style={style}>
+      <div className="suggestions-wrapper" ref={listRef}>
         <header>
           <h3>Members</h3>
         </header>
-        {list.map((obj) => (
-          <UserDisplay displayName={obj.displayName} />
-        ))}
-      </ul>
+      </div>
     </div>
   );
 };

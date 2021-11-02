@@ -5,7 +5,7 @@ import { MentionsInput, Mention } from 'react-mentions';
 import IconBtn from '../IconBtn';
 import MentionWrapper from './MentionWrapper';
 import MentionsPopup from './MentionsPopup';
-import UserDisplay from '../OnlineUsers/UserDisplay';
+import MentionsListItem from './MentionsListItem';
 
 import { getUsersForMentions } from '../../logic/channel_firebaseStuff';
 
@@ -18,8 +18,8 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   const mentionsPopupRef = useRef();
   const inputRef = useRef();
   const [msg, setMsg] = useState();
+  const [mentions, setMentions] = useState();
   const [isMentionPopup, setIsMentionPopup] = useState(false);
-  const [query, setQuery] = useState('');
 
   useEffect(function centerChatTextarea() {
     const scrollHeight = inputRef.current.scrollHeight;
@@ -30,23 +30,24 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
 
+  function handleChange(e, newValue, newPlainTextValue, mentions) {
+    setMsg(newValue);
+    setMentions(mentions);
+  }
+
   return (
     <div className="chat-wrapper" style={style}>
       <div className="add-wrapper">
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        <MentionsPopup
-          ref={mentionsPopupRef}
-          userList={userList}
-          query={query}
-        />
+        <MentionsPopup listRef={mentionsPopupRef} msg={msg} />
 
         <MentionsInput
           inputRef={inputRef}
           className="textarea"
           value={msg}
-          onChange={(e) => setMsg(e.target.value)}
+          onChange={handleChange}
           placeholder={`message ${roomName}`}
           suggestionsPortalHost={mentionsPopupRef.current}
         >
@@ -54,7 +55,6 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
             className="mentions-popup"
             trigger="@"
             data={function queryUserList(query) {
-              console.log(query);
               return userList
                 .sort((a, b) => {
                   if (a.displayName === b.displayName) return 0;
@@ -66,9 +66,9 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
             }}
             renderSuggestion={function showMentionSuggestions(entry) {
               return (
-                <UserDisplay
-                  displayName={entry.displayName}
-                  uid={entry.uid}
+                <MentionsListItem
+                  displayName={entry.display}
+                  uid={entry.id}
                   avatar={entry.avatar}
                 />
               );
@@ -76,6 +76,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
             displayTransform={function displayMentionInInput(uid, display) {
               return <MentionWrapper uid={uid} displayName={display} />;
             }}
+            onAdd={() => console.log('hi')}
           />
         </MentionsInput>
       </div>
