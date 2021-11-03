@@ -4,25 +4,15 @@ import UserDisplay from '../OnlineUsers/UserDisplay';
 
 import '../../styles/MentionsPopup.css';
 
-const MentionsPopup = ({ listRef, msg }) => {
-  const ref = useRef();
-
-  const [isActive, setIsActive] = useState(false);
-
-  /*useEffect(() => {
-    if (!ref.current) return;
-    // duct tape solution to show popup on '@' trigger
-    setTimeout(() => setIsActive(!!ref.current.querySelector('li')), 100);
-  }, [msg]);*/
-
-  const style = isActive ? { opacity: 1 } : { opacity: 0 };
-
+const MentionsPopup = ({ children }) => {
+  console.log(children);
   return (
-    <div className="mentions-popup" ref={ref} style={style}>
-      <div className="suggestions-wrapper" ref={listRef}>
+    <div className="mentions-popup">
+      <div className="suggestions-wrapper">
         <header>
           <h3>Members</h3>
         </header>
+        <ul>{children}</ul>
       </div>
     </div>
   );

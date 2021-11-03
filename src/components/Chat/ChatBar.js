@@ -25,6 +25,7 @@ import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff
 
 import '../../styles/MentionsPopup.css';
 import 'draft-js/dist/Draft.css';
+import UserDisplay from '../OnlineUsers/UserDisplay';
 
 const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   const [editorState, setEditorState] = useState(() =>
@@ -32,10 +33,12 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   );
 
   const [isMentionPopup, setIsMentionPopup] = useState(false);
-  const [suggestions, setSuggestions] = useState();
+  const [suggestions, setSuggestions] = useState(userList);
 
   const { MentionSuggestions, plugins } = useMemo(() => {
-    const mentionPlugin = createMentionPlugin();
+    const mentionPlugin = createMentionPlugin({
+      mentionComponent: MentionWrapper,
+    });
     // eslint-disable-next-line no-shadow
     const { MentionSuggestions } = mentionPlugin;
     // eslint-disable-next-line no-shadow
@@ -52,28 +55,28 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
 
-  function handleChange(e, newValue, newPlainTextValue, mentions) {
-    setMsg(newValue);
-    setMentions(mentions);
+  function onChange(editorState) {
+    setEditorState(editorState);
   }
 
-  const onOpenChange = useCallback((isOpen) => {
+  function onOpenChange(isOpen) {
     setIsMentionPopup(isOpen);
-  });
+  }
 
-  const onQueryChange = useCallback(({ value }) => {
+  function onQueryChange({ value }) {
     setSuggestions(queryUserList(value));
-  });
 
-  function queryUserList(query) {
-    return userList
-      .sort((a, b) => {
-        if (a.displayName === b.displayName) return 0;
-        return a.displayName > b.displayName ? 1 : -1;
-      })
-      .filter((obj) => obj.displayName.includes(query))
-      .filter((obj, i) => i < 5)
-      .map((obj) => ({ id: obj.uid, display: obj.displayName }));
+    function queryUserList(query) {
+      console.log(query);
+      return userList
+        .sort((a, b) => {
+          if (a.displayName === b.displayName) return 0;
+          return a.displayName > b.displayName ? 1 : -1;
+        })
+        .filter((obj) => obj.displayName.includes(query))
+        .filter((obj, i) => i < 5)
+        .map((obj) => ({ id: obj.uid, name: obj.displayName }));
+    }
   }
 
   return (
@@ -82,20 +85,21 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
         <IconBtn svg={addCircleSvg} alt="upload a file" />
       </div>
       <div className="input-wrapper">
-        <MentionsPopup listRef={mentionsPopupRef} msg={msg} />
-
         <Editor
           editorKey={'editor'}
           editorState={editorState}
-          onChange={setEditorState}
+          onChange={onChange}
           plugins={plugins}
           ref={inputRef}
         />
         <MentionSuggestions
           open={isMentionPopup}
           onOpenChange={onOpenChange}
+          entryComponent={UserDisplay}
+          popoverContainer={MentionsPopup}
           suggestions={suggestions}
-          onQueryChange={onQueryChange}
+          onSearchChange={onQueryChange}
+          renderEmptyPopup={true}
           onAddMention={() => {
             // get the mention object selected
           }}

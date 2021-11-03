@@ -4,12 +4,7 @@ import '../../styles/MentionWrapper.css';
 
 const MentionWrapper = ({ displayName, uid, id }) => {
   return (
-    <span
-      className="mention-wrapper"
-      data-uid={uid}
-      data-id={id}
-      contentEditable={false}
-    >
+    <span className="mention-wrapper" data-uid={uid} data-id={id}>
       @{displayName}
     </span>
   );
