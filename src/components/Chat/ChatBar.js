@@ -74,8 +74,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
           return a.displayName > b.displayName ? 1 : -1;
         })
         .filter((obj) => obj.displayName.includes(query))
-        .filter((obj, i) => i < 5)
-        .map((obj) => ({ id: obj.uid, name: obj.displayName }));
+        .filter((obj, i) => i < 5);
     }
   }
 

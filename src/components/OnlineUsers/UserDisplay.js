@@ -2,13 +2,13 @@ import React from 'react';
 
 import Avatar from '../Avatar';
 
-const UserDisplay = ({ name, onClick }) => {
-  console.log(name);
+const UserDisplay = ({ displayName, onClick, mention }) => {
+  displayName = displayName || mention.displayName;
   return (
     <li className="user-wrapper" onClick={onClick}>
       <Avatar />
       <div className="content">
-        <span>{name}</span>
+        <span>{displayName}</span>
 
         <span className="subText"></span>
       </div>
