@@ -1,18 +1,21 @@
-import React, { useRef, useState, useEffect } from 'react';
-
-import UserDisplay from '../OnlineUsers/UserDisplay';
+import React from 'react';
 
 import '../../styles/MentionsPopup.css';
 
 const MentionsPopup = ({ children }) => {
-  console.log(children);
   return (
     <div className="mentions-popup">
       <div className="suggestions-wrapper">
         <header>
           <h3>Members</h3>
         </header>
-        <ul>{children}</ul>
+        {children.length > 0 ? (
+          <ul>{children}</ul>
+        ) : (
+          <div className="text-wrapper">
+            <span>No users match</span>
+          </div>
+        )}
       </div>
     </div>
   );

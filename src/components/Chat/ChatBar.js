@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { EditorState } from 'draft-js';
+import { EditorState, getDefaultKeyBinding } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
 import createMentionPlugin, {
   defaultSuggestionsFilter,
@@ -67,7 +67,6 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
     setSuggestions(queryUserList(value));
 
     function queryUserList(query) {
-      console.log(query);
       return userList
         .sort((a, b) => {
           if (a.displayName === b.displayName) return 0;
@@ -75,6 +74,25 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
         })
         .filter((obj) => obj.displayName.includes(query))
         .filter((obj, i) => i < 5);
+    }
+  }
+
+  function keyBindingFn(e) {
+    switch (e.key) {
+      case 'Enter':
+        return 'msg-submit';
+      default:
+        return getDefaultKeyBinding(e);
+    }
+  }
+
+  function handleKeyCmd(cmd) {
+    switch (cmd) {
+      case 'msg-submit':
+        console.log('hi');
+        break;
+      default:
+        return;
     }
   }
 
@@ -90,6 +108,8 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
           onChange={onChange}
           plugins={plugins}
           ref={inputRef}
+          keyBindingFn={keyBindingFn}
+          handleKeyCommand={handleKeyCmd}
         />
         <MentionSuggestions
           open={isMentionPopup}
@@ -99,8 +119,15 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
           suggestions={suggestions}
           onSearchChange={onQueryChange}
           renderEmptyPopup={true}
-          onAddMention={() => {
-            // get the mention object selected
+          onAddMention={(mention) => {
+            setMentions((prev) =>
+              prev
+                ? [
+                    ...prev,
+                    { uid: mention.uid, displayName: mention.displayName },
+                  ]
+                : [{ uid: mention.uid, displayName: mention.displayName }]
+            );
           }}
         />
       </div>
