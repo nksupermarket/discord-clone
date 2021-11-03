@@ -8,6 +8,7 @@ const MentionWrapper = ({ displayName, uid, id, mention, ...props }) => {
   return (
     <span className="mention-wrapper" data-uid={uid} data-id={id}>
       @{displayName}
+      <span style={{ display: 'none' }}>{props.children}</span>
     </span>
   );
 };

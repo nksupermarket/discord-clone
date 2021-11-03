@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { EditorState, getDefaultKeyBinding } from 'draft-js';
+import { EditorState, getDefaultKeyBinding, convertToRaw } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
 import createMentionPlugin, {
   defaultSuggestionsFilter,
@@ -89,10 +89,20 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   function handleKeyCmd(cmd) {
     switch (cmd) {
       case 'msg-submit':
-        console.log('hi');
+        onMsgSubmit();
         break;
       default:
         return;
+    }
+
+    function onMsgSubmit() {
+      const replyToMsgID = replyTo ? replyTo.msgId : null;
+      //const mentionArr = parseHTMLForMentions(e.target.innerHTML);
+
+      console.log(convertToRaw(editorState.getCurrentContent()));
+
+      //setReplyTo();
+      //submit(msg, replyToMsgID, mentionArr);
     }
   }
 

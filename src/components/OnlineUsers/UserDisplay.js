@@ -7,6 +7,7 @@ const UserDisplay = ({
   id,
   displayName,
   onClick,
+  selectMention,
   mention,
   theme,
   searchValue,
