@@ -5,14 +5,16 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import ReactDOM from 'react-dom';
-import { EditorState, getDefaultKeyBinding, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  getDefaultKeyBinding,
+  convertToRaw,
+  convertFromRaw,
+} from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
-import createMentionPlugin, {
-  defaultSuggestionsFilter,
-} from '@draft-js-plugins/mention';
+import createMentionPlugin from '@draft-js-plugins/mention';
+import { stateToHTML } from 'draft-js-export-html';
 
-import { MentionsInput, Mention } from 'react-mentions';
 import IconBtn from '../IconBtn';
 import MentionWrapper from './MentionWrapper';
 import MentionsPopup from './MentionsPopup';
@@ -100,7 +102,23 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
       const replyToMsgID = replyTo ? replyTo.msgId : null;
       //const mentionArr = parseHTMLForMentions(e.target.innerHTML);
 
-      //console.log(convertToRaw(editorState.getCurrentContent()));
+      const options = {
+        entityStyleFn: (entity) => {
+          const entityType = entity.get('type').toLowerCase();
+          console.log(entityType);
+          const data = entity.getData();
+          console.log(data);
+
+          return {
+            element: 'span',
+            attributes: {
+              dataMention: 'string',
+            },
+          };
+        },
+      };
+      const raw = stateToHTML(editorState.getCurrentContent(), options);
+      console.log(raw);
 
       //setReplyTo();
       //submit(msg, replyToMsgID, mentionArr);
@@ -150,75 +168,6 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
 };
 
 export default ChatBar;
-
-/*<span
-          ref={inputRef}
-          className="textarea"
-          contentEditable
-          suppressContentEditableWarning={true}
-          onInput={(e) => {
-            getHTMLCaretIndex(e.target);
-
-            setMsg(e.target.textContent);
-            if (isMentionPopup) {
-              console.log(e.target.innerHTML);
-              //find end of mention
-              let indexOfNextSpace = e.target.textContent.indexOf(
-                ' ',
-                mentionStart.current
-              );
-              //set query to @ to end of mention
-              indexOfNextSpace === -1
-                ? setQuery(e.target.textContent.slice(mentionStart.current + 1))
-                : setQuery(
-                    e.target.textContent.slice(
-                      mentionStart.current + 1,
-                      indexOfNextSpace
-                    )
-                  );
-            }
-          }}
-          onKeyDown={(e) => {
-            switch (e.key) {
-              case 'Enter': {
-                e.preventDefault();
-                //submit message
-                if (!msg) return;
-                const replyToMsgID = replyTo ? replyTo.msgId : null;
-                const mentionArr = parseHTMLForMentions(e.target.innerHTML);
-                setReplyTo();
-                //submit(msg, replyToMsgID, mentionArr);
-                e.target.textContent = '';
-                setMsg('');
-                break;
-              }
-              case '@': {
-                if (!msg || msg.charAt(mentionStart.current - 1) === ' ') {
-                  setIsMentionPopup(true);
-                  mentionStart.current = getCaretIndex(inputRef.current);
-                }
-                break;
-              }
-              case ' ': {
-                setIsMentionPopup(false);
-                break;
-              }
-              case 'Delete':
-              case 'Backspace': {
-                console.log(msg);
-                if (getCaretIndex(inputRef.current) === mentionStart.current)
-                  setIsMentionPopup(false);
-                break;
-              }
-              case 'Tab': {
-                break;
-              }
-              default:
-                return;
-            }
-          }}
-        ></span>
-        */
 
 function getCaretCoords() {
   let x = 0,

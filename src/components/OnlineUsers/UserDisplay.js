@@ -16,8 +16,6 @@ const UserDisplay = ({
 }) => {
   if (isFocused) className += ' user-focused';
 
-  console.log(className);
-
   return (
     <li
       className={`user-wrapper ${className}`}
