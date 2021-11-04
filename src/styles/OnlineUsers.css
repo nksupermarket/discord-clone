@@ -19,8 +19,9 @@
   cursor: pointer;
 }
 
+.mentions-popup .suggestions-wrapper .user-wrapper.user-focused,
 .user-wrapper:hover {
-  background-color: black;
+  background-color: rgba(174, 174, 174, 0.1);
 }
 
 .user-wrapper .avatar {

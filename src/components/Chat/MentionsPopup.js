@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../styles/MentionsPopup.css';
 
-const MentionsPopup = ({ children }) => {
+const MentionsPopup = ({ children, active }) => {
   return (
     <div className="mentions-popup">
       <div className="suggestions-wrapper">

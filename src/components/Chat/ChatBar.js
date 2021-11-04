@@ -47,9 +47,10 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
   }, []);
 
   const mentionsPopupRef = useRef();
-  const inputRef = useRef();
   const [msg, setMsg] = useState();
   const [mentions, setMentions] = useState();
+
+  const [activeSuggestion, setActiveSuggestion] = useState(0);
 
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
@@ -82,7 +83,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
       case 'Enter':
         return 'msg-submit';
       default:
-        return getDefaultKeyBinding(e);
+        return;
     }
   }
 
@@ -99,7 +100,7 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
       const replyToMsgID = replyTo ? replyTo.msgId : null;
       //const mentionArr = parseHTMLForMentions(e.target.innerHTML);
 
-      console.log(convertToRaw(editorState.getCurrentContent()));
+      //console.log(convertToRaw(editorState.getCurrentContent()));
 
       //setReplyTo();
       //submit(msg, replyToMsgID, mentionArr);
@@ -117,7 +118,6 @@ const ChatBar = ({ roomName, replyTo, setReplyTo, userList, submit }) => {
           editorState={editorState}
           onChange={onChange}
           plugins={plugins}
-          ref={inputRef}
           keyBindingFn={keyBindingFn}
           handleKeyCommand={handleKeyCmd}
         />

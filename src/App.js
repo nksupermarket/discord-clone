@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
+import { getAuth, signOut } from '@firebase/auth';
 
 import useLoginUser from './logic/custom-hooks/useLoginUser';
 
@@ -25,6 +26,13 @@ function App() {
         setError();
       }, 3500);
   });
+
+  useEffect(() => {
+    if (!user) return;
+
+    const auth = getAuth();
+    signOut(auth);
+  }, [user]);
 
   const history = useHistory();
 

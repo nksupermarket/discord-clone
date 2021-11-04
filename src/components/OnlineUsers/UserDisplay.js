@@ -14,13 +14,19 @@ const UserDisplay = ({
   isFocused,
   ...parentProps
 }) => {
-  displayName = displayName || mention.displayName;
+  if (isFocused) className += ' user-focused';
+
+  console.log(className);
 
   return (
-    <li className="user-wrapper" onClick={onClick} {...parentProps}>
+    <li
+      className={`user-wrapper ${className}`}
+      onClick={onClick}
+      {...parentProps}
+    >
       <Avatar />
       <div className="content">
-        <span>{displayName}</span>
+        <span>{displayName || mention.displayName}</span>
 
         <span className="subText"></span>
       </div>
