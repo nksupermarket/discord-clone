@@ -51,13 +51,13 @@ async function getMsgList(roomId, setMsgList) {
     data = data || {};
     let msgList = [];
     for (const id in data) {
-      data[id].msgId = id;
       msgList.push(data[id]);
     }
-
     setMsgList(changeReplyFromIDtoMsgObj(msgList));
 
     function changeReplyFromIDtoMsgObj(arr) {
+      // iterate over entire msgList
+      // if msg has replyTo, replace the msgId with actual msgObj
       return arr.map((obj, i, thisArr) => {
         if (!obj.replyTo) return obj;
 

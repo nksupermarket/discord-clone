@@ -37,20 +37,20 @@ export default function useOnRoomEnter(user, channel, room, setError) {
 
   return { msgList, submitMsg };
 
-  function submitMsg(msg, replyTo, mention) {
-    replyTo = replyTo || '';
-
+  function submitMsg(msg, replyTo, mentions) {
     const msgObj = {
       msg,
-      replyTo,
-      mention: mention ? mention.displayName : '',
+      replyTo: replyTo || '',
+      mentions: mentions || [],
       user: user.uid,
       displayName: user.displayName,
       timestamp: getUnixTime(new Date()),
     };
     const msgID = pushToMsgList(room.id, msgObj, setError);
 
-    if (mention)
-      updateMentions(mention.uid, channel.id, room.id, msgID, setError);
+    if (mentions.length > 0)
+      mentions.forEach((mention) =>
+        updateMentions(mention.uid, channel.id, room.id, msgID, setError)
+      );
   }
 }

@@ -27,12 +27,12 @@ function App() {
       }, 3500);
   });
 
-  useEffect(() => {
-    if (!user) return;
+  // useEffect(() => {
+  //   if (!user) return;
 
-    const auth = getAuth();
-    signOut(auth);
-  }, [user]);
+  //   const auth = getAuth();
+  //   signOut(auth);
+  // }, [user]);
 
   const history = useHistory();
 
