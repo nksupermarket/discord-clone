@@ -6,7 +6,7 @@ import useLoginUser from './logic/custom-hooks/useLoginUser';
 
 import ChannelView from './components/ChannelView';
 import LoginScreen from './components/Login/LoginScreen';
-import ChannelList from './components/MainNav/MainNav';
+import MainNav from './components/MainNav/MainNav';
 import Error from './components/Error';
 
 import './globalStyles.css';
@@ -19,6 +19,9 @@ function App() {
   const [error, setError] = useState();
 
   const { user, setUser, channelList } = useLoginUser(setError);
+
+  const [isModal, setisModal] = useState(false);
+  const [modalContent, setModalContent] = useState();
 
   useEffect(function ifError() {
     if (error)
@@ -49,7 +52,7 @@ function App() {
       </Route>
       {user && (
         <div className="app">
-          <ChannelList list={channelList} />
+          <MainNav list={channelList} />
           <Route
             path={['/channels/:channelId/:roomId', '/channels/:channelId']}
           >
@@ -57,6 +60,7 @@ function App() {
           </Route>
         </div>
       )}
+      {isModal && <Modal>{modalContent}</Modal>}
     </>
   );
 }
