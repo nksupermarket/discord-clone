@@ -47,10 +47,13 @@ export default function useOnRoomEnter(user, channel, room, setError) {
       timestamp: getUnixTime(new Date()),
     };
     const msgID = pushToMsgList(room.id, msgObj, setError);
+    if (!msgID) return 'error';
 
     if (mentions.length > 0)
       mentions.forEach((mention) =>
         updateMentions(mention.uid, channel.id, room.id, msgID, setError)
       );
+
+    return 'success';
   }
 }

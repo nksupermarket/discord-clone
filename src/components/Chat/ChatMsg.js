@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Avatar from '../Avatar';
 import MsgButtons from './MsgButtons';
@@ -8,7 +8,7 @@ import '../../styles/ChatMsg.css';
 import ReplyContext from './ReplyContext';
 import MsgHeader from './MsgHeader';
 
-const ChatMsg = ({ content, setReplyTo }) => {
+const ChatMsg = ({ content, onReplyTo }) => {
   const {
     displayName,
     msg,
@@ -19,13 +19,6 @@ const ChatMsg = ({ content, setReplyTo }) => {
   } = content;
 
   const [isShowBtns, setIsShowBtns] = useState(false); //buttons on hover
-
-  function replyToThisMsg() {
-    setReplyTo({
-      displayName,
-      msgId,
-    });
-  }
 
   function convertPlaintextToHTML(text, mentions) {
     if (!mentions || mentions.length === 0) return text;
@@ -49,6 +42,7 @@ const ChatMsg = ({ content, setReplyTo }) => {
       if (mentionIndex !== -1)
         content.push(
           <MentionWrapper
+            key={mentionIndex}
             displayName={mentions[mentionIndex].displayName}
             uid={mentions[mentionIndex].uid}
           />
@@ -87,7 +81,10 @@ const ChatMsg = ({ content, setReplyTo }) => {
             {convertPlaintextToHTML(msg, mentions)}
           </div>
           {isShowBtns && (
-            <MsgButtons msgId={msgId} setReplyTo={replyToThisMsg} />
+            <MsgButtons
+              msgId={msgId}
+              setReplyTo={() => onReplyTo(displayName, msgId)}
+            />
           )}
         </div>
       </div>

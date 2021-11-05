@@ -51,6 +51,7 @@ async function getMsgList(roomId, setMsgList) {
     data = data || {};
     let msgList = [];
     for (const id in data) {
+      data[id].msgId = id; // set msgId
       msgList.push(data[id]);
     }
     setMsgList(changeReplyFromIDtoMsgObj(msgList));
@@ -77,6 +78,7 @@ function pushToMsgList(roomId, msgObj, setError) {
     return newMsgRef.key;
   } catch (error) {
     setError(error.message);
+    return null;
   }
 }
 
