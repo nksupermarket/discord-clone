@@ -8,6 +8,7 @@ import ChannelView from './components/ChannelView';
 import LoginScreen from './components/Login/LoginScreen';
 import MainNav from './components/MainNav/MainNav';
 import Error from './components/Error';
+import Modal from './components/Modal';
 
 import './globalStyles.css';
 
@@ -44,6 +45,16 @@ function App() {
       history.push('/channels/-MkoRSxTqkrS9mlivGfs');
   }, [history]);
 
+  function openModal(content) {
+    setModalContent(content);
+    setisModal(true);
+  }
+
+  function closeModal() {
+    setisModal(false);
+    setModalContent();
+  }
+
   return (
     <>
       {error && <Error errorMsg={error} />}
@@ -52,7 +63,7 @@ function App() {
       </Route>
       {user && (
         <div className="app">
-          <MainNav list={channelList} />
+          <MainNav list={channelList} openModal={openModal} />
           <Route
             path={['/channels/:channelId/:roomId', '/channels/:channelId']}
           >
@@ -60,7 +71,7 @@ function App() {
           </Route>
         </div>
       )}
-      {isModal && <Modal>{modalContent}</Modal>}
+      {isModal && <Modal close={closeModal}>{modalContent}</Modal>}
     </>
   );
 }
