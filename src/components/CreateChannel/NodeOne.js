@@ -4,7 +4,7 @@ import FlatBtn from '../FlatBtn';
 
 import '../../styles/CreateChannelNodeOne.css';
 
-const NodeOne = ({ setChannelInfo }) => {
+const NodeOne = ({ nextNode, setChannelInfo }) => {
   return (
     <div
       className="create-channel create-channel-node_one"
@@ -21,13 +21,28 @@ const NodeOne = ({ setChannelInfo }) => {
         <div className="btn-ctn">
           <FlatBtn
             text={'Private (invite only)'}
-            onClick={() => setChannelInfo('private')}
+            onClick={() => {
+              setChannelInfo('private');
+              nextNode();
+            }}
           />
-          <FlatBtn text={'Public'} onClick={() => setChannelInfo('public')} />
+          <FlatBtn
+            text={'Public'}
+            onClick={() => {
+              setChannelInfo('public');
+              nextNode();
+            }}
+          />
         </div>
       </div>
       <footer>
-        <FlatBtn text="Skip this question" />
+        <FlatBtn
+          text="Skip this question for now"
+          onClick={() => {
+            setChannelInfo('private');
+            nextNode();
+          }}
+        />
       </footer>
     </div>
   );
