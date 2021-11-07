@@ -144,3 +144,8 @@ body {
 .avatar {
   border-radius: 50%;
 }
+
+.flat-btn.inactive {
+  opacity: 0.5;
+  pointer-events: none;
+}

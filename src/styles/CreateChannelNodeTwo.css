@@ -6,6 +6,44 @@
   margin: 16px 0;
   padding: 0 16px;
   border-radius: 5px 5px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.create-channel-node_two .content .upload-file {
+  position: relative;
+  cursor: pointer;
+  align-self: center;
+  border: 3px dashed gray;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-channel-node_two .content .upload-file .camera-fill {
+  height: 30px;
+}
+.create-channel-node_two .content .upload-file .add-circle-bg {
+  position: absolute;
+  top: -3px;
+  right: 2px;
+  background-color: #d5d6db;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
+.create-channel-node_two .content .upload-file .add-circle-fill {
+  position: absolute;
+  top: -5px;
+  right: 0px;
+  z-index: 1;
+  filter: invert(34%) sepia(55%) saturate(1678%) hue-rotate(315deg)
+    brightness(86%) contrast(89%);
 }
 
 .create-channel-node_two .content form {

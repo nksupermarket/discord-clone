@@ -3,6 +3,8 @@ import React from 'react';
 import FlatBtn from '../FlatBtn';
 import InputField from '../InputField';
 
+import addCircleSVG from '../../assets/svg/add-circle-fill.svg';
+import cameraSVG from '../../assets/svg/camera-fill.svg';
 import '../../styles/CreateChannelNodeTwo.css';
 
 const NodeTwo = ({
@@ -12,7 +14,6 @@ const NodeTwo = ({
   handleChannelName,
   close,
 }) => {
-  console.log(channelName);
   return (
     <div
       className="create-channel create-channel-node_two"
@@ -26,7 +27,16 @@ const NodeTwo = ({
         </p>
       </header>
       <div className="content">
-        <div>{/* upload files */}</div>
+        <label className="upload-file">
+          <img
+            className="add-circle-fill"
+            src={addCircleSVG}
+            alt="upload an icon"
+          />
+          <div className="add-circle-bg"></div>
+          <img className="camera-fill" src={cameraSVG} alt="upload an icon" />
+          <input type="file" style={{ display: 'none' }} />
+        </label>
         <form>
           <h5>Channel Name</h5>
           <InputField value={channelName} onChange={handleChannelName} />
@@ -35,7 +45,7 @@ const NodeTwo = ({
       <footer>
         <FlatBtn text={'Back'} onClick={prevNode} />
         <FlatBtn
-          className="filled"
+          className={channelName ? 'filled' : 'filled inactive'}
           text="Create"
           onClick={() => {
             close();
