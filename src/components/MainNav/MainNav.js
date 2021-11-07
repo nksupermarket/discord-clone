@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ChannelList from './ChannelList';
 
@@ -7,25 +7,29 @@ import ChannelListHeader from './ChannelListHeader';
 import MainNavBtn from './MainNavBtn';
 import CreateChannel from '../CreateChannel/CreateChannel';
 
-const MainNav = ({ list, openModal }) => {
+const MainNav = ({ user, list }) => {
+  const [isCreateChannel, setIsCreateChannel] = useState(false);
   return (
-    <nav id="main-nav">
-      <ChannelListHeader />
-      <div className="scroller">
-        <ChannelList list={list} />
-        <div className="btn-ctn">
-          <MainNavBtn
-            icon="flaticon-plus"
-            onClick={function openCreateChannel() {
-              openModal(<CreateChannel />);
-            }}
-          />
-          {/* add a server */}
-          <MainNavBtn icon="flaticon-explore" />
+    <>
+      <nav id="main-nav">
+        <ChannelListHeader />
+        <div className="scroller">
+          <ChannelList list={list} />
+          <div className="btn-ctn">
+            <MainNavBtn
+              icon="flaticon-plus"
+              onClick={() => setIsCreateChannel(true)}
+            />
+            {/* add a server */}
+            <MainNavBtn icon="flaticon-explore" />
+          </div>
+          {/* explore servers */}
         </div>
-        {/* explore servers */}
-      </div>
-    </nav>
+      </nav>
+      {isCreateChannel && (
+        <CreateChannel close={() => setIsCreateChannel(false)} user={user} />
+      )}
+    </>
   );
 };
 

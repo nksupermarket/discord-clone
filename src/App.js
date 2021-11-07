@@ -21,9 +21,6 @@ function App() {
 
   const { user, setUser, channelList } = useLoginUser(setError);
 
-  const [isModal, setisModal] = useState(false);
-  const [modalContent, setModalContent] = useState();
-
   useEffect(function ifError() {
     if (error)
       setTimeout(() => {
@@ -45,16 +42,6 @@ function App() {
       history.push('/channels/-MkoRSxTqkrS9mlivGfs');
   }, [history]);
 
-  function openModal(content) {
-    setModalContent(content);
-    setisModal(true);
-  }
-
-  function closeModal() {
-    setisModal(false);
-    setModalContent();
-  }
-
   return (
     <>
       {error && <Error errorMsg={error} />}
@@ -63,7 +50,7 @@ function App() {
       </Route>
       {user && (
         <div className="app">
-          <MainNav list={channelList} openModal={openModal} />
+          <MainNav user={user} list={channelList} />
           <Route
             path={['/channels/:channelId/:roomId', '/channels/:channelId']}
           >
@@ -71,7 +58,6 @@ function App() {
           </Route>
         </div>
       )}
-      {isModal && <Modal close={closeModal}>{modalContent}</Modal>}
     </>
   );
 }

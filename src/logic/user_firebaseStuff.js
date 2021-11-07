@@ -15,7 +15,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { getRoleOfUser } from './channel_firebaseStuff';
+import { getRoleOfUser, getRoomList } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
@@ -78,19 +78,25 @@ function signIn(email, password, setError) {
   }
 }
 
-async function subscribeToChannel(uid, channelID, roomList, setError) {
+async function subscribeToChannel(uid, channelID, setError) {
   try {
     const newChannelRef = ref(db, `users/${uid}/channels/${channelID}`);
 
-    let updates = {};
+    let roomList = [];
+    await getRoomList(channelID, updateRoomList);
+    if (roomList.length === 0) return;
 
+    let updates = {};
     roomList.forEach((roomID) => {
       updates[
         `users/${uid}/channels/${channelID}/unread_rooms/${roomID}`
       ] = true;
     });
-
     update(ref(db), updates);
+
+    function updateRoomList(list) {
+      roomList = list;
+    }
   } catch (error) {
     setError && setError(error);
   }
@@ -168,6 +174,7 @@ export {
   createUser,
   signIn,
   isUserOnline,
+  subscribeToChannel,
   getChannelList,
   updateUserOnline,
   updateMentions,

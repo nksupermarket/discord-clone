@@ -1,12 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import '../styles/Modal.css';
 
 const Modal = ({ close, children }) => {
-  return (
+  return ReactDOM.createPortal(
     <div className="modal" onClick={close}>
       {children}
-    </div>
+    </div>,
+    document.querySelector('body')
   );
 };
 

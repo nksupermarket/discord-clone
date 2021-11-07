@@ -31,3 +31,10 @@ main#chat {
   min-height: 100%;
   align-items: stretch;
 }
+
+.messages-ctn .mention-wrapper {
+  background-color: rgba(203, 62, 91, 0.5);
+}
+.messages-ctn .mention-wrapper:hover {
+  background-color: #cb3e5b;
+}

@@ -12,12 +12,13 @@ class Input extends Component {
   }
 
   render() {
-    const { className, type, name, placeholder, onKeyDown } = this.props;
+    const { className, type, name, value, placeholder, onKeyDown } = this.props;
 
     return (
       <input
         type={type}
         name={name}
+        value={value}
         className={className}
         placeholder={placeholder}
         onChange={this.handleChange}

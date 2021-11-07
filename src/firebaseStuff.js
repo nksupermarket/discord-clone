@@ -37,11 +37,15 @@ initializeApp(firebaseConfig);
 const db = getDatabase();
 
 async function createChannel(name) {
-  const db = getDatabase();
-  const channelListRef = ref(db, 'Channels');
-  const newChannelRef = push(channelListRef);
-  set(newChannelRef, { name });
-  return newChannelRef.key;
+  try {
+    const db = getDatabase();
+    const channelListRef = ref(db, 'Channels');
+    const newChannelRef = push(channelListRef);
+    await set(newChannelRef, { name });
+    return newChannelRef.key;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export { db, createChannel };

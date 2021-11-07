@@ -56,7 +56,7 @@ async function createRoom(channelID, name, setError) {
   }
 }
 
-function getRoomList(channelID, setRoomList) {
+async function getRoomList(channelID, setRoomList) {
   const roomsRef = ref(db, `Channels/${channelID}/rooms`);
 
   onValue(roomsRef, (snapshot) => {

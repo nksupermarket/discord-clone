@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+
+import { createChannel } from '../../firebaseStuff';
+import { subscribeToChannel } from '../../logic/user_firebaseStuff';
+
+import Modal from '../Modal';
 import NodeOne from './NodeOne';
 
 import '../../styles/CreateChannel.css';
+import NodeTwo from './NodeTwo';
 
-const CreateChannel = () => {
+const CreateChannel = ({ user, close }) => {
   const [node, setNode] = useState(1);
-  const [channelInfo, setChannelInfo] = useState({});
+  const [channelInfo, setChannelInfo] = useState({
+    name: `${user.displayName}'s channel`,
+  });
 
   function ontoNextNode() {
     setNode((prev) => prev + 1);
@@ -15,30 +23,48 @@ const CreateChannel = () => {
     setNode((prev) => prev - 1);
   }
 
-  const nodeOne = (
-    <NodeOne
-      nextNode={ontoNextNode}
-      setChannelInfo={(status) =>
-        setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
+  const display = useMemo(
+    function getDisplay() {
+      const nodeOne = (
+        <NodeOne
+          nextNode={ontoNextNode}
+          setChannelInfo={(status) =>
+            setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
+          }
+        />
+      );
+      const nodeTwo = (
+        <NodeTwo
+          createChannel={onCreateChannel}
+          prevNode={prevNode}
+          channelName={channelInfo.name}
+          handleChannelName={(name) =>
+            setChannelInfo((prev) => ({ ...prev, name }))
+          }
+          close={close}
+        />
+      );
+
+      switch (node) {
+        case 1:
+          return nodeOne;
+
+        case 2:
+          return nodeTwo;
+
+        default:
+          return nodeOne;
       }
-    />
+
+      async function onCreateChannel() {
+        const channelID = await createChannel(channelInfo.name);
+        subscribeToChannel(user.uid, channelID);
+      }
+    },
+    [node, close, channelInfo, user]
   );
 
-  let display;
-  switch (node) {
-    case 1: {
-      display = nodeOne;
-      break;
-    }
-    case 'nodeTwo': {
-      break;
-    }
-    default: {
-      display = nodeOne;
-    }
-  }
-
-  return display;
+  return <Modal close={close}>{display}</Modal>;
 };
 
 export default CreateChannel;

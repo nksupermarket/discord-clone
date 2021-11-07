@@ -1,0 +1,68 @@
+.create-channel-node_two header {
+  padding: 24px 24px 0;
+}
+
+.create-channel-node_two .content {
+  margin: 16px 0;
+  padding: 0 16px;
+  border-radius: 5px 5px 0 0;
+}
+
+.create-channel-node_two .content form {
+  display: flex;
+  flex-direction: column;
+  color: var(--header-secondary);
+}
+
+.create-channel-node_two .content form h5 {
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.create-channel-node_two .content form .input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-channel-node_two .content form .input-wrapper input {
+  padding: 10px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  background-color: var(--interactive-hover);
+  border: 1px solid var(--background-accent);
+  box-shadow: none;
+}
+
+.create-channel-node_two .content form .input-wrapper input:focus {
+  outline: none;
+  border: 1px solid #0645ad;
+}
+
+.create-channel-node_two footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-channel-node_two footer .flat-btn.filled {
+  height: 38px;
+  min-width: 96px;
+  background-color: var(--action-normal);
+  border-radius: 3px;
+  padding: 2px 16px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.17s ease, color 0.17s ease;
+}
+
+.create-channel-node_two footer .flat-btn.filled:hover {
+  background-color: #a23148;
+}

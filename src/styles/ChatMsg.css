@@ -78,7 +78,6 @@
   line-height: inherit;
   white-space: pre;
   text-overflow: ellipsis;
-  pointer-events: none;
   user-select: none;
 }
 

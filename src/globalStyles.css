@@ -5,6 +5,8 @@
   --secondary-fg-color: #161823;
   --header-primary: #fff;
   --header-secondary: #b9bbbe;
+  --action-normal: #cb3e5b;
+  --action-muted: rgba(203, 62, 91, 0.5);
   --text-normal: #dcddde;
   --text-normal-filter: invert(99%) sepia(6%) saturate(408%) hue-rotate(175deg)
     brightness(88%) contrast(98%);

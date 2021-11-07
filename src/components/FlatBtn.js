@@ -1,9 +1,13 @@
 import React from 'react';
 
-const FlatBtn = ({ type, text, onClick }) => {
+const FlatBtn = ({ className, type, text, onClick }) => {
   return (
-    <button type={type || 'button'} className="flat-btn" onClick={onClick}>
-      {text}
+    <button
+      type={type || 'button'}
+      className={`flat-btn ${className}`}
+      onClick={onClick}
+    >
+      <span>{text}</span>
     </button>
   );
 };
