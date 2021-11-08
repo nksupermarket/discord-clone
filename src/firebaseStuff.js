@@ -1,21 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  get,
-  update,
-  onValue,
-  off,
-  onDisconnect,
-} from 'firebase/database';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC8GZMfCxqOUIFsa2OYlXcMzfQKfAobukQ',
@@ -35,20 +20,9 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getDatabase();
+const storage = getStorage();
 
-async function createChannel(name) {
-  try {
-    const db = getDatabase();
-    const channelListRef = ref(db, 'Channels');
-    const newChannelRef = push(channelListRef);
-    await set(newChannelRef, { name });
-    return newChannelRef.key;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export { db, createChannel };
+export { db, storage };
 
 //login user
 // pull Channels user is subscribed to

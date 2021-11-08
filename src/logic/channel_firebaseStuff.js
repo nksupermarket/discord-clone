@@ -12,8 +12,43 @@ import {
   limitToFirst,
   onDisconnect,
 } from 'firebase/database';
-import { db } from '../firebaseStuff';
+import { uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
+
+async function createChannel(name) {
+  try {
+    const db = getDatabase();
+    const channelListRef = ref(db, 'Channels');
+    const newChannelRef = push(channelListRef);
+    await set(newChannelRef, { name });
+    return newChannelRef.key;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function uploadChannelIcon(channelID, image, setError) {
+  try {
+    const channelIconRef = ref(storage, `channel_icons/${channelID}`);
+    console.log(image);
+    await uploadBytes(channelIconRef, image);
+
+    const channelIconURL = await getDownloadURL(channelIconRef);
+    return channelIconURL;
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+
+async function changeChannelIcon(channelID, imageURL, setError) {
+  try {
+    const channelRef = ref(db, `Channels/${channelID}`);
+    update(channelRef, { icon: imageURL });
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
 
 function detachListenersForChannel(channelID, uid) {
   const userRolesRef = ref(db, `Channels/${channelID}/user_roles`);
@@ -242,6 +277,9 @@ async function updateRoleOfUser(channelID, userId, role, setError) {
 // }
 
 export {
+  createChannel,
+  uploadChannelIcon,
+  changeChannelIcon,
   getChannelName,
   getRoomCategories,
   createRoomCategory,

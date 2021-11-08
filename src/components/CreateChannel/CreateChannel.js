@@ -1,6 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 
-import { createChannel } from '../../firebaseStuff';
+import {
+  createChannel,
+  uploadChannelIcon,
+  changeChannelIcon,
+} from '../../logic/channel_firebaseStuff';
 import { subscribeToChannel } from '../../logic/user_firebaseStuff';
 
 import Modal from '../Modal';
@@ -23,48 +27,41 @@ const CreateChannel = ({ user, close }) => {
     setNode((prev) => prev - 1);
   }
 
-  const display = useMemo(
-    function getDisplay() {
-      const nodeOne = (
+  const onCreateChannel = useCallback(
+    async function onCreateChannel() {
+      console.log('before channelID');
+      const channelID = await createChannel(channelInfo.name);
+      console.log('after channelID');
+      const iconURL = await uploadChannelIcon(channelID, channelInfo.icon);
+      console.log('after iconURL');
+      changeChannelIcon(channelID, iconURL);
+      subscribeToChannel(user.uid, channelID);
+    },
+    [channelInfo, user]
+  );
+
+  return (
+    <Modal close={close}>
+      {node === 1 && (
         <NodeOne
           nextNode={ontoNextNode}
           setChannelInfo={(status) =>
             setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
           }
         />
-      );
-      const nodeTwo = (
+      )}
+      {node === 2 && (
         <NodeTwo
           createChannel={onCreateChannel}
           prevNode={prevNode}
           channelName={channelInfo.name}
-          handleChannelName={(name) =>
-            setChannelInfo((prev) => ({ ...prev, name }))
-          }
+          handleName={(name) => setChannelInfo((prev) => ({ ...prev, name }))}
+          handleIcon={(icon) => setChannelInfo((prev) => ({ ...prev, icon }))}
           close={close}
         />
-      );
-
-      switch (node) {
-        case 1:
-          return nodeOne;
-
-        case 2:
-          return nodeTwo;
-
-        default:
-          return nodeOne;
-      }
-
-      async function onCreateChannel() {
-        const channelID = await createChannel(channelInfo.name);
-        subscribeToChannel(user.uid, channelID);
-      }
-    },
-    [node, close, channelInfo, user]
+      )}
+    </Modal>
   );
-
-  return <Modal close={close}>{display}</Modal>;
 };
 
 export default CreateChannel;

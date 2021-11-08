@@ -16,13 +16,16 @@
   position: relative;
   cursor: pointer;
   align-self: center;
-  border: 3px dashed gray;
   height: 80px;
   width: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+}
+.create-channel-node_two .content .upload-file.init {
+  border: 3px dashed gray;
 }
 
 .create-channel-node_two .content .upload-file .camera-fill {
@@ -44,6 +47,12 @@
   z-index: 1;
   filter: invert(34%) sepia(55%) saturate(1678%) hue-rotate(315deg)
     brightness(86%) contrast(89%);
+}
+
+.create-channel-node_two .content .icon-preview {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
 }
 
 .create-channel-node_two .content form {
