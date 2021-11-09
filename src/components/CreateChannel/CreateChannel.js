@@ -32,10 +32,10 @@ const CreateChannel = ({ user, close }) => {
   const onCreateChannel = useCallback(
     async function onCreateChannel() {
       const channelID = await createChannel(channelInfo.name);
-      console.log(channelInfo);
-      if (channelInfo.icon) {
-        console.log('im inside');
+      if (channelInfo.icon instanceof File) {
+        console.log('inside if statement');
         const iconURL = await uploadChannelIcon(channelID, channelInfo.icon);
+        console.log(iconURL);
         changeChannelIcon(channelID, iconURL);
       }
       subscribeToChannel(user, channelID);

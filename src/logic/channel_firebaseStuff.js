@@ -12,7 +12,7 @@ import {
   limitToFirst,
   onDisconnect,
 } from 'firebase/database';
-import { uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
@@ -29,7 +29,9 @@ async function createChannel(name) {
 
 async function uploadChannelIcon(channelID, image, setError) {
   try {
-    const channelIconRef = ref(storage, `channel_icons/${channelID}`);
+    console.log('before ref');
+    const channelIconRef = store(storage, `channel_icons/${channelID}`);
+    console.log('uploading');
     await uploadBytes(channelIconRef, image);
     console.log('uploaded');
     const channelIconURL = await getDownloadURL(channelIconRef);
