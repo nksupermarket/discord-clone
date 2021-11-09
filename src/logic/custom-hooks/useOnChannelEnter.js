@@ -14,7 +14,7 @@ import {
 export default function useOnChannelEnter(
   user,
   channelID,
-  setChannelName,
+  updateChannel,
   setError
 ) {
   const [roleList, setRoleList] = useState(['Online']);
@@ -30,7 +30,7 @@ export default function useOnChannelEnter(
     if (!channelID || !user) return;
     getChannelInfo(
       channelID,
-      setChannelName,
+      updateChannel,
       setRoomCategories,
       setRoomList,
       setRoleList,
@@ -42,7 +42,7 @@ export default function useOnChannelEnter(
     //getMentions(user.uid, channelID, setRoomsMentioned, setError);
 
     return () => detachListenersForChannel(channelID, user.uid);
-  }, [channelID, setChannelName, user, setError]);
+  }, [channelID, updateChannel, user, setError]);
 
   return {
     roleList,

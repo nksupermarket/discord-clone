@@ -10,30 +10,37 @@ import {
   setRoomExitTimestampOnDisconnect,
   removeOnDisconnectForRoomExitTimestamp,
   removeRoomFromUnread,
+  getRoomStuff,
 } from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 import { updateMentions } from '../user_firebaseStuff';
 
-export default function useOnRoomEnter(user, channel, room, setError) {
+export default function useOnRoomEnter(
+  user,
+  channelID,
+  roomID,
+  setRoomName,
+  setError
+) {
   const [msgList, setMsgList] = useState([]);
 
   useEffect(() => {
-    if (!user || !channel || !room) return;
-    detachListenersForRoom(room.id);
-    removeRoomFromUnread(channel.id, room.id, user.uid, setError);
-    setRoomExitTimestampOnDisconnect(channel.id, room.id, user.uid, setError);
-    getMsgList(room.id, setMsgList, setError);
-    //setCurrentlyInRoom(channel.id, room.id, user.uid, setError);
+    if (!user || !channelID || !roomID) return;
+    detachListenersForRoom(roomID);
+    removeRoomFromUnread(channelID, roomID, user.uid, setError);
+    setRoomExitTimestampOnDisconnect(channelID, roomID, user.uid, setError);
+    getRoomStuff(roomID, setRoomName, setMsgList);
+    //setCurrentlyInRoom(channelID, roomID, user.uid, setError);
 
     return async function () {
-      detachListenersForRoom(room.id);
-      removeOnDisconnectForRoomExitTimestamp(channel.id);
+      detachListenersForRoom(roomID);
+      removeOnDisconnectForRoomExitTimestamp(channelID);
       const isRoomUnsubscribed = await getRoomUnsubscribeStatus();
       if (isRoomUnsubscribed) return;
-      setRoomExitTimestamp(channel.id, room.id, user.uid, setError);
-      attachUnreadMsgsListener(channel.id, room.id, user.uid, setError);
+      setRoomExitTimestamp(channelID, roomID, user.uid, setError);
+      attachUnreadMsgsListener(channelID, roomID, user.uid, setError);
     };
-  }, [room, channel, user, setError]);
+  }, [roomID, channelID, user, setRoomName, setError]);
 
   return { msgList, submitMsg };
 
@@ -46,12 +53,12 @@ export default function useOnRoomEnter(user, channel, room, setError) {
       displayName: user.displayName,
       timestamp: getUnixTime(new Date()),
     };
-    const msgID = pushToMsgList(room.id, msgObj, setError);
+    const msgID = pushToMsgList(roomID, msgObj, setError);
     if (!msgID) return 'error';
 
     if (mentions.length > 0)
       mentions.forEach((mention) =>
-        updateMentions(mention.uid, channel.id, room.id, msgID, setError)
+        updateMentions(mention.uid, channelID, roomID, msgID, setError)
       );
 
     return 'success';

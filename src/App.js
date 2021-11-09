@@ -8,7 +8,6 @@ import ChannelView from './components/ChannelView';
 import LoginScreen from './components/Login/LoginScreen';
 import MainNav from './components/MainNav/MainNav';
 import Error from './components/Error';
-import Modal from './components/Modal';
 
 import './globalStyles.css';
 

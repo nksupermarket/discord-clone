@@ -18,7 +18,7 @@ const ChannelView = ({ user, setError }) => {
   const [room, setRoom] = useState();
 
   const updateChannel = useCallback(
-    (name) => setChannel({ name, id: channelID }),
+    (name, icon) => setChannel({ name, icon, id: channelID }),
     [channelID]
   );
   const {
@@ -39,21 +39,19 @@ const ChannelView = ({ user, setError }) => {
 
     if (!roomID && roomList[0])
       history.push(`/channels/${channel.id}/${roomList[0].id}`); //enter default room for channel
+  }, [roomList, history, channel, roomID]);
 
-    getRoomInfoThenSetRoom();
-
-    async function getRoomInfoThenSetRoom() {
-      const id = roomID || roomList[0].id;
-      const name = await getRoomName(id, setError);
-
-      setRoom({
-        name: name,
-        id: id,
-      });
-    }
-  }, [roomList, history, channel, roomID, setError]);
-
-  const { msgList, submitMsg } = useOnRoomEnter(user, channel, room, setError);
+  const updateRoom = useCallback(
+    (name) => setRoom({ name, id: roomID }),
+    [roomID]
+  );
+  const { msgList, submitMsg } = useOnRoomEnter(
+    user,
+    channelID,
+    roomID,
+    updateRoom,
+    setError
+  );
 
   return (
     <div className="channel-view">

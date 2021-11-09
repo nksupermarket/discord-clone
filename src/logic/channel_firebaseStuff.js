@@ -30,7 +30,6 @@ async function createChannel(name) {
 async function uploadChannelIcon(channelID, image, setError) {
   try {
     const channelIconRef = ref(storage, `channel_icons/${channelID}`);
-    console.log(image);
     await uploadBytes(channelIconRef, image);
 
     const channelIconURL = await getDownloadURL(channelIconRef);
@@ -42,8 +41,8 @@ async function uploadChannelIcon(channelID, image, setError) {
 
 async function changeChannelIcon(channelID, imageURL, setError) {
   try {
-    const channelRef = ref(db, `Channels/${channelID}`);
-    update(channelRef, { icon: imageURL });
+    const iconsRef = ref(db, `icons`);
+    update(iconsRef, { [channelID]: imageURL });
   } catch (error) {
     setError && setError(error.message);
   }
@@ -59,7 +58,7 @@ function detachListenersForChannel(channelID, uid) {
 
 function getChannelInfo(
   channelID,
-  setChannelName,
+  updateChannel,
   setRoomCategories,
   setRoomList,
   setUserRoles,
@@ -72,7 +71,7 @@ function getChannelInfo(
     onValue(channelRef, (snap) => {
       const data = snap.val();
 
-      setChannelName(data.name);
+      updateChannel(data.name, data.icon || '');
 
       const roomCategories = Object.keys(data.room_categories);
       setRoomCategories(['none', ...roomCategories]);

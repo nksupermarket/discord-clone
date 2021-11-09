@@ -44,8 +44,8 @@ async function createUser(
     if (channelID) {
       let updates = {};
 
-      updates[`users/${userCredential.user.uid}/channels`] = {
-        [channelID]: '',
+      updates[`users/${userCredential.user.uid}/channels/${channelID}`] = {
+        role: '',
       };
 
       updates[`Channels/${channelID}/users/${userCredential.user.uid}`] = {
@@ -78,25 +78,20 @@ function signIn(email, password, setError) {
   }
 }
 
-async function subscribeToChannel(uid, channelID, setError) {
+async function subscribeToChannel(user, channelID, setError) {
   try {
-    const newChannelRef = ref(db, `users/${uid}/channels/${channelID}`);
-
-    let roomList = [];
-    await getRoomList(channelID, updateRoomList);
-    if (roomList.length === 0) return;
-
     let updates = {};
-    roomList.forEach((roomID) => {
-      updates[
-        `users/${uid}/channels/${channelID}/unread_rooms/${roomID}`
-      ] = true;
-    });
-    update(ref(db), updates);
 
-    function updateRoomList(list) {
-      roomList = list;
-    }
+    updates[`users/${user.uid}/channels/${channelID}`] = {
+      role: '',
+    };
+
+    updates[`Channels/${channelID}/users/${user.uid}`] = {
+      displayName: user.displayName,
+      avatar: user.avatar || '',
+    };
+
+    update(ref(db), updates);
   } catch (error) {
     setError && setError(error);
   }
@@ -111,7 +106,7 @@ function getChannelList(uid, setChannelList, setError) {
       const data = snap.val();
 
       for (const id in data) {
-        channelList.push({ role: data[id], id });
+        channelList.push({ id, role: data[id] });
       }
       setChannelList(channelList);
     });
@@ -123,8 +118,6 @@ function getChannelList(uid, setChannelList, setError) {
 function updateUserOnline(uid, userChannelList, setError) {
   try {
     const connectedRef = ref(db, '.info/connected');
-    const userRef = ref(db, `users/${uid}`);
-
     // add user to online_users for all channels in their list
     userChannelList.forEach((channel) => {
       const userStatusRef = ref(db, `Channels/${channel.id}/users/${uid}`);
@@ -136,15 +129,10 @@ function updateUserOnline(uid, userChannelList, setError) {
         }
 
         await onDisconnect(userStatusRef).update({ status: 'offline' });
-        await onDisconnect(userRef).update({
-          isOnline: false,
-          last_logged_in: getUnixTime(new Date()),
-        });
 
         update(userStatusRef, {
           status: 'online',
         });
-        update(userRef, { isOnline: true });
       });
     });
   } catch (error) {

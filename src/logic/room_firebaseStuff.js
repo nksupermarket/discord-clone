@@ -1,5 +1,4 @@
 import {
-  getDatabase,
   ref,
   push,
   set,
@@ -13,19 +12,43 @@ import {
 import { db } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
-function detachListenersForRoom(roomId) {
-  const msgListRef = ref(db, `Rooms/${roomId}/messages`);
+function detachListenersForRoom(roomID) {
+  const roomRef = ref(db, `Rooms/${roomID}`);
 
-  off(msgListRef);
+  off(roomRef);
 }
 
-async function getRoomName(id, setError) {
+async function getRoomStuff(roomID, setRoomName, setMsgList, setError) {
   try {
-    const roomNameRef = ref(db, `Rooms/${id}/name`);
+    const roomRef = ref(db, `Rooms/${roomID}`, setError);
 
-    const data = await get(roomNameRef);
+    onValue(roomRef, (snap) => {
+      const data = snap.val();
 
-    return data.val();
+      setRoomName(data.name);
+
+      let messages = data.messages || {};
+      let msgList = [];
+      updateMsgList();
+      setMsgList(changeReplyFromIDtoMsgObj(msgList));
+      //helpers
+      function updateMsgList() {
+        for (const id in messages) {
+          messages[id].msgId = id; // set msgId
+          msgList.push(messages[id]);
+        }
+      }
+      function changeReplyFromIDtoMsgObj(arr) {
+        // iterate over entire msgList
+        // if msg has replyTo, replace the msgId with actual msgObj
+        return arr.map((obj, i, thisArr) => {
+          if (!obj.replyTo) return obj;
+
+          obj.replyTo = thisArr.find((msgObj) => msgObj.msgId === obj.replyTo);
+          return obj;
+        });
+      }
+    });
   } catch (error) {
     setError && setError(error.message);
   }
@@ -41,32 +64,6 @@ async function removeRoomFromUnread(channelId, roomId, uid, setError) {
   } catch (error) {
     setError && setError();
   }
-}
-
-async function getMsgList(roomId, setMsgList) {
-  const msgListRef = ref(db, `Rooms/${roomId}/messages`);
-
-  onValue(msgListRef, (snapshot) => {
-    let data = snapshot.val();
-    data = data || {};
-    let msgList = [];
-    for (const id in data) {
-      data[id].msgId = id; // set msgId
-      msgList.push(data[id]);
-    }
-    setMsgList(changeReplyFromIDtoMsgObj(msgList));
-
-    function changeReplyFromIDtoMsgObj(arr) {
-      // iterate over entire msgList
-      // if msg has replyTo, replace the msgId with actual msgObj
-      return arr.map((obj, i, thisArr) => {
-        if (!obj.replyTo) return obj;
-
-        obj.replyTo = thisArr.find((msgObj) => msgObj.msgId === obj.replyTo);
-        return obj;
-      });
-    }
-  });
 }
 
 function pushToMsgList(roomId, msgObj, setError) {
@@ -208,9 +205,8 @@ async function removeOnDisconnectForRoomExitTimestamp(
 
 export {
   detachListenersForRoom,
-  getRoomName,
+  getRoomStuff,
   removeRoomFromUnread,
-  getMsgList,
   pushToMsgList,
   setRoomExitTimestamp,
   setRoomExitTimestampOnDisconnect,

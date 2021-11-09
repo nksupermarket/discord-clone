@@ -12,6 +12,7 @@ export default function useLoginUser(setError) {
   useEffect(function getCurrentUser() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
+      console.log(user);
       setUser(user);
     });
   }, []);
