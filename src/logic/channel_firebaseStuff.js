@@ -18,7 +18,6 @@ import { isUserOnline } from './user_firebaseStuff';
 
 async function createChannel(name) {
   try {
-    const db = getDatabase();
     const channelListRef = ref(db, 'Channels');
     const newChannelRef = push(channelListRef);
     await set(newChannelRef, { name });
@@ -51,28 +50,78 @@ async function changeChannelIcon(channelID, imageURL, setError) {
 }
 
 function detachListenersForChannel(channelID, uid) {
-  const userRolesRef = ref(db, `Channels/${channelID}/user_roles`);
-  const roomCategoriesRef = ref(db, `Channels/${channelID}/room_categories`);
-  const roomListRef = ref(db, `Channels/${channelID}/rooms`);
+  const channelInfoRef = ref(db, `Channels/${channelID}`);
   const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
-  const onlineUsersRef = ref(db, `Channels/${channelID}/online_users`);
 
+  off(channelInfoRef);
   off(unreadRoomsRef);
-  off(userRolesRef);
-  off(roomCategoriesRef);
-  off(roomListRef);
-  off(onlineUsersRef);
 }
 
-async function getChannelName(id, setError) {
+function getChannelInfo(
+  channelID,
+  setChannelName,
+  setRoomCategories,
+  setRoomList,
+  setUserRoles,
+  setUserList,
+  setOnlineUsers,
+  setError
+) {
   try {
-    const channelNameRef = ref(db, `Channels/${id}/name`);
+    const channelRef = ref(db, `Channels/${channelID}`);
+    onValue(channelRef, (snap) => {
+      const data = snap.val();
 
-    const data = await get(channelNameRef);
+      setChannelName(data.name);
 
-    return data.val();
+      const roomCategories = Object.keys(data.room_categories);
+      setRoomCategories(['none', ...roomCategories]);
+
+      let roomListArr = [];
+      pushToRoomListArr(data.rooms);
+      setRoomList(roomListArr);
+
+      const userRoles = Object.keys(data.user_roles);
+      setUserRoles([...userRoles, 'Online']);
+
+      let userList = [];
+      pushToUserListArr(data.users);
+      setUserList(userList);
+      const onlineUsers = userList.filter((user) => user.status === 'online');
+      setOnlineUsers(onlineUsers);
+
+      //helpers
+      function pushToRoomListArr(data) {
+        for (const id in data) {
+          roomListArr.push({ ...data[id], id });
+        }
+      }
+      function pushToUserListArr(data) {
+        for (const id in data) {
+          const userInfo = { ...data[id], uid: id };
+          userList.push(userInfo);
+        }
+      }
+    });
   } catch (error) {
     setError && setError(error.message);
+  }
+}
+
+async function getRoomList(channelID, setRoomList, setError) {
+  try {
+    const roomListRef = ref(db, `Channels/${channelID}/rooms`);
+
+    const snap = await get(roomListRef);
+    const data = snap.val();
+
+    let roomList = [];
+    for (const id in data) {
+      roomList.push({ ...data[id], id });
+    }
+    setRoomList(roomList);
+  } catch (error) {
+    setError(error.message);
   }
 }
 
@@ -89,20 +138,6 @@ async function createRoom(channelID, name, setError) {
     setError && setError(error.message);
     console.log(error);
   }
-}
-
-async function getRoomList(channelID, setRoomList) {
-  const roomsRef = ref(db, `Channels/${channelID}/rooms`);
-
-  onValue(roomsRef, (snapshot) => {
-    const data = snapshot.val();
-
-    let roomList = [];
-    for (const id in data) {
-      roomList.push({ ...data[id], id });
-    }
-    setRoomList(roomList);
-  });
 }
 
 async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
@@ -135,22 +170,6 @@ async function getMentions(uid, channelID, setRoomsMentioned, setError) {
   }
 }
 
-function getRoomCategories(channelID, setRoomCategories, setError) {
-  try {
-    const roomCategoriesRef = ref(db, `Channels/${channelID}/room_categories`);
-    onValue(roomCategoriesRef, (snap) => {
-      const data = snap.val();
-      if (!data) return;
-
-      const roomCategories = Object.keys(data);
-      setRoomCategories(['none', ...roomCategories]);
-    });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
-}
-
 function createRoomCategory(channelID, name, setError) {
   try {
     const channelRoomCategoriesRef = ref(
@@ -171,28 +190,6 @@ function updateCategoryOfRoom(channelID, roomId, category, setError) {
   } catch (error) {
     setError && setError(error.message);
     console.log(error);
-  }
-}
-
-async function getUserList(channelID, setUserList, setOnlineUsers, setError) {
-  try {
-    const userListRef = ref(db, `Channels/${channelID}/users`);
-
-    onValue(userListRef, (snap) => {
-      const data = snap.val();
-
-      let userList = [];
-      for (const id in data) {
-        const userInfo = { ...data[id], uid: id };
-        userList.push(userInfo);
-      }
-      setUserList(userList);
-
-      const onlineUsers = userList.filter((user) => user.status === 'online');
-      setOnlineUsers(onlineUsers);
-    });
-  } catch (error) {
-    setError && setError(error.message);
   }
 }
 
@@ -220,23 +217,6 @@ async function createUserRole(channelID, role, setError) {
     set(newRoleRef, { role }); */
 
     update(channelUserRolesRef, { [role]: true });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
-}
-
-async function getUserRoles(channelID, setUserRoles, setError) {
-  try {
-    const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
-
-    onValue(channelUserRolesRef, (snap) => {
-      const data = snap.val();
-      if (!data) return;
-      const userRoles = Object.keys(data);
-
-      setUserRoles([...userRoles, 'Online']);
-    });
   } catch (error) {
     setError && setError(error.message);
     console.log(error);
@@ -280,16 +260,13 @@ export {
   createChannel,
   uploadChannelIcon,
   changeChannelIcon,
-  getChannelName,
-  getRoomCategories,
+  getChannelInfo,
+  getRoomList,
   createRoomCategory,
   updateCategoryOfRoom,
   getUnreadRooms,
   getMentions,
-  getRoomList,
   createRoom,
-  getUserList,
-  getUserRoles,
   getRoleOfUser,
   createUserRole,
   updateRoleOfUser,

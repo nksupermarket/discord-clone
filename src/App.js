@@ -52,7 +52,7 @@ function App() {
         <div className="app">
           <MainNav user={user} list={channelList} />
           <Route
-            path={['/channels/:channelId/:roomId', '/channels/:channelId']}
+            path={['/channels/:channelID/:roomID', '/channels/:channelID']}
           >
             <ChannelView user={user} setError={setError} />
           </Route>

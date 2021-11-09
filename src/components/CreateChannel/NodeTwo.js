@@ -14,7 +14,6 @@ const NodeTwo = ({
   close,
   handleIcon,
 }) => {
-  console.log(createChannel);
   return (
     <div
       className="create-channel create-channel-node_two"

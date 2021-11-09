@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
+  getChannelInfo,
   getRoomCategories,
   getRoomList,
-  getOnlineUsers,
   getUserRoles,
   getRoleOfUser,
   detachListenersForChannel,
@@ -11,7 +11,12 @@ import {
   getUserList,
 } from '../channel_firebaseStuff';
 
-export default function useOnChannelEnter(user, channel, setError) {
+export default function useOnChannelEnter(
+  user,
+  channelID,
+  setChannelName,
+  setError
+) {
   const [roleList, setRoleList] = useState(['Online']);
   const [roomCategories, setRoomCategories] = useState(['none']);
   const [roomList, setRoomList] = useState([]);
@@ -21,19 +26,23 @@ export default function useOnChannelEnter(user, channel, setError) {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const [userRole, setUserRole] = useState();
-
   useEffect(() => {
-    if (!channel || !user) return;
-    getUserRoles(channel.id, setRoleList, setError);
-    getUserList(channel.id, setUserList, setOnlineUsers, setError);
-    getRoleOfUser(channel.id, user.uid, setUserRole, setError);
-    getRoomCategories(channel.id, setRoomCategories, setError);
-    getRoomList(channel.id, setRoomList, setError);
-    getUnreadRooms(user.uid, channel.id, setUnreadRooms, setError);
-    getMentions(user.uid, channel.id, setRoomsMentioned, setError);
+    if (!channelID || !user) return;
+    getChannelInfo(
+      channelID,
+      setChannelName,
+      setRoomCategories,
+      setRoomList,
+      setRoleList,
+      setUserList,
+      setOnlineUsers
+    );
+    //getRoleOfUser(channelID, user.uid, setUserRole, setError);
+    getUnreadRooms(user.uid, channelID, setUnreadRooms, setError);
+    //getMentions(user.uid, channelID, setRoomsMentioned, setError);
 
-    return () => detachListenersForChannel(channel.id, user.uid);
-  }, [channel, user, setError]);
+    return () => detachListenersForChannel(channelID, user.uid);
+  }, [channelID, setChannelName, user, setError]);
 
   return {
     roleList,

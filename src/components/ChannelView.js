@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams } from 'react-router';
 
 import ChannelNav from './ChannelNav/ChannelNav';
@@ -10,27 +10,17 @@ import '../styles/ChannelView.css';
 
 import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
-import { getChannelName } from '../logic/channel_firebaseStuff';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
 const ChannelView = ({ user, setError }) => {
-  const { channelId, roomId } = useParams();
+  const { channelID, roomID } = useParams();
   const [channel, setChannel] = useState();
   const [room, setRoom] = useState();
 
-  useEffect(() => {
-    getChannelInfoThenSetChannel();
-
-    async function getChannelInfoThenSetChannel() {
-      const name = await getChannelName(channelId, setError);
-
-      setChannel({
-        name: name,
-        id: channelId,
-      });
-    }
-  }, [channelId, setError]);
-
+  const updateChannel = useCallback(
+    (name) => setChannel({ name, id: channelID }),
+    [channelID]
+  );
   const {
     roleList,
     roomCategories,
@@ -39,7 +29,7 @@ const ChannelView = ({ user, setError }) => {
     onlineUsers,
     unreadRooms,
     userRole,
-  } = useOnChannelEnter(user, channel, setError);
+  } = useOnChannelEnter(user, channelID, updateChannel, setError);
 
   // room stuff
   const history = useHistory();
@@ -47,13 +37,13 @@ const ChannelView = ({ user, setError }) => {
   useEffect(() => {
     if (roomList.length === 0) return;
 
-    if (!roomId && roomList[0])
+    if (!roomID && roomList[0])
       history.push(`/channels/${channel.id}/${roomList[0].id}`); //enter default room for channel
 
     getRoomInfoThenSetRoom();
 
     async function getRoomInfoThenSetRoom() {
-      const id = roomId || roomList[0].id;
+      const id = roomID || roomList[0].id;
       const name = await getRoomName(id, setError);
 
       setRoom({
@@ -61,7 +51,7 @@ const ChannelView = ({ user, setError }) => {
         id: id,
       });
     }
-  }, [roomList, history, channel, roomId, setError]);
+  }, [roomList, history, channel, roomID, setError]);
 
   const { msgList, submitMsg } = useOnRoomEnter(user, channel, room, setError);
 
