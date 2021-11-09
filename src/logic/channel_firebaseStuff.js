@@ -156,19 +156,6 @@ async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
   }
 }
 
-async function getMentions(uid, channelID, setRoomsMentioned, setError) {
-  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}`);
-
-  try {
-    onValue(mentionsRef, (snap) => {
-      const data = snap.val();
-      setRoomsMentioned(data);
-    });
-  } catch (error) {
-    setError(error.message);
-  }
-}
-
 function createRoomCategory(channelID, name, setError) {
   try {
     const channelRoomCategoriesRef = ref(
@@ -192,23 +179,6 @@ function updateCategoryOfRoom(channelID, roomId, category, setError) {
   }
 }
 
-async function getUsersForMentions(channelID, query, setError) {
-  try {
-    const channelUsersRef = ref(db, `Channels/${channelID}`);
-
-    const results = query(
-      channelUsersRef,
-      orderByValue().startAt(query).limitToFirst(5)
-    );
-
-    const data = await get(results);
-
-    return data.val();
-  } catch (error) {
-    setError && setError(error.message);
-  }
-}
-
 async function createUserRole(channelID, role, setError) {
   try {
     const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
@@ -216,20 +186,6 @@ async function createUserRole(channelID, role, setError) {
     set(newRoleRef, { role }); */
 
     update(channelUserRolesRef, { [role]: true });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
-}
-
-async function getRoleOfUser(channelID, userId, setRole, setError) {
-  try {
-    const userRoleRef = ref(db, `users/${userId}/channels/${channelID}`);
-    onValue(userRoleRef, (snap) => {
-      const data = snap.val();
-
-      setRole(data);
-    });
   } catch (error) {
     setError && setError(error.message);
     console.log(error);
@@ -264,11 +220,8 @@ export {
   createRoomCategory,
   updateCategoryOfRoom,
   getUnreadRooms,
-  getMentions,
   createRoom,
-  getRoleOfUser,
   createUserRole,
   updateRoleOfUser,
-  getUsersForMentions,
   detachListenersForChannel,
 };

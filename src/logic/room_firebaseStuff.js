@@ -54,18 +54,6 @@ async function getRoomStuff(roomID, setRoomName, setMsgList, setError) {
   }
 }
 
-async function removeRoomFromUnread(channelId, roomId, uid, setError) {
-  try {
-    const unreadRoomRef = ref(
-      db,
-      `users/${uid}/unread_rooms/${channelId}/${roomId}`
-    );
-    remove(unreadRoomRef);
-  } catch (error) {
-    setError && setError();
-  }
-}
-
 function pushToMsgList(roomId, msgObj, setError) {
   try {
     const roomMsgList = ref(db, `Rooms/${roomId}/messages`);
@@ -76,21 +64,6 @@ function pushToMsgList(roomId, msgObj, setError) {
   } catch (error) {
     setError(error.message);
     return null;
-  }
-}
-
-async function getRoomUnsubscribeStatus(roomId, userId, setError) {
-  try {
-    const userRoomsUnsubscribedRef = ref(
-      db,
-      `users/${userId}/rooms_unsubscribed/${roomId}`
-    );
-
-    const isUnsubscribed = await (await get(userRoomsUnsubscribedRef)).val();
-
-    return isUnsubscribed;
-  } catch (error) {
-    setError(error.message);
   }
 }
 
@@ -190,6 +163,33 @@ async function removeOnDisconnectForRoomExitTimestamp(
   }
 }
 
+async function getRoomUnsubscribeStatus(roomId, userId, setError) {
+  try {
+    const userRoomsUnsubscribedRef = ref(
+      db,
+      `users/${userId}/rooms_unsubscribed/${roomId}`
+    );
+
+    const isUnsubscribed = await (await get(userRoomsUnsubscribedRef)).val();
+
+    return isUnsubscribed;
+  } catch (error) {
+    setError(error.message);
+  }
+}
+
+async function removeRoomFromUnread(channelId, roomId, uid, setError) {
+  try {
+    const unreadRoomRef = ref(
+      db,
+      `users/${uid}/unread_rooms/${channelId}/${roomId}`
+    );
+    remove(unreadRoomRef);
+  } catch (error) {
+    setError && setError();
+  }
+}
+
 /*async function setCurrentlyInRoom(channelId, roomId, userId, setError) {
   try {
     const updates = {};
@@ -206,12 +206,12 @@ async function removeOnDisconnectForRoomExitTimestamp(
 export {
   detachListenersForRoom,
   getRoomStuff,
-  removeRoomFromUnread,
   pushToMsgList,
   setRoomExitTimestamp,
   setRoomExitTimestampOnDisconnect,
   removeOnDisconnectForRoomExitTimestamp,
-  getRoomUnsubscribeStatus,
   attachUnreadMsgsListener,
+  getRoomUnsubscribeStatus,
+  removeRoomFromUnread,
   //setCurrentlyInRoom,
 };
