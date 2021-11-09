@@ -12,10 +12,16 @@ export default function useLoginUser(setError) {
   useEffect(function getCurrentUser() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      console.log(user);
       setUser(user);
     });
   }, []);
+  useEffect(() => {
+    if (!user) return;
+    return () => {
+      console.log('detached');
+      detachListenersForUser(user.uid);
+    };
+  }, [user]);
 
   useEffect(
     function onLogin() {
@@ -29,8 +35,6 @@ export default function useLoginUser(setError) {
     function afterSetChannelList() {
       if (!user || !channelList) return;
       updateUserOnline(user.uid, channelList, setError);
-
-      return () => detachListenersForUser(user.uid);
     },
     [user, channelList, setError]
   );

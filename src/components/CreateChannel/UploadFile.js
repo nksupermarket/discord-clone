@@ -14,6 +14,7 @@ const UploadFile = ({ handleIcon }) => {
     reader.readAsDataURL(file);
 
     reader.onloadend = () => setImgSrc(reader.result);
+    console.log(file);
     handleIcon(file); // store file to channelInfo state
   }
   return (

@@ -42,18 +42,7 @@ async function createUser(
     );
     await updateProfile(userCredential.user, { displayName });
     if (channelID) {
-      let updates = {};
-
-      updates[`users/${userCredential.user.uid}/channels/${channelID}`] = {
-        role: '',
-      };
-
-      updates[`Channels/${channelID}/users/${userCredential.user.uid}`] = {
-        displayName,
-        avatar: '',
-      };
-
-      update(ref(db), updates);
+      subscribeToChannel(userCredential, channelID, setError);
     }
 
     setUser(userCredential.user);
@@ -81,10 +70,7 @@ function signIn(email, password, setError) {
 async function subscribeToChannel(user, channelID, setError) {
   try {
     let updates = {};
-
-    updates[`users/${user.uid}/channels/${channelID}`] = {
-      role: '',
-    };
+    updates[`users/${user.uid}/channels/${channelID}`] = '';
 
     updates[`Channels/${channelID}/users/${user.uid}`] = {
       displayName: user.displayName,
@@ -101,15 +87,32 @@ function getChannelList(uid, setChannelList, setError) {
   try {
     const userChannelListRef = ref(db, `users/${uid}/channels`);
 
-    let channelList = [];
-    onValue(userChannelListRef, (snap) => {
+    onValue(userChannelListRef, async (snap) => {
       const data = snap.val();
 
+      let channelList = [];
       for (const id in data) {
         channelList.push({ id, role: data[id] });
       }
+      await getChannelIcons(channelList, updateChannelListWithIcons, setError);
       setChannelList(channelList);
+
+      //helpers
+      function updateChannelListWithIcons(icons) {
+        icons.forEach((icon, i) => (channelList[i].icon = icon));
+      }
     });
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+
+async function getChannelIcons(channelList, updateChannelList, setError) {
+  try {
+    const resultArr = await Promise.all(
+      channelList.map((channel) => get(ref(db, `Channels/${channel.id}/icon`)))
+    );
+    updateChannelList(resultArr.map((result) => result.val()));
   } catch (error) {
     setError && setError(error.message);
   }

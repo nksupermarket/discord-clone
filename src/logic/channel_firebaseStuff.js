@@ -31,7 +31,7 @@ async function uploadChannelIcon(channelID, image, setError) {
   try {
     const channelIconRef = ref(storage, `channel_icons/${channelID}`);
     await uploadBytes(channelIconRef, image);
-
+    console.log('uploaded');
     const channelIconURL = await getDownloadURL(channelIconRef);
     return channelIconURL;
   } catch (error) {
@@ -41,8 +41,8 @@ async function uploadChannelIcon(channelID, image, setError) {
 
 async function changeChannelIcon(channelID, imageURL, setError) {
   try {
-    const iconsRef = ref(db, `icons`);
-    update(iconsRef, { [channelID]: imageURL });
+    const iconsRef = ref(db, `Channels/${channelID}`);
+    update(iconsRef, { icon: imageURL });
   } catch (error) {
     setError && setError(error.message);
   }

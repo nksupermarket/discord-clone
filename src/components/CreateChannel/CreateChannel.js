@@ -17,6 +17,8 @@ const CreateChannel = ({ user, close }) => {
   const [node, setNode] = useState(1);
   const [channelInfo, setChannelInfo] = useState({
     name: `${user.displayName}'s channel`,
+    icon: {},
+    isPrivate: '',
   });
 
   function ontoNextNode() {
@@ -29,13 +31,14 @@ const CreateChannel = ({ user, close }) => {
 
   const onCreateChannel = useCallback(
     async function onCreateChannel() {
-      console.log('before channelID');
       const channelID = await createChannel(channelInfo.name);
-      console.log('after channelID');
-      const iconURL = await uploadChannelIcon(channelID, channelInfo.icon);
-      console.log('after iconURL');
-      changeChannelIcon(channelID, iconURL);
-      subscribeToChannel(user.uid, channelID);
+      console.log(channelInfo);
+      if (channelInfo.icon) {
+        console.log('im inside');
+        const iconURL = await uploadChannelIcon(channelID, channelInfo.icon);
+        changeChannelIcon(channelID, iconURL);
+      }
+      subscribeToChannel(user, channelID);
     },
     [channelInfo, user]
   );
