@@ -2,6 +2,8 @@ import React from 'react';
 
 import ChannelLink from './ChannelLink';
 
+import '../../styles/ChannelList.css';
+
 const ChannelList = ({ list }) => {
   return (
     <ul className="channel-list">
@@ -11,7 +13,8 @@ const ChannelList = ({ list }) => {
             <ChannelLink
               key={channel.id}
               channelID={channel.id}
-              icon={channel.icon}
+              icon={channel.icon ? channel.icon : undefined}
+              name={channel.icon ? undefined : channel.name}
             />
           );
         })}

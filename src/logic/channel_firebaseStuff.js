@@ -29,11 +29,8 @@ async function createChannel(name) {
 
 async function uploadChannelIcon(channelID, image, setError) {
   try {
-    console.log('before ref');
     const channelIconRef = store(storage, `channel_icons/${channelID}`);
-    console.log('uploading');
     await uploadBytes(channelIconRef, image);
-    console.log('uploaded');
     const channelIconURL = await getDownloadURL(channelIconRef);
     return channelIconURL;
   } catch (error) {
@@ -141,18 +138,23 @@ async function createRoom(channelID, name, setError) {
   }
 }
 
-async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
+async function getChannelNames(channelList, updateChannelList, setError) {
   try {
-    const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
+    const resultArr = await Promise.all(
+      channelList.map((channel) => get(ref(db, `Channels/${channel.id}/name`)))
+    );
+    updateChannelList(resultArr.map((result) => result.val()));
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
 
-    onValue(unreadRoomsRef, (snap) => {
-      const data = snap.val();
-      if (!data) return setUnreadRooms([]);
-
-      const unreadRooms = Object.keys(data);
-
-      setUnreadRooms(unreadRooms);
-    });
+async function getChannelIcons(channelList, updateChannelList, setError) {
+  try {
+    const resultArr = await Promise.all(
+      channelList.map((channel) => get(ref(db, `Channels/${channel.id}/icon`)))
+    );
+    updateChannelList(resultArr.map((result) => result.val()));
   } catch (error) {
     setError && setError(error.message);
   }
@@ -218,10 +220,11 @@ export {
   uploadChannelIcon,
   changeChannelIcon,
   getChannelInfo,
+  getChannelNames,
+  getChannelIcons,
   getRoomList,
   createRoomCategory,
   updateCategoryOfRoom,
-  getUnreadRooms,
   createRoom,
   createUserRole,
   updateRoleOfUser,

@@ -15,7 +15,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { getRoomList } from './channel_firebaseStuff';
+import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
@@ -95,11 +95,15 @@ function getChannelList(uid, setChannelList, setError) {
         channelList.push({ id, role: data[id] });
       }
       await getChannelIcons(channelList, updateChannelListWithIcons, setError);
+      await getChannelNames(channelList, updateChannelListWithNames, setError);
       setChannelList(channelList);
 
       //helpers
       function updateChannelListWithIcons(icons) {
         icons.forEach((icon, i) => (channelList[i].icon = icon));
+      }
+      function updateChannelListWithNames(names) {
+        names.forEach((name, i) => (channelList[i].name = name));
       }
     });
   } catch (error) {
@@ -107,12 +111,18 @@ function getChannelList(uid, setChannelList, setError) {
   }
 }
 
-async function getChannelIcons(channelList, updateChannelList, setError) {
+async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
   try {
-    const resultArr = await Promise.all(
-      channelList.map((channel) => get(ref(db, `Channels/${channel.id}/icon`)))
-    );
-    updateChannelList(resultArr.map((result) => result.val()));
+    const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
+
+    onValue(unreadRoomsRef, (snap) => {
+      const data = snap.val();
+      if (!data) return setUnreadRooms([]);
+
+      const unreadRooms = Object.keys(data);
+
+      setUnreadRooms(unreadRooms);
+    });
   } catch (error) {
     setError && setError(error.message);
   }
@@ -198,5 +208,6 @@ export {
   getChannelList,
   updateUserOnline,
   updateMentions,
+  getUnreadRooms,
   detachListenersForUser,
 };

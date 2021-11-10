@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
   getChannelInfo,
-  getRoomCategories,
-  getRoomList,
-  getUserRoles,
-  getRoleOfUser,
   detachListenersForChannel,
-  getUnreadRooms,
-  getMentions,
-  getUserList,
 } from '../channel_firebaseStuff';
+import { getUnreadRooms } from '../user_firebaseStuff';
 
 export default function useOnChannelEnter(
   user,

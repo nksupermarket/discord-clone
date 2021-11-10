@@ -7,7 +7,9 @@ const Avatar = ({ img, channelName, onClick }) => {
     <span></span>
   );
 
-  const style = img ? { background: `url(${img})` } : { background: 'black' };
+  const style = img
+    ? { background: `url(${img})`, backgroundSize: 'cover' }
+    : { background: 'var(--bg-color' };
   return (
     <div className="avatar" style={style} onClick={onClick}>
       {!img && filler}
@@ -20,6 +22,6 @@ export default Avatar;
 function createInitials(channelName) {
   return channelName
     .split(' ')
-    .map((word) => word.charAt[0])
-    .join();
+    .map((word) => word.charAt(0))
+    .join('');
 }
