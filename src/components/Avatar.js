@@ -23,5 +23,6 @@ function createInitials(channelName) {
   return channelName
     .split(' ')
     .map((word) => word.charAt(0))
+    .filter((char, i) => i < 3)
     .join('');
 }
