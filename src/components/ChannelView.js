@@ -57,6 +57,7 @@ const ChannelView = ({ user, setError }) => {
     <div className="channel-view">
       {channel && (
         <ChannelNav
+          user={user}
           channel={channel}
           categories={roomCategories}
           list={roomList}

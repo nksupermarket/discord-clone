@@ -3,10 +3,18 @@ import ReactDom from 'react-dom';
 import { setRoomExitTimestamp } from '../../logic/room_firebaseStuff';
 
 import '../../styles/ChannelNav.css';
-import RoomCategory from './RoomCategory';
+import UserInfo from '../UserInfo/UserInfo';
+import CatList from '../CatList';
 import RoomLink from './RoomLink';
 
-const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
+const ChannelNav = ({
+  user,
+  channel,
+  categories,
+  list,
+  unread,
+  onRoomExit,
+}) => {
   categories = categories || [];
 
   const categoriesRef = useRef({});
@@ -16,41 +24,36 @@ const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
       <header>{channel.name}</header>
       <div className="room-list">
         {categories.map((category, i) => (
-          <RoomCategory
+          <CatList
             key={i}
-            categoriesRef={categoriesRef}
-            category={category}
-          />
+            ref={categoriesRef}
+            cat={category}
+            isHeader={category === 'none' ? false : true}
+            className="category-room-wrapper"
+          >
+            {list
+              .filter((room) => {
+                if (room.category === category) return true;
+                if (!room.category && category === 'none') return true;
+                return false;
+              })
+              .map((room) => {
+                const isUnread = unread.includes(room.id);
+                return (
+                  <RoomLink
+                    key={room.id}
+                    isUnread={isUnread}
+                    channel={channel}
+                    room={room}
+                  />
+                );
+              })}
+          </CatList>
 
           //each RoomCategory is given a ref in the categoriesRef.current object
         ))}
-
-        {list.map((room) => {
-          let isUnread = unread.includes(room.id);
-
-          const roomLink = (
-            <RoomLink
-              key={room.id}
-              isUnread={isUnread}
-              channel={channel}
-              room={room}
-            />
-          );
-
-          if (!categoriesRef.current) return null;
-          if (
-            //if room belongs in a category, move RoomLink to corresponding category
-            room.category &&
-            categories.includes(room.category) &&
-            categoriesRef.current[room.category]
-          )
-            return ReactDom.createPortal(
-              roomLink,
-              categoriesRef.current[room.category]
-            );
-          return ReactDom.createPortal(roomLink, categoriesRef.current['none']);
-        })}
       </div>
+      <UserInfo avatar={user.avatar || ''} displayName={user.displayName} />
     </nav>
   );
 };

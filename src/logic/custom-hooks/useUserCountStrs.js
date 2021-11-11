@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
-export default function useUserCountStrs(list, rolesRef) {
+export default function useUserCountStrs(list, roles, rolesRef) {
   const [userCountStrs, setUserCountStrs] = useState({});
   useEffect(() => {
-    if (!rolesRef.current) return;
+    roles.forEach((role) => {
+      if (!rolesRef) return;
 
-    for (const role in rolesRef.current) {
       const userCount = list.filter((user) => {
         if (role === 'Online') return !user.role;
         return user.role === role;
@@ -16,8 +16,8 @@ export default function useUserCountStrs(list, rolesRef) {
         : rolesRef.current[role].classList.remove('hidden');
 
       setUserCountStrs((prev) => ({ ...prev, [role]: ` - ${userCount}` }));
-    }
-  }, [rolesRef, list]);
+    });
+  }, [roles, rolesRef, list]);
 
   return userCountStrs;
 }

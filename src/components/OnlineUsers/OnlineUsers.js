@@ -1,49 +1,40 @@
 import React, { useRef } from 'react';
-import ReactDom from 'react-dom';
 
 import '../../styles/OnlineUsers.css';
-import UserRole from './UserRole';
+import CatList from '../CatList';
 import UserDisplay from './UserDisplay';
 import useUserCountStrs from '../../logic/custom-hooks/useUserCountStrs';
-import MentionWrapper from '../Chat/MentionWrapper';
 
 const OnlineUsers = ({ list, roles }) => {
   roles = roles || [];
 
   const rolesRef = useRef({});
 
-  const userCountStrs = useUserCountStrs(list, rolesRef);
+  const userCountStrs = useUserCountStrs(list, roles, rolesRef);
 
   return (
     <aside className="users-ctn">
       {roles.map((role, i) => {
         return (
           //each UserRole is given a ref in the rolesRef.current object
-          <UserRole
+          <CatList
             key={i}
-            rolesRef={rolesRef}
-            role={role}
-            userCountStr={userCountStrs[role]}
-          />
+            catRef={(el) => (rolesRef.current[role] = el)}
+            cat={role}
+            headerSubtext={userCountStrs[role]}
+            className="role-users-wrapper"
+          >
+            {list
+              .filter((user) => {
+                if (user.role === role) return true;
+                if (!user.role && role === 'Online') return true;
+                return false;
+              })
+              .map((user) => (
+                <UserDisplay key={user.uid} displayName={user.displayName} />
+              ))}
+          </CatList>
         );
-      })}
-
-      {list.map((user) => {
-        const userDisplay = (
-          <UserDisplay key={user.uid} displayName={user.displayName} />
-        );
-
-        if (Object.keys(rolesRef.current).length === 0) return <></>;
-        if (
-          //if user has a role, move UserDisplay to corresponding role
-          user.role
-        ) {
-          return ReactDom.createPortal(
-            userDisplay,
-            rolesRef.current[user.role]
-          );
-        }
-        return ReactDom.createPortal(userDisplay, rolesRef.current.Online);
       })}
     </aside>
   );
