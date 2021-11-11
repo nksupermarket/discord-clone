@@ -17,8 +17,6 @@ const ChannelNav = ({
 }) => {
   categories = categories || [];
 
-  const categoriesRef = useRef({});
-
   return (
     <nav className="channel-nav sidebar">
       <header>{channel.name}</header>
@@ -26,7 +24,6 @@ const ChannelNav = ({
         {categories.map((category, i) => (
           <CatList
             key={i}
-            ref={categoriesRef}
             cat={category}
             isHeader={category === 'none' ? false : true}
             className="category-room-wrapper"
@@ -49,8 +46,6 @@ const ChannelNav = ({
                 );
               })}
           </CatList>
-
-          //each RoomCategory is given a ref in the categoriesRef.current object
         ))}
       </div>
       <UserInfo avatar={user.avatar || ''} displayName={user.displayName} />
