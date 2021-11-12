@@ -7,22 +7,22 @@ import UserSettings from './UserSettings';
 import '../../styles/UserInfo.css';
 import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
-const UserInfo = ({ avatar, displayName }) => {
+const UserInfo = ({ user }) => {
   const [isSettings, setIsSettings] = useState(false);
   return (
     <>
       <section className="user-info-panel">
         <div className="ctn">
-          <Avatar img={avatar} />
+          <Avatar img={user.photoURL} />
           <div className="name-tag">
-            <div className="username-wrapper">{displayName}</div>
+            <div className="username-wrapper">{user.displayName}</div>
           </div>
           <div className="btn-ctn">
             <IconBtn svg={settingsSVG} onClick={() => setIsSettings(true)} />
           </div>
         </div>
       </section>
-      {isSettings && <UserSettings />}
+      {isSettings && <UserSettings user={user} />}
     </>
   );
 };

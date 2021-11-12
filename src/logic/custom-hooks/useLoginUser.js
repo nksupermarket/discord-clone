@@ -17,8 +17,8 @@ export default function useLoginUser(setError) {
   }, []);
   useEffect(() => {
     if (!user) return;
+    console.log(user);
     return () => {
-      console.log('detached');
       detachListenersForUser(user.uid);
     };
   }, [user]);

@@ -48,7 +48,7 @@ const ChannelNav = ({
           </CatList>
         ))}
       </div>
-      <UserInfo avatar={user.avatar || ''} displayName={user.displayName} />
+      <UserInfo user={user} />
     </nav>
   );
 };

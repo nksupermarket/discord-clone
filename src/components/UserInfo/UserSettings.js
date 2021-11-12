@@ -5,11 +5,11 @@ import MyAccount from './MyAccount';
 import UserProfile from './UserProfile';
 import Notifications from './Notifications';
 
-const UserSettings = () => {
+const UserSettings = ({ user }) => {
   const [content, setContent] = useReducer((state, swapTo) => {
     switch (swapTo) {
       case 'my account':
-        return <MyAccount />;
+        return <MyAccount user={user} />;
       case 'user profile':
         return <UserProfile />;
       case 'notifications':
@@ -17,7 +17,7 @@ const UserSettings = () => {
       default:
         throw new Error("that doesn't exist!");
     }
-  }, <MyAccount />);
+  }, <MyAccount user={user} />);
 
   console.log('running');
 

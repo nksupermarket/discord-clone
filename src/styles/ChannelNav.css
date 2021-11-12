@@ -108,7 +108,7 @@
 }
 
 @media screen and (min-width: 500px) {
-  .sidebar {
+  .channel-nav {
     max-width: 240px;
   }
 }

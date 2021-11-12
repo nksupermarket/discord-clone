@@ -35,7 +35,7 @@ const Sidebar = ({ btnList, categories, reducer }) => {
                   );
                 })}
             </CatList>
-            <div className="list-underline-wrapper list-item">
+            <div className="list-underline-wrapper">
               <div className="list-underline"></div>
             </div>
           </>
