@@ -6,11 +6,10 @@ import Sidebar from './Sidebar';
 import '../../styles/Settings.css';
 
 const Settings = ({ children, ...props }) => {
-  console.log('settings running');
   return ReactDOM.createPortal(
     <div className="settings">
       <Sidebar {...props}></Sidebar>
-      <main>{children}</main>
+      <main className="content">{children}</main>
     </div>,
     document.querySelector('body')
   );

@@ -1,0 +1,41 @@
+.account-profile-card {
+  background-color: var(--secondary-fg-color);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.account-profile-card .banner {
+  width: 100%;
+  height: 100px;
+}
+
+.account-profile-card .user-info {
+  height: 72px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 16px 0 120px;
+}
+.account-profile-card .user-info .avatar {
+  width: 80px;
+  height: 80px;
+  border: 7px solid var(--secondary-fg-color);
+  background-color: var(--secondary-fg-color);
+  position: absolute;
+  top: 76px;
+  left: 16px;
+  box-sizing: content-box;
+}
+.account-profile-card .user-info .profile-card-username {
+  margin-bottom: 6px;
+  color: var(--header-primary);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.account-profile-card .user-info .flat-btn {
+  height: 32px;
+  min-width: 60px;
+}

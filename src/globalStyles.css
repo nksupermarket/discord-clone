@@ -5,6 +5,7 @@
   --secondary-fg-color: #161823;
   --header-primary: #fff;
   --header-secondary: #b9bbbe;
+  --hover-main: rgba(174, 174, 174, 0.1);
   --action-normal: #cb3e5b;
   --action-muted: rgba(203, 62, 91, 0.5);
   --text-normal: #dcddde;
@@ -148,4 +149,8 @@ body {
 .flat-btn.inactive {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.sidebar {
+  background-color: var(--fg-color);
 }
