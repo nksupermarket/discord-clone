@@ -13,7 +13,7 @@ const AccountProfileCard = ({ displayName, email }) => {
       <div className="user-info">
         <Avatar />
         <div className="profile-card-username">{displayName}</div>
-        <FlatBtn text={'Edit User Profile'} />
+        <FlatBtn text={'Edit User Profile'} className={'filled'} />
       </div>
       <div className="background">
         <div className="field-list">

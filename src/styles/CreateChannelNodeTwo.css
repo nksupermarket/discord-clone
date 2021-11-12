@@ -98,16 +98,6 @@
 .create-channel-node_two footer .flat-btn.filled {
   height: 38px;
   min-width: 96px;
-  background-color: var(--action-normal);
-  border-radius: 3px;
-  padding: 2px 16px;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.17s ease, color 0.17s ease;
 }
 
 .create-channel-node_two footer .flat-btn.filled:hover {

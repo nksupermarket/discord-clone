@@ -17,6 +17,7 @@
   display: flex;
   justify-content: space-between;
   padding: 16px 16px 0 120px;
+  box-sizing: border-box;
 }
 .account-profile-card .user-info .avatar {
   width: 80px;
