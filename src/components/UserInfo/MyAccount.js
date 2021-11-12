@@ -7,7 +7,7 @@ const MyAccount = ({ ...props }) => {
       <header>
         <h2>My Account</h2>
       </header>
-      <div className="content">
+      <div className="inner-content">
         <AccountProfileCard {...props} />
       </div>
     </section>

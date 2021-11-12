@@ -17,10 +17,12 @@ const Settings = ({ close, children, ...props }) => {
         </div>
       </div>
       <div className="content-region">
-        <div className="content-scroller">
-          <main className="content">{children}</main>
-          <div className="actions">
-            <IconBtn svg={closeSVG} onClick={close} className={'close-btn'} />
+        <div className="content-transition-wrapper">
+          <div className="content-scroller">
+            <main className="content">{children}</main>
+            <div className="actions">
+              <IconBtn svg={closeSVG} onClick={close} className={'close-btn'} />
+            </div>
           </div>
         </div>
       </div>
