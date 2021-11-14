@@ -2,7 +2,7 @@ import React from 'react';
 
 import FlatBtn from '../FlatBtn';
 
-const Field = ({ item, display }) => {
+const Field = ({ item, display, onClick }) => {
   return (
     <div className="field">
       <div className="constrained-row">
@@ -13,7 +13,7 @@ const Field = ({ item, display }) => {
           </div>
         </div>
       </div>
-      <FlatBtn text={'Edit'} className="filled"></FlatBtn>
+      <FlatBtn text={'Edit'} className="filled" onClick={onClick} />
     </div>
   );
 };

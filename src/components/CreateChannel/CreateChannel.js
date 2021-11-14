@@ -33,9 +33,7 @@ const CreateChannel = ({ user, close }) => {
     async function onCreateChannel() {
       const channelID = await createChannel(channelInfo.name);
       if (channelInfo.icon instanceof File) {
-        console.log('inside if statement');
         const iconURL = await uploadChannelIcon(channelID, channelInfo.icon);
-        console.log(iconURL);
         changeChannelIcon(channelID, iconURL);
       }
       subscribeToChannel(user, channelID);
@@ -51,6 +49,7 @@ const CreateChannel = ({ user, close }) => {
           setChannelInfo={(status) =>
             setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
           }
+          close={close}
         />
       )}
       {node === 2 && (
@@ -58,7 +57,12 @@ const CreateChannel = ({ user, close }) => {
           createChannel={onCreateChannel}
           prevNode={prevNode}
           channelName={channelInfo.name}
-          handleName={(name) => setChannelInfo((prev) => ({ ...prev, name }))}
+          handleChange={(e) =>
+            setChannelInfo((prev) => ({
+              ...prev,
+              [e.target.name]: e.target.value,
+            }))
+          }
           handleIcon={(icon) => setChannelInfo((prev) => ({ ...prev, icon }))}
           close={close}
         />

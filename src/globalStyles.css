@@ -108,7 +108,7 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   display: grid;
   place-items: center;
-  z-index: 2;
+  z-index: 99;
 }
 
 .app {
@@ -167,11 +167,15 @@ body {
   align-items: center;
   transition: background-color 0.17s ease, color 0.17s ease;
 }
+
 .flat-btn.filled {
   background-color: var(--action-normal);
 }
 .flat-btn.filled:hover {
   background-color: var(--action-hover);
+}
+.flat-btn:hover .underline-hover {
+  text-decoration: underline;
 }
 
 .flat-btn.hollow {
@@ -233,4 +237,39 @@ body {
 
 .subtext {
   font-size: 12px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  color: var(--header-secondary);
+}
+
+form label {
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+form .input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+form .input-wrapper input {
+  padding: 10px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  background-color: var(--interactive-hover);
+  border: 1px solid var(--background-accent);
+  box-shadow: none;
+}
+
+form .input-wrapper input:focus {
+  outline: none;
+  border: 1px solid #0645ad;
 }

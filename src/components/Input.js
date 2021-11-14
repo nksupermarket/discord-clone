@@ -1,31 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Input extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(e) {
-    this.props.onChange && this.props.onChange(e.target.value);
-  }
-
-  render() {
-    const { className, type, name, value, placeholder, onKeyDown } = this.props;
-
-    return (
-      <input
-        type={type}
-        name={name}
-        value={value}
-        className={className}
-        placeholder={placeholder}
-        onChange={this.handleChange}
-        onKeyDown={onKeyDown}
-      />
-    );
-  }
-}
+const Input = ({ ...props }) => {
+  return <input {...props} />;
+};
 
 export default Input;

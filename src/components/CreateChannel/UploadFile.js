@@ -35,6 +35,7 @@ const UploadFile = ({ handleIcon }) => {
       )}
       <input
         type="file"
+        name="icon"
         ref={uploadFileRef}
         onChange={onUploadFile}
         style={{ display: 'none' }}

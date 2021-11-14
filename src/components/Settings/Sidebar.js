@@ -3,7 +3,7 @@ import React from 'react';
 import CatList from '../CatList';
 import ListItem from './ListItem';
 
-const Sidebar = ({ btnList, categories, reducer }) => {
+const Sidebar = ({ btnList, categories, dispatch }) => {
   function capitalize(str) {
     return str
       .split(' ')
@@ -29,7 +29,12 @@ const Sidebar = ({ btnList, categories, reducer }) => {
                 })
                 .map((btn, i) => {
                   return (
-                    <ListItem key={i} onClick={() => reducer(btn.text)}>
+                    <ListItem
+                      key={i}
+                      onClick={() =>
+                        dispatch({ type: 'swap_to', payload: btn.text })
+                      }
+                    >
                       {capitalize(btn.text)}
                     </ListItem>
                   );

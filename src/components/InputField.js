@@ -3,7 +3,7 @@ import Input from './Input.js';
 
 const InputField = ({ label, ...inputProps }) => (
   <div className="input-wrapper">
-    {label && <label>{label}</label>}
+    {label && <label className="caps-title">{label}</label>}
     <Input {...inputProps} />
   </div>
 );

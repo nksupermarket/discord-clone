@@ -6,19 +6,27 @@ import Avatar from '../Avatar';
 
 import '../../styles/AccountProfileCard.css';
 
-const AccountProfileCard = ({ user }) => {
+const AccountProfileCard = ({ user, editProfile, editUsername, editEmail }) => {
   return (
     <div className="account-profile-card">
       <div className="banner"></div>
       <div className="user-info">
         <Avatar img={user.photoURL} />
         <div className="profile-card-username">{user.displayName}</div>
-        <FlatBtn text={'Edit User Profile'} className={'filled'} />
+        <FlatBtn
+          text={'Edit User Profile'}
+          className={'filled'}
+          onClick={editProfile}
+        />
       </div>
       <div className="background">
         <div className="field-list">
-          <Field item="username" display={user.displayName} />
-          <Field item="email" display={user.email} />
+          <Field
+            item="username"
+            display={user.displayName}
+            onClick={editUsername}
+          />
+          <Field item="email" display={user.email} onClick={editEmail} />
         </div>
       </div>
     </div>

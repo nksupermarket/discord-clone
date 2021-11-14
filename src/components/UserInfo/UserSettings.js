@@ -5,21 +5,28 @@ import MyAccount from './MyAccount';
 import UserProfile from './UserProfile';
 import Notifications from './Notifications';
 
-const UserSettings = ({ user }) => {
-  const [content, setContent] = useReducer((state, swapTo) => {
-    switch (swapTo) {
-      case 'my account':
-        return <MyAccount user={user} />;
-      case 'user profile':
-        return <UserProfile />;
-      case 'notifications':
-        return <Notifications />;
-      default:
-        throw new Error("that doesn't exist!");
+const UserSettings = ({ user, close }) => {
+  const [state, dispatch] = useReducer((state, action) => {
+    if (action.type === 'swap_to') {
+      switch (action.payload) {
+        case 'my account':
+          return (
+            <MyAccount
+              user={user}
+              editProfile={() =>
+                dispatch({ type: 'swap_to', payload: 'user profile' })
+              }
+            />
+          );
+        case 'user profile':
+          return <UserProfile />;
+        case 'notifications':
+          return <Notifications />;
+        default:
+          throw new Error("that doesn't exist!");
+      }
     }
-  }, <MyAccount user={user} />);
-
-  console.log('running');
+  }, <MyAccount user={user} editProfile={() => dispatch({ type: 'swap_to', payload: 'user profile' })} />);
 
   function createSettingsButton(text, category) {
     return {
@@ -29,6 +36,7 @@ const UserSettings = ({ user }) => {
   }
   return (
     <Settings
+      close={close}
       categories={['user settings', 'app settings', 'none']}
       btnList={[
         createSettingsButton('my account', 'user settings'),
@@ -36,9 +44,9 @@ const UserSettings = ({ user }) => {
         createSettingsButton('notifications', 'app settings'),
         createSettingsButton('log out', 'none'),
       ]}
-      reducer={setContent}
+      dispatch={dispatch}
     >
-      {content}
+      {state && state}
     </Settings>
   );
 };
