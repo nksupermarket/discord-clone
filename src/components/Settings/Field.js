@@ -5,13 +5,15 @@ import FlatBtn from '../FlatBtn';
 const Field = ({ item, display }) => {
   return (
     <div className="field">
-      <div className="constained-row">
+      <div className="constrained-row">
         <div className={`${item}-wrapper`}>
           <h5 className="caps-title">{item}</h5>
-          <div className={`${item}-inner_row`}>{display}</div>
+          <div className={`inner_row`}>
+            <span>{display}</span>
+          </div>
         </div>
       </div>
-      <FlatBtn text={'Edit'}></FlatBtn>
+      <FlatBtn text={'Edit'} className="filled"></FlatBtn>
     </div>
   );
 };

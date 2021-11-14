@@ -7,6 +7,7 @@
   --header-secondary: #b9bbbe;
   --hover-main: rgba(174, 174, 174, 0.1);
   --action-normal: #cb3e5b;
+  --action-hover: #ac354d;
   --action-muted: rgba(203, 62, 91, 0.5);
   --text-normal: #dcddde;
   --text-normal-filter: invert(99%) sepia(6%) saturate(408%) hue-rotate(175deg)
@@ -155,8 +156,7 @@ body {
   background-color: var(--fg-color);
 }
 
-.flat-btn.filled {
-  background-color: var(--action-normal);
+.flat-btn {
   border-radius: 3px;
   padding: 2px 16px;
   font-size: 14px;
@@ -166,4 +166,71 @@ body {
   justify-content: center;
   align-items: center;
   transition: background-color 0.17s ease, color 0.17s ease;
+}
+.flat-btn.filled {
+  background-color: var(--action-normal);
+}
+.flat-btn.filled:hover {
+  background-color: var(--action-hover);
+}
+
+.flat-btn.hollow {
+  color: var(--action-normal);
+  border: 1px solid var(--action-normal);
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.field .constrained-row {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  margin-right: 16px;
+}
+.field:not(:first-child) {
+  margin-top: 24px;
+}
+.field .flat-btn {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.field h5 {
+  margin-bottom: 4px;
+  color: var(--header-secondary);
+  font-weight: 600;
+  flex: 1;
+}
+.field .inner_row {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.field .inner_row span {
+  line-height: 20px;
+  font-size: 16px;
+  display: block;
+}
+.field .flat-btn {
+  background-color: #4f545c;
+}
+.field .flat-btn:hover {
+  background-color: #5d6269;
+}
+
+.margin-top-40 {
+  margin-top: 40px;
+}
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.header-secondary {
+  color: var(--header-secondary);
+}
+
+.subtext {
+  font-size: 12px;
 }

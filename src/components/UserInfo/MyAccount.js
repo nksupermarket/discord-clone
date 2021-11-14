@@ -1,5 +1,8 @@
 import React from 'react';
 import AccountProfileCard from './AccountProfileCard';
+import Divider from '../Settings/Divider';
+import PasswordSection from './PasswordSection';
+import AccountRemoval from './AccountRemoval';
 
 const MyAccount = ({ ...props }) => {
   return (
@@ -9,6 +12,10 @@ const MyAccount = ({ ...props }) => {
       </header>
       <div className="inner-content">
         <AccountProfileCard {...props} />
+        <Divider />
+        <PasswordSection />
+        <Divider />
+        <AccountRemoval />
       </div>
     </section>
   );

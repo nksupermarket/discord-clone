@@ -21,7 +21,7 @@ const Sidebar = ({ btnList, categories, reducer }) => {
               className="settings-category-wrapper"
               isHeader={category !== 'none'}
             >
-              {btnList
+              {btnList //grab btns that fall under the category
                 .filter((btn) => {
                   if (btn.category === category) return true;
                   if (!btn.category && category === 'none') return true;
