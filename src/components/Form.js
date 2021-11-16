@@ -9,9 +9,8 @@ import FlatBtn from './FlatBtn';
 const Form = ({ fields, handleChange, submitAction, close }) => {
   const user = useContext(UserContext);
   const formRef = useRef();
-  const { inputError, validateInput } = useInputError(
-    fields.map((f) => f.name)
-  );
+  const fieldNames = fields.map((f) => f.name);
+  const { inputError, validateInput } = useInputError(fieldNames);
 
   return (
     <form
@@ -25,8 +24,7 @@ const Form = ({ fields, handleChange, submitAction, close }) => {
         } = e;
 
         let errors = false;
-        fields //iterate through each input field and validate
-          .map((f) => f.name)
+        fieldNames //iterate through each input field and validate
           .forEach((fname) => {
             const currEl = elements.namedItem(fname);
             const isValid =
@@ -40,7 +38,13 @@ const Form = ({ fields, handleChange, submitAction, close }) => {
           });
         if (errors) return;
 
-        submitAction(user);
+        submitAction(
+          // submit action = update user info
+          user,
+          elements.namedItem(
+            fieldNames.find((fname) => fname.includes('new')).value //inputName w/ new means that is the value to be updated
+          )
+        );
       }}
     >
       <div className="content">

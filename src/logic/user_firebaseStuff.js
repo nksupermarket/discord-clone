@@ -59,6 +59,12 @@ async function updateUserPassword(user, newPW, setError) {
 async function removeUser(user, channelList, setError) {
   try {
     await deleteUser(user);
+
+    let updates = {};
+    channelList.forEach((c) => {
+      updates[`Channels/${c.id}/users/${user.uid}`] = '';
+    });
+    update(db, updates);
   } catch (error) {
     setError && setError(error.message);
   }
