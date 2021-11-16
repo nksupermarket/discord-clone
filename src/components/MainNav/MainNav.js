@@ -27,7 +27,7 @@ const MainNav = ({ list }) => {
         </div>
       </nav>
       {isCreateChannel && (
-        <CreateChannel close={() => setIsCreateChannel(false)} user={user} />
+        <CreateChannel close={() => setIsCreateChannel(false)} />
       )}
     </>
   );

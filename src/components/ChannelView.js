@@ -1,5 +1,13 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useContext,
+} from 'react';
 import { useHistory, useParams } from 'react-router';
+
+import { UserContext } from '../logic/contexts/UserContext';
 
 import ChannelNav from './ChannelNav/ChannelNav';
 import OnlineUsers from './OnlineUsers/OnlineUsers';
@@ -12,7 +20,8 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
-const ChannelView = ({ user, setError }) => {
+const ChannelView = ({ setError }) => {
+  const user = useContext(UserContext);
   const { channelID, roomID } = useParams();
   const [channel, setChannel] = useState();
   const [room, setRoom] = useState();
@@ -57,7 +66,6 @@ const ChannelView = ({ user, setError }) => {
     <div className="channel-view">
       {channel && (
         <ChannelNav
-          user={user}
           channel={channel}
           categories={roomCategories}
           list={roomList}

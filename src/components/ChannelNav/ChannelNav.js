@@ -7,14 +7,7 @@ import UserInfo from '../UserInfo/UserInfo';
 import CatList from '../CatList';
 import RoomLink from './RoomLink';
 
-const ChannelNav = ({
-  user,
-  channel,
-  categories,
-  list,
-  unread,
-  onRoomExit,
-}) => {
+const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
   categories = categories || [];
 
   return (
@@ -48,7 +41,7 @@ const ChannelNav = ({
           </CatList>
         ))}
       </div>
-      <UserInfo user={user} />
+      <UserInfo />
     </nav>
   );
 };

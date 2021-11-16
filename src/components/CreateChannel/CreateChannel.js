@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 
 import {
   createChannel,
@@ -12,8 +12,10 @@ import NodeOne from './NodeOne';
 
 import '../../styles/CreateChannel.css';
 import NodeTwo from './NodeTwo';
+import { UserContext } from '../../logic/contexts/UserContext';
 
-const CreateChannel = ({ user, close }) => {
+const CreateChannel = ({ close }) => {
+  const user = useContext(UserContext);
   const [node, setNode] = useState(1);
   const [channelInfo, setChannelInfo] = useState({
     name: `${user.displayName}'s channel`,

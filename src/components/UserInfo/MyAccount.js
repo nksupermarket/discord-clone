@@ -5,20 +5,14 @@ import PasswordSection from './PasswordSection';
 import AccountRemoval from './AccountRemoval';
 import Modal from '../Modal';
 import Popup from '../Popup';
-import FlatBtn from '../FlatBtn';
 
-import {
-  validatePW,
-  validateEmail,
-  confirmPW,
-} from '../../logic/formValidation';
 import {
   updateUserEmail,
   updateUsername,
   updateUserPassword,
 } from '../../logic/user_firebaseStuff';
 
-const MyAccount = ({ user, editProfile }) => {
+const MyAccount = ({ editProfile }) => {
   const [popupDetails, setPopupDetails] = useState();
 
   const editUsername = useCallback(() => {
@@ -85,7 +79,6 @@ const MyAccount = ({ user, editProfile }) => {
         </header>
         <div className="inner-content">
           <AccountProfileCard
-            user={user}
             editProfile={editProfile}
             editUsername={editUsername}
             editEmail={editEmail}

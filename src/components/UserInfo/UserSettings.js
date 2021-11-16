@@ -5,14 +5,13 @@ import MyAccount from './MyAccount';
 import UserProfile from './UserProfile';
 import Notifications from './Notifications';
 
-const UserSettings = ({ user, close }) => {
+const UserSettings = ({ close }) => {
   const [state, dispatch] = useReducer((state, action) => {
     if (action.type === 'swap_to') {
       switch (action.payload) {
         case 'my account':
           return (
             <MyAccount
-              user={user}
               editProfile={() =>
                 dispatch({ type: 'swap_to', payload: 'user profile' })
               }
@@ -26,7 +25,7 @@ const UserSettings = ({ user, close }) => {
           throw new Error("that doesn't exist!");
       }
     }
-  }, <MyAccount user={user} editProfile={() => dispatch({ type: 'swap_to', payload: 'user profile' })} />);
+  }, <MyAccount editProfile={() => dispatch({ type: 'swap_to', payload: 'user profile' })} />);
 
   function createSettingsButton(text, category) {
     return {

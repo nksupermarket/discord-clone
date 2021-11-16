@@ -6,7 +6,8 @@ import {
 } from '../user_firebaseStuff';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-export default function useLoginUser(user, setUser, setError) {
+export default function useLoginUser(setError) {
+  const [user, setUser] = useState();
   const [channelList, setChannelList] = useState([]);
 
   useEffect(

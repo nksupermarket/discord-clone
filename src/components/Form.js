@@ -1,11 +1,13 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, useContext } from 'react';
 
 import useInputError from '../logic/custom-hooks/useInputError';
+import { UserContext } from '../logic/contexts/UserContext';
 
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
 const Form = ({ fields, handleChange, submitAction, close }) => {
+  const user = useContext(UserContext);
   const formRef = useRef();
   const { inputError, validateInput } = useInputError(
     fields.map((f) => f.name)
@@ -37,6 +39,8 @@ const Form = ({ fields, handleChange, submitAction, close }) => {
             if (!isValid) errors = true;
           });
         if (errors) return;
+
+        submitAction(user);
       }}
     >
       <div className="content">

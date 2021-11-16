@@ -18,8 +18,7 @@ import './assets/font/remixicon.css';
 
 function App() {
   const [error, setError] = useState();
-  const [user, setUser] = useContext(UserContext);
-  const { channelList } = useLoginUser(user, setUser, setError);
+  const { user, setUser, channelList } = useLoginUser(setError);
 
   useEffect(function ifError() {
     if (error)
@@ -51,11 +50,11 @@ function App() {
       {user && (
         <UserContext.Provider value={user}>
           <div className="app">
-            <MainNav user={user} list={channelList} />
+            <MainNav list={channelList} />
             <Route
               path={['/channels/:channelID/:roomID', '/channels/:channelID']}
             >
-              <ChannelView user={user} setError={setError} />
+              <ChannelView setError={setError} />
             </Route>
           </div>
         </UserContext.Provider>

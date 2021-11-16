@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { UserContext } from '../../logic/contexts/UserContext';
 
 import Field from '../Settings/Field';
 import FlatBtn from '../FlatBtn';
@@ -6,7 +8,8 @@ import Avatar from '../Avatar';
 
 import '../../styles/AccountProfileCard.css';
 
-const AccountProfileCard = ({ user, editProfile, editUsername, editEmail }) => {
+const AccountProfileCard = ({ editProfile, editUsername, editEmail }) => {
+  const user = useContext(UserContext);
   return (
     <div className="account-profile-card">
       <div className="banner"></div>

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { UserContext } from '../../logic/contexts/UserContext';
 
 import Avatar from '../Avatar';
 import IconBtn from '../IconBtn';
@@ -7,7 +9,8 @@ import UserSettings from './UserSettings';
 import '../../styles/UserInfo.css';
 import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
-const UserInfo = ({ user }) => {
+const UserInfo = () => {
+  const user = useContext(UserContext);
   const [isSettings, setIsSettings] = useState(false);
   return (
     <>
@@ -22,9 +25,7 @@ const UserInfo = ({ user }) => {
           </div>
         </div>
       </section>
-      {isSettings && (
-        <UserSettings user={user} close={() => setIsSettings(false)} />
-      )}
+      {isSettings && <UserSettings close={() => setIsSettings(false)} />}
     </>
   );
 };
