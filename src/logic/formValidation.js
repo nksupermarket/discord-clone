@@ -40,7 +40,6 @@ function confirmPW(pw, otherPW) {
 }
 
 function dynamicValidation(el, otherPW) {
-  if (el.name === 'confirm_password') console.log(confirmPW(el.value, otherPW));
   switch (true) {
     case el.name.includes('email'): {
       return validateEmail(el.value);

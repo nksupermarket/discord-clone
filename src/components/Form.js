@@ -5,7 +5,7 @@ import useInputError from '../logic/custom-hooks/useInputError';
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
-const Form = ({ fields, handleChange, close }) => {
+const Form = ({ fields, handleChange, submitAction, close }) => {
   const formRef = useRef();
   const { inputError, validateInput } = useInputError(
     fields.map((f) => f.name)

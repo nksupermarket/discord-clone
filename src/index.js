@@ -2,18 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import { UserContext } from './logic/contexts/UserContext';
+
 import App from './App';
-import {
-  createRoomCategory,
-  createUserRole,
-  updateCategoryOfRoom,
-  updateRoleOfUser,
-} from './logic/channel_firebaseStuff';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <UserContext.Provider value="">
+        <App />
+      </UserContext.Provider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

@@ -14,7 +14,7 @@ const Popup = ({
   fields,
   children,
   footerContent,
-  validate,
+  submitAction,
   close,
 }) => {
   const [info, setInfo] = useState({});
@@ -35,7 +35,12 @@ const Popup = ({
         <IconBtn svg={closeSVG} onClick={close} className="close-btn" />
       </header>
       {fields && (
-        <Form handleChange={handleChange} fields={fields} close={close} />
+        <Form
+          handleChange={handleChange}
+          fields={fields}
+          submitAction={submitAction}
+          close={close}
+        />
       )}
       {children && (
         <>

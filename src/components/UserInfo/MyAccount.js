@@ -12,6 +12,11 @@ import {
   validateEmail,
   confirmPW,
 } from '../../logic/formValidation';
+import {
+  updateUserEmail,
+  updateUsername,
+  updateUserPassword,
+} from '../../logic/user_firebaseStuff';
 
 const MyAccount = ({ user, editProfile }) => {
   const [popupDetails, setPopupDetails] = useState();
@@ -29,6 +34,7 @@ const MyAccount = ({ user, editProfile }) => {
           type: 'password',
         },
       ],
+      submitAction: updateUsername,
     });
   }, []);
 
@@ -45,7 +51,7 @@ const MyAccount = ({ user, editProfile }) => {
           type: 'password',
         },
       ],
-      validate: validateEmail,
+      submitAction: updateUserEmail,
     });
   }, []);
 
@@ -67,8 +73,7 @@ const MyAccount = ({ user, editProfile }) => {
           type: 'password',
         },
       ],
-      validate: validatePW,
-      onSubmit: (pw, otherPW, onInputError) => {},
+      submitAction: updateUserPassword,
     });
   }, []);
 

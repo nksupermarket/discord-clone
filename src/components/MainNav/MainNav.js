@@ -7,7 +7,7 @@ import ChannelListHeader from './ChannelListHeader';
 import MainNavBtn from './MainNavBtn';
 import CreateChannel from '../CreateChannel/CreateChannel';
 
-const MainNav = ({ user, list }) => {
+const MainNav = ({ list }) => {
   const [isCreateChannel, setIsCreateChannel] = useState(false);
   return (
     <>

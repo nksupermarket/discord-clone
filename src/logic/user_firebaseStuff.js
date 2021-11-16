@@ -13,6 +13,9 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  updateEmail,
+  updatePassword,
+  deleteUser,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
@@ -23,6 +26,42 @@ function detachListenersForUser(uid) {
   const channelListRef = ref(db, `users/${uid}/channels`);
 
   off(channelListRef);
+}
+
+async function updateUsername(user, displayName, setError) {
+  try {
+    updateProfile(user, { displayName });
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+async function updateUserAvatar(user, photoURL, setError) {
+  try {
+    updateProfile(user, { photoURL });
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+async function updateUserEmail(user, email, setError) {
+  try {
+    updateEmail(user, email);
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+async function updateUserPassword(user, newPW, setError) {
+  try {
+    updatePassword(user, newPW);
+  } catch (error) {
+    setError && setError(error.message);
+  }
+}
+async function removeUser(user, channelList, setError) {
+  try {
+    await deleteUser(user);
+  } catch (error) {
+    setError && setError(error.message);
+  }
 }
 
 async function createUser(
@@ -40,7 +79,7 @@ async function createUser(
       email,
       password
     );
-    await updateProfile(userCredential.user, { displayName });
+    await updateUsername(userCredential.user, { displayName }, setError);
     if (channelID) {
       subscribeToChannel(userCredential, channelID, setError);
     }
@@ -208,6 +247,10 @@ async function verifyPW(pw) {
 }
 
 export {
+  updateUsername,
+  updateUserAvatar,
+  updateUserEmail,
+  updateUserPassword,
   createUser,
   signIn,
   isUserOnline,

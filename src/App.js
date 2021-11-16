@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import { getAuth, signOut } from '@firebase/auth';
 
 import useLoginUser from './logic/custom-hooks/useLoginUser';
+import { UserContext } from './logic/contexts/UserContext';
 
 import ChannelView from './components/ChannelView';
 import LoginScreen from './components/Login/LoginScreen';
@@ -17,8 +18,8 @@ import './assets/font/remixicon.css';
 
 function App() {
   const [error, setError] = useState();
-
-  const { user, setUser, channelList } = useLoginUser(setError);
+  const [user, setUser] = useContext(UserContext);
+  const { channelList } = useLoginUser(user, setUser, setError);
 
   useEffect(function ifError() {
     if (error)
@@ -48,14 +49,16 @@ function App() {
         {!user && <LoginScreen setUser={setUser} setError={setError} />}
       </Route>
       {user && (
-        <div className="app">
-          <MainNav user={user} list={channelList} />
-          <Route
-            path={['/channels/:channelID/:roomID', '/channels/:channelID']}
-          >
-            <ChannelView user={user} setError={setError} />
-          </Route>
-        </div>
+        <UserContext.Provider value={user}>
+          <div className="app">
+            <MainNav user={user} list={channelList} />
+            <Route
+              path={['/channels/:channelID/:roomID', '/channels/:channelID']}
+            >
+              <ChannelView user={user} setError={setError} />
+            </Route>
+          </div>
+        </UserContext.Provider>
       )}
     </>
   );
