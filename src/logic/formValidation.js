@@ -39,21 +39,24 @@ function confirmPW(pw, otherPW) {
     : { error: "Passwords don't match" };
 }
 
-function validateInput(el, otherPW) {
-  console.log(el);
+function dynamicValidation(el, otherPW) {
+  if (el.name === 'confirm_password') console.log(confirmPW(el.value, otherPW));
   switch (true) {
     case el.name.includes('email'): {
       return validateEmail(el.value);
     }
+    case el.name === 'confirm_password': {
+      const pwValidation = validatePW(el.value);
+      if (pwValidation.error) return pwValidation;
+      return confirmPW(el.value, otherPW);
+    }
     case el.name.includes('password'): {
       return validatePW(el.value);
     }
-    case el.name === 'confirm_password': {
-      return confirmPW(el.value, otherPW);
-    }
+
     default:
       return { isValid: true };
   }
 }
 
-export { validateInput, validateEmail, validatePW, confirmPW };
+export { dynamicValidation, validateEmail, validatePW, confirmPW };

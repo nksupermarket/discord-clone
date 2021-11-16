@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { validateInput } from '../logic/formValidation';
+import { dynamicValidation } from '../logic/formValidation';
 import useInputError from '../logic/custom-hooks/useInputError';
 
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
 const Form = ({ fields, handleChange, close }) => {
-  const { inputError, setInputError } = useInputError(
+  const { inputError, validateInput } = useInputError(
     fields.map((f) => f.name)
   );
   return (
@@ -19,24 +19,28 @@ const Form = ({ fields, handleChange, close }) => {
           target: { elements },
         } = e;
 
+        let errors = false;
         fields //iterate through each input field and validate
           .map((f) => f.name)
           .forEach((fname) => {
             const currEl = elements.namedItem(fname);
-            console.log(currEl);
-            const validationStatus = validateInput(currEl);
-            if (validationStatus.error)
-              return setInputError((prev) => ({
-                ...prev,
-                [fname]: validationStatus.error,
-              }));
+            const isValid =
+              fname === 'confirm_password'
+                ? validateInput(
+                    currEl,
+                    elements.namedItem('new_password').value
+                  )
+                : validateInput(currEl);
+            if (!isValid) errors = true;
           });
+        if (errors) return;
       }}
     >
       <div className="content">
         {fields.map((f, idx) => (
           <InputField
             key={idx}
+            //onBlur={(e) => validateInput(e.target)}
             error={inputError[f.name]}
             label={f.label}
             name={f.name}
