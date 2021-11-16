@@ -7,23 +7,14 @@ import Modal from '../Modal';
 import Popup from '../Popup';
 import FlatBtn from '../FlatBtn';
 
+import {
+  validatePW,
+  validateEmail,
+  confirmPW,
+} from '../../logic/formValidation';
+
 const MyAccount = ({ user, editProfile }) => {
   const [popupDetails, setPopupDetails] = useState();
-
-  useEffect(() => console.log(popupDetails));
-  const defaultFooterContent = useMemo(
-    () => (
-      <div className="btn-ctn">
-        <FlatBtn
-          text="Cancel"
-          isUnderline={true}
-          onClick={() => setPopupDetails()}
-        />
-        <FlatBtn type="submit" text="Done" className="filled" />
-      </div>
-    ),
-    []
-  );
 
   const editUsername = useCallback(() => {
     setPopupDetails({
@@ -34,9 +25,8 @@ const MyAccount = ({ user, editProfile }) => {
         { label: 'username', name: 'new_username' },
         { label: 'current password', name: 'current_password' },
       ],
-      footerContent: defaultFooterContent,
     });
-  }, [defaultFooterContent]);
+  }, []);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
@@ -47,9 +37,9 @@ const MyAccount = ({ user, editProfile }) => {
         { label: 'email', name: 'new_email' },
         { label: 'current password', name: 'current_password' },
       ],
-      footerContent: defaultFooterContent,
+      validate: validateEmail,
     });
-  }, [defaultFooterContent]);
+  }, []);
 
   const editPassword = useCallback(() => {
     setPopupDetails({
@@ -61,9 +51,10 @@ const MyAccount = ({ user, editProfile }) => {
         { label: 'new password', name: 'new_password' },
         { label: 'confirm new password', name: 'confirm_password' },
       ],
-      footerContent: defaultFooterContent,
+      validate: validatePW,
+      onSubmit: (pw, otherPW, onInputError) => {},
     });
-  }, [defaultFooterContent]);
+  }, []);
 
   return (
     <>

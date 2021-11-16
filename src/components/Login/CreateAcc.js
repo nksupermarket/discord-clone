@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { validateEmail, validatePw } from '../../logic/formValidation';
+import { validateEmail, validatePW } from '../../logic/formValidation';
 import { createUser } from '../../logic/user_firebaseStuff';
 
 import InputField from '../InputField';
@@ -20,7 +20,7 @@ const CreateAcc = ({ serverInfo, displayName, channel, setUser, setError }) => {
 
   function validateForm() {
     const isEmailValid = validateEmail(email);
-    const isPwValid = validatePw(pw);
+    const isPwValid = validatePW(pw);
     setValidStatus({ isEmailValid, isPwValid });
     return isEmailValid && isPwValid;
   }

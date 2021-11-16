@@ -15,6 +15,7 @@
   --text-muted: #72767d;
   --text-muted-filter: invert(50%) sepia(1%) saturate(2278%) hue-rotate(179deg)
     brightness(90%) contrast(80%);
+  --text-danger: hsl(359, calc(var(--saturation-factor, 1) * 82.6%), 59.4%);
   --interactive-normal: #b9bbbe;
   --interactive-hover: #dcddde;
   --interactive-normal-filter: invert(79%) sepia(6%) saturate(124%)
@@ -249,8 +250,7 @@ form label {
   margin-bottom: 8px;
   font-size: 12px;
   line-height: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
+  color: inherit;
 }
 
 form .input-wrapper {
@@ -272,4 +272,15 @@ form .input-wrapper input {
 form .input-wrapper input:focus {
   outline: none;
   border: 1px solid #0645ad;
+}
+
+.error,
+.error label {
+  color: var(--text-danger) !important;
+}
+.error-msg {
+  font-style: italic;
+}
+.error input {
+  border: 1px solid var(--text-danger) !important;
 }

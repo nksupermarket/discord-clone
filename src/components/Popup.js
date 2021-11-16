@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
-import FlatBtn from './FlatBtn';
 import IconBtn from './IconBtn';
-import InputField from './InputField';
 
 import closeSVG from '../assets/svg/close-line.svg';
 
 import '../styles/Popup.css';
+import Form from './Form';
 
 const Popup = ({
   className,
@@ -19,6 +18,10 @@ const Popup = ({
   close,
 }) => {
   const [info, setInfo] = useState({});
+
+  function handleChange(e) {
+    setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
   return (
     <div
       className={className ? className + ' popup' : 'popup'}
@@ -32,26 +35,7 @@ const Popup = ({
         <IconBtn svg={closeSVG} onClick={close} className="close-btn" />
       </header>
       {fields && (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <div className="content">
-            {fields.map((f) => (
-              <InputField
-                label={f.label}
-                name={f.name}
-                onChange={(e) =>
-                  setInfo((prev) =>
-                    setInfo({ ...prev, [e.target.name]: e.target.value })
-                  )
-                }
-              />
-            ))}
-          </div>
-          <footer>{footerContent}</footer>
-        </form>
+        <Form handleChange={handleChange} fields={fields} close={close} />
       )}
       {children && (
         <>

@@ -198,6 +198,15 @@ function isUserOnline(uid) {
   return get(userRef);
 }
 
+async function verifyPW(pw) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const userCredential = auth.EmailAuthProvider.credential(user.email, pw);
+
+  await user.reauthenticateWithCredential(userCredential);
+  console.log('re authenticated');
+}
+
 export {
   createUser,
   signIn,
@@ -210,4 +219,5 @@ export {
   updateMentions,
   getUnreadRooms,
   detachListenersForUser,
+  verifyPW,
 };

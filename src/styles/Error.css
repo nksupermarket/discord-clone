@@ -10,7 +10,7 @@
   text-align: center;
 }
 
-.error-msg {
+#error-popup .error-msg {
   display: flex;
   align-items: center;
   column-gap: 10px;
