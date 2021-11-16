@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 
-import { dynamicValidation } from '../logic/formValidation';
 import useInputError from '../logic/custom-hooks/useInputError';
 
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
 const Form = ({ fields, handleChange, close }) => {
+  const formRef = useRef();
   const { inputError, validateInput } = useInputError(
     fields.map((f) => f.name)
   );
+
   return (
     <form
+      ref={formRef}
+      autocomplete="nope"
       onSubmit={(e) => {
         e.preventDefault();
 
@@ -37,10 +40,20 @@ const Form = ({ fields, handleChange, close }) => {
       }}
     >
       <div className="content">
+        <input type="password" hidden />
         {fields.map((f, idx) => (
           <InputField
             key={idx}
-            //onBlur={(e) => validateInput(e.target)}
+            type={f.type}
+            onBlur={
+              f.name === 'confirm_password'
+                ? (e) =>
+                    validateInput(
+                      e.target,
+                      formRef.current.elements.namedItem('new_password').value
+                    )
+                : (e) => validateInput(e.target)
+            }
             error={inputError[f.name]}
             label={f.label}
             name={f.name}
