@@ -7,14 +7,14 @@ import ChannelListHeader from './ChannelListHeader';
 import MainNavBtn from './MainNavBtn';
 import CreateChannel from '../CreateChannel/CreateChannel';
 
-const MainNav = ({ list }) => {
+const MainNav = () => {
   const [isCreateChannel, setIsCreateChannel] = useState(false);
   return (
     <>
       <nav id="main-nav">
         <ChannelListHeader />
         <div className="scroller">
-          <ChannelList list={list} />
+          <ChannelList />
           <div className="btn-ctn">
             <MainNavBtn
               icon="flaticon-plus"

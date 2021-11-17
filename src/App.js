@@ -44,7 +44,7 @@ function App() {
       {user && (
         <UserContext.Provider value={{ user, channelList }}>
           <div className="app">
-            <MainNav list={channelList} />
+            <MainNav />
             <Route
               path={['/channels/:channelID/:roomID', '/channels/:channelID']}
             >

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { UserContext } from '../../logic/contexts/UserContext';
 
 import ChannelLink from './ChannelLink';
 
 import '../../styles/ChannelList.css';
 
-const ChannelList = ({ list }) => {
+const ChannelList = () => {
+  const { channelList: list } = useContext(UserContext);
   return (
     <ul className="channel-list">
       {list &&

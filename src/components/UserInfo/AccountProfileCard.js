@@ -14,7 +14,7 @@ const AccountProfileCard = ({
   editEmail,
   isSmall,
 }) => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   return (
     <div className="account-profile-card">
       <div className="banner"></div>

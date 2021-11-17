@@ -10,7 +10,7 @@ import '../../styles/UserInfo.css';
 import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
 const UserInfo = () => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [isSettings, setIsSettings] = useState(false);
   return (
     <>
