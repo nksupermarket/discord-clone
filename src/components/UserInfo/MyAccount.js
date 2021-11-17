@@ -1,19 +1,26 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useContext,
+} from 'react';
+
+import { updateUserInfo, removeUser } from '../../logic/user_firebaseStuff';
+import useError from '../../logic/custom-hooks/useError';
+import { UserContext } from '../../logic/contexts/UserContext';
+
 import AccountProfileCard from './AccountProfileCard';
 import Divider from '../Settings/Divider';
 import PasswordSection from './PasswordSection';
 import AccountRemoval from './AccountRemoval';
 import Modal from '../Modal';
 import Popup from '../Popup';
-
-import {
-  updateUserEmail,
-  updateUsername,
-  updateUserPassword,
-  removeUser,
-} from '../../logic/user_firebaseStuff';
+import Error from '../Error';
 
 const MyAccount = ({ editProfile }) => {
+  const { error, setError } = useError();
+  const { channelList } = useContext(UserContext);
   const [popupDetails, setPopupDetails] = useState();
 
   const editUsername = useCallback(() => {
@@ -29,9 +36,10 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: updateUsername,
+      submitAction: (value) =>
+        updateUserInfo('displayName', value, setError, channelList),
     });
-  }, []);
+  }, [setError, channelList]);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
@@ -46,9 +54,9 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: updateUserEmail,
+      submitAction: (value) => updateUserInfo('email', value, setError),
     });
-  }, []);
+  }, [setError]);
 
   const editPassword = useCallback(() => {
     setPopupDetails({
@@ -68,9 +76,9 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: updateUserPassword,
+      submitAction: (value) => updateUserInfo('password', value, setError),
     });
-  }, []);
+  }, [setError]);
 
   const deleteAcc = useCallback(() => {
     setPopupDetails({
@@ -92,6 +100,7 @@ const MyAccount = ({ editProfile }) => {
 
   return (
     <>
+      {error && <Error errorMsg={error} />}
       <section className="my_account">
         <header>
           <h2>My Account</h2>

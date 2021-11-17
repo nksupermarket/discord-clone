@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import { getAuth, signOut } from '@firebase/auth';
 
+import useError from './logic/custom-hooks/useError';
 import useLoginUser from './logic/custom-hooks/useLoginUser';
 import { UserContext } from './logic/contexts/UserContext';
 
@@ -17,15 +18,8 @@ import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
 
 function App() {
-  const [error, setError] = useState();
+  const { error, setError } = useError();
   const { user, setUser, channelList } = useLoginUser(setError);
-
-  useEffect(function ifError() {
-    if (error)
-      setTimeout(() => {
-        setError();
-      }, 3500);
-  });
 
   // useEffect(() => {
   //   if (!user) return;
@@ -48,7 +42,7 @@ function App() {
         {!user && <LoginScreen setUser={setUser} setError={setError} />}
       </Route>
       {user && (
-        <UserContext.Provider value={user}>
+        <UserContext.Provider value={{ user, channelList }}>
           <div className="app">
             <MainNav list={channelList} />
             <Route

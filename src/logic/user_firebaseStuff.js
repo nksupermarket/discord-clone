@@ -30,53 +30,63 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function updateUsername(displayName, setError) {
+async function updateUserInfo(infoType, value, setError, channelList) {
   const auth = getAuth();
   const user = auth.currentUser;
+
+  const updateObj = { [infoType]: value };
   try {
-    updateProfile(user, { displayName });
+    switch (infoType) {
+      case 'displayName': {
+        updateProfile(user, updateObj);
+        break;
+      }
+      case 'avatar': {
+        updateProfile(user, { photoURL: value });
+        break;
+      }
+      case 'color': {
+        updateUserProfileColor(user.uid, value);
+        break;
+      }
+      case 'email': {
+        updateEmail(user, value);
+        break;
+      }
+      case 'password': {
+        updatePassword(user, value);
+        break;
+      }
+      default: {
+        return;
+      }
+    }
+
+    if (channelList)
+      updateUserInfoForAllChannels(user.uid, channelList, updateObj);
   } catch (error) {
     setError && setError(error.message);
   }
 }
-async function updateUserAvatar(photoURL, setError) {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  try {
-    updateProfile(user, { photoURL });
-  } catch (error) {
-    setError && setError(error.message);
-  }
-}
-async function updateUserEmail(email, setError) {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  try {
-    updateEmail(user, email);
-  } catch (error) {
-    setError && setError(error.message);
-  }
-}
-async function updateUserPassword(newPW, setError) {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  try {
-    updatePassword(user, newPW);
-  } catch (error) {
-    setError && setError(error.message);
-  }
+function updateUserProfileColor(uid, color) {
+  const defaultColors = [
+    'rgb(92, 100, 244)',
+    'rgb(237, 66, 69)',
+    'rgb(250, 166, 26)',
+  ];
+  color =
+    color || defaultColors[Math.floor(Math.random() * defaultColors.length)];
+
+  const userRef = ref(db, `users/${uid}`);
+  update(userRef, { color });
+
+  return color;
 }
 async function removeUser(channelList, setError) {
   const auth = getAuth();
   const user = auth.currentUser;
   try {
     await deleteUser(user);
-
-    let updates = {};
-    channelList.forEach((c) => {
-      updates[`Channels/${c.id}/users/${user.uid}`] = '';
-    });
-    update(db, updates);
   } catch (error) {
     setError && setError(error.message);
   }
@@ -97,16 +107,17 @@ async function createUser(
       email,
       password
     );
-    await updateUsername(userCredential.user, { displayName }, setError);
-    if (channelID) {
-      subscribeToChannel(userCredential, channelID, setError);
-    }
+    await updateProfile(userCredential.user, { displayName });
+    const profileColor = await updateUserProfileColor();
+    userCredential.user.color = profileColor;
+    console.log(userCredential.user);
+
+    if (channelID) subscribeToChannel(userCredential.user, channelID, setError);
 
     setUser(userCredential.user);
 
     return true;
   } catch (error) {
-    console.log(error);
     setError && setError(error.message);
     return false;
     //setError(error.code);
@@ -118,7 +129,6 @@ function signIn(email, password, setError) {
   try {
     signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    console.log(error);
     setError && setError(error.message);
     //setError(error.code);
   }
@@ -131,7 +141,8 @@ async function subscribeToChannel(user, channelID, setError) {
 
     updates[`Channels/${channelID}/users/${user.uid}`] = {
       displayName: user.displayName,
-      avatar: user.avatar || '',
+      avatar: user.photoURL || '',
+      color: user.color,
     };
 
     update(ref(db), updates);
@@ -269,11 +280,16 @@ async function verifyPW(pw) {
   }
 }
 
+function updateUserInfoForAllChannels(uid, channelList, updateObj) {
+  let updates = {};
+  channelList.forEach((c) => {
+    updates[`Channels/${c.id}/users/${uid}/`] = updateObj;
+  });
+  update(db, updates);
+}
+
 export {
-  updateUsername,
-  updateUserAvatar,
-  updateUserEmail,
-  updateUserPassword,
+  updateUserInfo,
   createUser,
   signIn,
   isUserOnline,
