@@ -6,7 +6,7 @@
   padding: 1em 1.5em;
   border-radius: 10px;
   background: var(--fg-color);
-  z-index: 2;
+  z-index: 99;
   text-align: center;
 }
 

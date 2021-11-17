@@ -116,7 +116,7 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   display: grid;
   place-items: center;
-  z-index: 99;
+  z-index: 20;
 }
 
 .app {

@@ -30,42 +30,38 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function updateUserInfo(infoType, value, setError, channelList) {
+async function updateUserInfo(infoType, value, channelList) {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const updateObj = { [infoType]: value };
-  try {
-    switch (infoType) {
-      case 'displayName': {
-        updateProfile(user, updateObj);
-        break;
-      }
-      case 'avatar': {
-        updateProfile(user, { photoURL: value });
-        break;
-      }
-      case 'color': {
-        updateUserProfileColor(user.uid, value);
-        break;
-      }
-      case 'email': {
-        updateEmail(user, value);
-        break;
-      }
-      case 'password': {
-        updatePassword(user, value);
-        break;
-      }
-      default: {
-        return;
-      }
+  switch (infoType) {
+    case 'displayName': {
+      updateProfile(user, { displayName: value });
+      break;
     }
-
-    if (channelList)
-      updateUserInfoForAllChannels(user.uid, channelList, updateObj);
-  } catch (error) {
-    setError && setError(error.message);
+    case 'avatar': {
+      updateProfile(user, { photoURL: value });
+      break;
+    }
+    case 'color': {
+      updateUserProfileColor(user.uid, value);
+      break;
+    }
+    case 'email': {
+      updateEmail(user, value);
+      break;
+    }
+    case 'password': {
+      updatePassword(user, value);
+      break;
+    }
+    default: {
+      return;
+    }
+  }
+  if (channelList.length > 0) {
+    const updateObj = { [infoType]: value };
+    updateUserInfoForAllChannels(user.uid, channelList, updateObj);
   }
 }
 function updateUserProfileColor(uid, color) {
@@ -81,6 +77,13 @@ function updateUserProfileColor(uid, color) {
   update(userRef, { color });
 
   return color;
+}
+function updateUserInfoForAllChannels(uid, channelList, updateObj) {
+  let updates = {};
+  channelList.forEach((c) => {
+    updates[`Channels/${c.id}/users/${uid}/`] = updateObj;
+  });
+  update(ref(db), updates);
 }
 async function removeUser(channelList, setError) {
   const auth = getAuth();
@@ -274,18 +277,11 @@ async function verifyPW(pw) {
     const credential = EmailAuthProvider.credential(user.email, pw);
 
     const status = await reauthenticateWithCredential(user, credential);
-    console.log(status);
+    if (status) return { isValid: true };
+    return { error: 'something went wrong' };
   } catch (error) {
     return { error: error.message };
   }
-}
-
-function updateUserInfoForAllChannels(uid, channelList, updateObj) {
-  let updates = {};
-  channelList.forEach((c) => {
-    updates[`Channels/${c.id}/users/${uid}/`] = updateObj;
-  });
-  update(db, updates);
 }
 
 export {

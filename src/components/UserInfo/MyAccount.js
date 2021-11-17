@@ -37,9 +37,9 @@ const MyAccount = ({ editProfile }) => {
         },
       ],
       submitAction: (value) =>
-        updateUserInfo('displayName', value, setError, channelList),
+        updateUserInfo('displayName', value, channelList),
     });
-  }, [setError, channelList]);
+  }, [channelList]);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
@@ -54,9 +54,9 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: (value) => updateUserInfo('email', value, setError),
+      submitAction: (value) => updateUserInfo('email', value),
     });
-  }, [setError]);
+  }, []);
 
   const editPassword = useCallback(() => {
     setPopupDetails({
@@ -76,9 +76,9 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: (value) => updateUserInfo('password', value, setError),
+      submitAction: (value) => updateUserInfo('password', value),
     });
-  }, [setError]);
+  }, []);
 
   const deleteAcc = useCallback(() => {
     setPopupDetails({
@@ -119,7 +119,11 @@ const MyAccount = ({ editProfile }) => {
       </section>
       {popupDetails && (
         <Modal close={() => setPopupDetails()}>
-          <Popup close={() => setPopupDetails()} {...popupDetails}></Popup>
+          <Popup
+            close={() => setPopupDetails()}
+            {...popupDetails}
+            setError={setError}
+          ></Popup>
         </Modal>
       )}
     </>

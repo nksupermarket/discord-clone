@@ -29,36 +29,39 @@ function useInputError(inputNames) {
     return true;
   }
 
-  async function submitForm(e, submitAction, close) {
+  async function submitForm(e, submitAction, close, setError) {
     e.preventDefault();
 
     const {
       target: { elements }, //destructure e to get elements
     } = e;
 
-    let errors = false;
-    for (const fname of inputNames) {
-      //iterate through each input field and validate
-      const currEl = elements.namedItem(fname);
-      const isValid =
-        fname === 'confirm_password'
-          ? await validateInput(
-              currEl,
-              true,
-              elements.namedItem('new_password').value
-            )
-          : await validateInput(currEl, true);
-      if (!isValid) errors = true;
-    }
-    if (errors) return;
+    try {
+      let errors = false;
+      for (const fname of inputNames) {
+        //iterate through each input field and validate
+        const currEl = elements.namedItem(fname);
+        const isValid =
+          fname === 'confirm_password'
+            ? await validateInput(
+                currEl,
+                true,
+                elements.namedItem('new_password').value
+              )
+            : await validateInput(currEl, true);
+        if (!isValid) errors = true;
+      }
+      if (errors) return;
 
-    submitAction(
-      // submit action = update user info
-      elements.namedItem(
-        inputNames.find((fname) => fname.includes('new')).value //inputName w/ new means that is the value to be updated
-      )
-    );
-    close();
+      submitAction(
+        // submit action = update user info
+        elements.namedItem(inputNames.find((fname) => fname.includes('new')))
+          .value //inputName w/ new means that is the value to be updated
+      );
+      close();
+    } catch (error) {
+      setError && setError(error.message);
+    }
   }
 
   return { inputError, validateInput, submitForm };

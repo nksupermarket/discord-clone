@@ -6,7 +6,14 @@ import { UserContext } from '../logic/contexts/UserContext';
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
-const Form = ({ fields, actionBtnText, handleChange, submitAction, close }) => {
+const Form = ({
+  fields,
+  actionBtnText,
+  handleChange,
+  submitAction,
+  close,
+  setError,
+}) => {
   const formRef = useRef();
   const fieldNames = fields.map((f) => f.name);
   const { inputError, validateInput, submitForm } = useInputError(fieldNames);
@@ -16,7 +23,7 @@ const Form = ({ fields, actionBtnText, handleChange, submitAction, close }) => {
       ref={formRef}
       autocomplete="nope"
       onSubmit={(e) => {
-        submitForm(e, submitAction, close);
+        submitForm(e, submitAction, close, setError);
       }}
     >
       <div className="content">
