@@ -1,0 +1,16 @@
+.user_profile .caps-title {
+  margin-bottom: 8px;
+}
+
+.user_profile .customization-wrapper {
+  margin-bottom: 40px;
+}
+
+.user_profile .btn-ctn {
+  margin-top: 16px;
+}
+
+.user_profile .preview {
+  flex: 0 0 auto;
+  margin-left: 20px;
+}

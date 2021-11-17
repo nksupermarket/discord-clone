@@ -289,3 +289,9 @@ form .input-wrapper input:focus {
 .error input {
   border: 1px solid var(--text-danger) !important;
 }
+
+.row-layout {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+}

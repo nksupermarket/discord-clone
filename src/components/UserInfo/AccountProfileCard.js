@@ -8,7 +8,12 @@ import Avatar from '../Avatar';
 
 import '../../styles/AccountProfileCard.css';
 
-const AccountProfileCard = ({ editProfile, editUsername, editEmail }) => {
+const AccountProfileCard = ({
+  editProfile,
+  editUsername,
+  editEmail,
+  isSmall,
+}) => {
   const user = useContext(UserContext);
   return (
     <div className="account-profile-card">
@@ -16,22 +21,26 @@ const AccountProfileCard = ({ editProfile, editUsername, editEmail }) => {
       <div className="user-info">
         <Avatar img={user.photoURL} />
         <div className="profile-card-username">{user.displayName}</div>
-        <FlatBtn
-          text={'Edit User Profile'}
-          className={'filled'}
-          onClick={editProfile}
-        />
-      </div>
-      <div className="background">
-        <div className="field-list">
-          <Field
-            item="username"
-            display={user.displayName}
-            onClick={editUsername}
+        {!isSmall && (
+          <FlatBtn
+            text={'Edit User Profile'}
+            className={'filled'}
+            onClick={editProfile}
           />
-          <Field item="email" display={user.email} onClick={editEmail} />
-        </div>
+        )}
       </div>
+      {!isSmall && (
+        <div className="background">
+          <div className="field-list">
+            <Field
+              item="username"
+              display={user.displayName}
+              onClick={editUsername}
+            />
+            <Field item="email" display={user.email} onClick={editEmail} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
