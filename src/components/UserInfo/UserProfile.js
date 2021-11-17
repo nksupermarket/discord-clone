@@ -5,6 +5,7 @@ import FlatBtn from '../FlatBtn';
 import AccountProfileCard from '../UserInfo/AccountProfileCard';
 
 import '../../styles/UserProfile.css';
+import ProfileColorSwatch from './ProfileColorSwatch';
 
 const UserProfile = () => {
   const user = useContext(UserContext);
@@ -24,7 +25,10 @@ const UserProfile = () => {
             </div>
             <div className="customization-wrapper">
               <h3 className="caps-title">Profile Color</h3>
-              <div className="btn-ctn"></div>
+              <div className="btn-ctn">
+                <ProfileColorSwatch isDefault={true} />
+                <ProfileColorSwatch />
+              </div>
             </div>
           </div>
           <div className="customization-wrapper preview">

@@ -1,0 +1,25 @@
+.profile-color-swatch {
+  text-align: center;
+  margin-right: 16px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.swatch {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 69px;
+  height: 50px;
+  border-radius: 4px;
+}
+.swatch.custom {
+  border: 1px solid var(--background-accent);
+}
+
+.swatch-description {
+  margin-top: 4px;
+  font-size: 12px;
+}
