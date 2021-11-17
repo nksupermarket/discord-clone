@@ -175,7 +175,6 @@ body {
   align-items: center;
   transition: background-color 0.17s ease, color 0.17s ease;
 }
-
 .flat-btn.filled {
   background-color: var(--action-normal);
 }
@@ -250,7 +249,6 @@ body {
 form {
   display: flex;
   flex-direction: column;
-  color: var(--header-secondary);
 }
 
 form label {

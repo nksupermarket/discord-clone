@@ -10,6 +10,7 @@ import {
   updateUserEmail,
   updateUsername,
   updateUserPassword,
+  removeUser,
 } from '../../logic/user_firebaseStuff';
 
 const MyAccount = ({ editProfile }) => {
@@ -71,6 +72,24 @@ const MyAccount = ({ editProfile }) => {
     });
   }, []);
 
+  const deleteAcc = useCallback(() => {
+    setPopupDetails({
+      className: 'settings-popup',
+      title: 'Delete Account',
+      subheader:
+        'Are you sure you want to delete your account? This will immediately log you out of your account and you will not be able to log in again. Forever.',
+      fields: [
+        {
+          label: 'password',
+          name: 'password',
+          type: 'password',
+        },
+      ],
+      actionBtnText: 'Delete Account',
+      submitAction: removeUser,
+    });
+  }, []);
+
   return (
     <>
       <section className="my_account">
@@ -86,7 +105,7 @@ const MyAccount = ({ editProfile }) => {
           <Divider />
           <PasswordSection editPassword={editPassword} />
           <Divider />
-          <AccountRemoval />
+          <AccountRemoval deleteAcc={deleteAcc} />
         </div>
       </section>
       {popupDetails && (

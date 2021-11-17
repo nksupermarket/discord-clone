@@ -17,6 +17,8 @@ import {
   updatePassword,
   deleteUser,
   signInWithEmailAndPassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from 'firebase/auth';
 import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
@@ -28,35 +30,45 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function updateUsername(user, displayName, setError) {
+async function updateUsername(displayName, setError) {
+  const auth = getAuth();
+  const user = auth.currentUser;
   try {
     updateProfile(user, { displayName });
   } catch (error) {
     setError && setError(error.message);
   }
 }
-async function updateUserAvatar(user, photoURL, setError) {
+async function updateUserAvatar(photoURL, setError) {
+  const auth = getAuth();
+  const user = auth.currentUser;
   try {
     updateProfile(user, { photoURL });
   } catch (error) {
     setError && setError(error.message);
   }
 }
-async function updateUserEmail(user, email, setError) {
+async function updateUserEmail(email, setError) {
+  const auth = getAuth();
+  const user = auth.currentUser;
   try {
     updateEmail(user, email);
   } catch (error) {
     setError && setError(error.message);
   }
 }
-async function updateUserPassword(user, newPW, setError) {
+async function updateUserPassword(newPW, setError) {
+  const auth = getAuth();
+  const user = auth.currentUser;
   try {
     updatePassword(user, newPW);
   } catch (error) {
     setError && setError(error.message);
   }
 }
-async function removeUser(user, channelList, setError) {
+async function removeUser(channelList, setError) {
+  const auth = getAuth();
+  const user = auth.currentUser;
   try {
     await deleteUser(user);
 
@@ -246,10 +258,15 @@ function isUserOnline(uid) {
 async function verifyPW(pw) {
   const auth = getAuth();
   const user = auth.currentUser;
-  const userCredential = auth.EmailAuthProvider.credential(user.email, pw);
 
-  await user.reauthenticateWithCredential(userCredential);
-  console.log('re authenticated');
+  try {
+    const credential = EmailAuthProvider.credential(user.email, pw);
+
+    const status = await reauthenticateWithCredential(user, credential);
+    console.log(status);
+  } catch (error) {
+    return { error: error.message };
+  }
 }
 
 export {
@@ -269,4 +286,5 @@ export {
   getUnreadRooms,
   detachListenersForUser,
   verifyPW,
+  removeUser,
 };

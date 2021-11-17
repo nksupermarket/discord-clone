@@ -1,7 +1,7 @@
 import React from 'react';
 import FlatBtn from '../FlatBtn';
 
-const AccountRemoval = () => {
+const AccountRemoval = ({ deleteAcc }) => {
   return (
     <div className="user-settings-acc_removal margin-top-40">
       <header style={{ marginBottom: '10px' }}>
@@ -14,7 +14,7 @@ const AccountRemoval = () => {
         >
           <span>Deleting your account will remove it forever</span>
         </div>
-        <FlatBtn text="Delete Account" className="hollow" />
+        <FlatBtn text="Delete Account" className="hollow" onClick={deleteAcc} />
       </div>
     </div>
   );

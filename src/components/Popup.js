@@ -14,8 +14,8 @@ const Popup = ({
   fields,
   children,
   footerContent,
-  submitAction,
   close,
+  ...props
 }) => {
   const [info, setInfo] = useState({});
 
@@ -38,8 +38,8 @@ const Popup = ({
         <Form
           handleChange={handleChange}
           fields={fields}
-          submitAction={submitAction}
           close={close}
+          {...props}
         />
       )}
       {children && (

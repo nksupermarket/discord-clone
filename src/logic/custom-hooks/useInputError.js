@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { dynamicValidation } from '../formValidation';
 
 function useInputError(inputNames) {
@@ -6,11 +6,19 @@ function useInputError(inputNames) {
     () => inputNames.reduce((acc, curr) => ({ ...acc, [curr]: '' }), {}) //turn inputNames into object keys
   );
 
-  function validateInput(el, pwConfirm) {
+  let isMounted = true;
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => (isMounted = false);
+  });
+
+  async function validateInput(el, isSubmit = false, pwConfirm = undefined) {
     const validationStatus = pwConfirm
-      ? dynamicValidation(el, pwConfirm)
-      : dynamicValidation(el);
-    if (el.name === 'confirm_password') console.log(validationStatus);
+      ? await dynamicValidation(el, isSubmit, pwConfirm)
+      : await dynamicValidation(el, isSubmit);
+
+    if (!isMounted) return;
+
     if (validationStatus.error) {
       setInputError((prev) => ({
         ...prev,
@@ -21,7 +29,39 @@ function useInputError(inputNames) {
     return true;
   }
 
-  return { inputError, validateInput };
+  async function submitForm(e, submitAction, close) {
+    e.preventDefault();
+
+    const {
+      target: { elements }, //destructure e to get elements
+    } = e;
+
+    let errors = false;
+    for (const fname of inputNames) {
+      //iterate through each input field and validate
+      const currEl = elements.namedItem(fname);
+      const isValid =
+        fname === 'confirm_password'
+          ? await validateInput(
+              currEl,
+              true,
+              elements.namedItem('new_password').value
+            )
+          : await validateInput(currEl, true);
+      if (!isValid) errors = true;
+    }
+    if (errors) return;
+
+    submitAction(
+      // submit action = update user info
+      elements.namedItem(
+        inputNames.find((fname) => fname.includes('new')).value //inputName w/ new means that is the value to be updated
+      )
+    );
+    close();
+  }
+
+  return { inputError, validateInput, submitForm };
 }
 
 export default useInputError;

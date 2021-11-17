@@ -63,7 +63,7 @@
   padding: 16px;
 }
 
-.popup footer button {
+.popup footer .flat-btn:not(.filled) {
   height: 38px;
   padding: 2px 4px;
 }

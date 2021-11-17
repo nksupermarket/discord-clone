@@ -6,45 +6,17 @@ import { UserContext } from '../logic/contexts/UserContext';
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
-const Form = ({ fields, handleChange, submitAction, close }) => {
-  const user = useContext(UserContext);
+const Form = ({ fields, actionBtnText, handleChange, submitAction, close }) => {
   const formRef = useRef();
   const fieldNames = fields.map((f) => f.name);
-  const { inputError, validateInput } = useInputError(fieldNames);
+  const { inputError, validateInput, submitForm } = useInputError(fieldNames);
 
   return (
     <form
       ref={formRef}
       autocomplete="nope"
       onSubmit={(e) => {
-        e.preventDefault();
-
-        const {
-          target: { elements },
-        } = e;
-
-        let errors = false;
-        fieldNames //iterate through each input field and validate
-          .forEach((fname) => {
-            const currEl = elements.namedItem(fname);
-            const isValid =
-              fname === 'confirm_password'
-                ? validateInput(
-                    currEl,
-                    elements.namedItem('new_password').value
-                  )
-                : validateInput(currEl);
-            if (!isValid) errors = true;
-          });
-        if (errors) return;
-
-        submitAction(
-          // submit action = update user info
-          user,
-          elements.namedItem(
-            fieldNames.find((fname) => fname.includes('new')).value //inputName w/ new means that is the value to be updated
-          )
-        );
+        submitForm(e, submitAction, close);
       }}
     >
       <div className="content">
@@ -53,11 +25,13 @@ const Form = ({ fields, handleChange, submitAction, close }) => {
           <InputField
             key={idx}
             type={f.type}
+            autoFocus={idx === 0 ? true : false}
             onBlur={
               f.name === 'confirm_password'
                 ? (e) =>
                     validateInput(
                       e.target,
+                      false,
                       formRef.current.elements.namedItem('new_password').value
                     )
                 : (e) => validateInput(e.target)
@@ -72,7 +46,11 @@ const Form = ({ fields, handleChange, submitAction, close }) => {
       <footer>
         <div className="btn-ctn">
           <FlatBtn text="Cancel" isUnderline={true} onClick={close} />
-          <FlatBtn type="submit" text="Done" className="filled" />
+          <FlatBtn
+            type="submit"
+            text={actionBtnText ? actionBtnText : 'Done'}
+            className="filled"
+          />
         </div>
       </footer>
     </form>
