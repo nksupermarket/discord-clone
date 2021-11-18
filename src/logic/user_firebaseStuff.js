@@ -83,12 +83,9 @@ function updateUserProfileColor(uid, color) {
   return color;
 }
 function updateUserInfoForAllChannels(uid, channelList, updateObj) {
-  let updates = {};
   channelList.forEach((c) => {
-    // set(ref(db, `Channels/${c.id}/users/${uid}/`), updateObj, { merge: true });
-    updates[`Channels/${c.id}/users/${uid}`] = updateObj;
+    update(ref(db, `Channels/${c.id}/users/${uid}`), updateObj);
   });
-  update(ref(db), updates);
 }
 async function removeUser(channelList, setError) {
   const auth = getAuth();
@@ -249,29 +246,25 @@ async function getRoleOfUser(channelID, userId, setRole, setError) {
   }
 }
 
-function updateUserOnline(uid, userChannelList, setError) {
-  try {
-    const connectedRef = ref(db, '.info/connected');
-    // add user to online_users for all channels in their list
-    userChannelList.forEach((channel) => {
-      const userStatusRef = ref(db, `Channels/${channel.id}/users/${uid}`);
+function updateUserOnline(uid, userChannelList) {
+  const connectedRef = ref(db, '.info/connected');
+  // add user to online_users for all channels in their list
+  userChannelList.forEach((channel) => {
+    const userStatusRef = ref(db, `Channels/${channel.id}/users/${uid}`);
 
-      onValue(connectedRef, async (snapshot) => {
-        if (snapshot.val() === false) {
-          off(connectedRef);
-          detachListenersForUser(uid);
-        }
+    onValue(connectedRef, async (snapshot) => {
+      if (snapshot.val() === false) {
+        off(connectedRef);
+        detachListenersForUser(uid);
+      }
 
-        await onDisconnect(userStatusRef).update({ status: 'offline' });
+      await onDisconnect(userStatusRef).update({ status: 'offline' });
 
-        update(userStatusRef, {
-          status: 'online',
-        });
+      update(userStatusRef, {
+        status: 'online',
       });
     });
-  } catch (error) {
-    setError(error.message);
-  }
+  });
 }
 
 function updateMentions(uid, channelID, roomID, msgID, setError) {

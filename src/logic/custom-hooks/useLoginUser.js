@@ -42,7 +42,7 @@ export default function useLoginUser(setError) {
     function afterSetChannelList() {
       if (!user || !channelList) return;
       try {
-        updateUserOnline(user.uid, channelList, setError);
+        updateUserOnline(user.uid, channelList);
         // updateUserInfoForAllChannels(user.uid, channelList, {
         //   displayName: 'jax',
         // });
