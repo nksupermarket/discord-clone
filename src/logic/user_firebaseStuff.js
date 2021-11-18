@@ -19,6 +19,7 @@ import {
   signInWithEmailAndPassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  reload,
 } from 'firebase/auth';
 import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
@@ -30,39 +31,42 @@ function detachListenersForUser(uid) {
   off(channelListRef);
 }
 
-async function updateUserInfo(infoType, value, channelList) {
+async function updateUserInfo(infoType, value, setUser, channelList) {
   const auth = getAuth();
   const user = auth.currentUser;
 
   switch (infoType) {
     case 'displayName': {
-      updateProfile(user, { displayName: value });
+      await updateProfile(user, { displayName: value });
       break;
     }
     case 'avatar': {
-      updateProfile(user, { photoURL: value });
+      await updateProfile(user, { photoURL: value });
       break;
     }
     case 'color': {
-      updateUserProfileColor(user.uid, value);
+      await updateUserProfileColor(user.uid, value);
       break;
     }
     case 'email': {
-      updateEmail(user, value);
+      await updateEmail(user, value);
       break;
     }
     case 'password': {
-      updatePassword(user, value);
+      await updatePassword(user, value);
       break;
     }
     default: {
       return;
     }
   }
-  if (channelList.length > 0) {
+  if (channelList && channelList.length > 0) {
     const updateObj = { [infoType]: value };
     updateUserInfoForAllChannels(user.uid, channelList, updateObj);
   }
+
+  await reload(user);
+  setUser(user);
 }
 function updateUserProfileColor(uid, color) {
   const defaultColors = [
@@ -81,7 +85,8 @@ function updateUserProfileColor(uid, color) {
 function updateUserInfoForAllChannels(uid, channelList, updateObj) {
   let updates = {};
   channelList.forEach((c) => {
-    updates[`Channels/${c.id}/users/${uid}/`] = updateObj;
+    // set(ref(db, `Channels/${c.id}/users/${uid}/`), updateObj, { merge: true });
+    updates[`Channels/${c.id}/users/${uid}`] = updateObj;
   });
   update(ref(db), updates);
 }
@@ -152,6 +157,37 @@ async function subscribeToChannel(user, channelID, setError) {
   } catch (error) {
     setError && setError(error);
   }
+}
+
+function getUserInfo(uid, setChannelList, setUserProfileColor) {
+  const userRef = ref(db, `users/${uid}/`);
+
+  onValue(userRef, async (snap) => {
+    const data = snap.val();
+
+    setUserProfileColor && setUserProfileColor(data.color);
+    updateChannelList();
+
+    //helper
+    async function updateChannelList() {
+      let channelList = [];
+      for (const id in data.channels) {
+        channelList.push({ id, role: data.channels[id] });
+      }
+      await getChannelIcons(channelList, updateChannelListWithIcons);
+      await getChannelNames(channelList, updateChannelListWithNames);
+
+      setChannelList(channelList);
+
+      //helpers
+      function updateChannelListWithIcons(icons) {
+        icons.forEach((icon, i) => (channelList[i].icon = icon));
+      }
+      function updateChannelListWithNames(names) {
+        names.forEach((name, i) => (channelList[i].name = name));
+      }
+    }
+  });
 }
 
 function getChannelList(uid, setChannelList, setError) {
@@ -285,7 +321,10 @@ async function verifyPW(pw) {
 }
 
 export {
+  updateUserInfoForAllChannels,
+  updateUserProfileColor,
   updateUserInfo,
+  getUserInfo,
   createUser,
   signIn,
   isUserOnline,

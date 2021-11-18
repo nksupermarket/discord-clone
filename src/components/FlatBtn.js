@@ -1,13 +1,19 @@
 import React from 'react';
 
-const FlatBtn = ({ className, type, text, isUnderline, onClick }) => {
+import LoadingEllipsis from './LoadingEllipsis';
+
+const FlatBtn = ({ className, type, text, isUnderline, loading, onClick }) => {
   return (
     <button
       type={type || 'button'}
       className={`flat-btn ${className}`}
       onClick={onClick}
     >
-      <span className={isUnderline ? 'underline-hover' : null}>{text}</span>
+      {loading ? (
+        <LoadingEllipsis />
+      ) : (
+        <span className={isUnderline ? 'underline-hover' : null}>{text}</span>
+      )}
     </button>
   );
 };

@@ -3,6 +3,9 @@ import {
   getChannelList,
   updateUserOnline,
   detachListenersForUser,
+  updateUserProfileColor,
+  updateUserInfoForAllChannels,
+  getUserInfo,
 } from '../user_firebaseStuff';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -22,7 +25,12 @@ export default function useLoginUser(setError) {
   useEffect(
     function afterLogin() {
       if (!user) return;
-      getChannelList(user.uid, setChannelList, setError);
+      try {
+        getUserInfo(user.uid, setChannelList);
+        //getUserProfileColor(user.uid);
+      } catch (error) {
+        setError(error.message);
+      }
       return () => {
         detachListenersForUser(user.uid);
       };
@@ -33,7 +41,22 @@ export default function useLoginUser(setError) {
   useEffect(
     function afterSetChannelList() {
       if (!user || !channelList) return;
-      updateUserOnline(user.uid, channelList, setError);
+      try {
+        updateUserOnline(user.uid, channelList, setError);
+        // updateUserInfoForAllChannels(user.uid, channelList, {
+        //   displayName: 'jax',
+        // });
+
+        // updateNewProfileColor();
+      } catch (error) {
+        setError(error.message);
+      }
+      async function updateNewProfileColor() {
+        const profileColor = await updateUserProfileColor(user.uid);
+        updateUserInfoForAllChannels(user.uid, channelList, {
+          color: profileColor,
+        });
+      }
     },
     [user, channelList, setError]
   );

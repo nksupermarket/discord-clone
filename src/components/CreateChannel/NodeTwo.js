@@ -1,11 +1,14 @@
 import React from 'react';
 
+import UploadFile from './UploadFile';
+import Popup from '../Popup';
 import FlatBtn from '../FlatBtn';
 import InputField from '../InputField';
 
 import '../../styles/CreateChannelNodeTwo.css';
-import UploadFile from './UploadFile';
-import Popup from '../Popup';
+
+import addCircleSVG from '../../assets/svg/add-circle-fill.svg';
+import cameraSVG from '../../assets/svg/camera-fill.svg';
 
 const NodeTwo = ({
   channelName,
@@ -35,7 +38,20 @@ const NodeTwo = ({
         </div>
       }
     >
-      <UploadFile handleIcon={handleIcon} />
+      <UploadFile
+        mainIcon={
+          <>
+            <img
+              className="add-circle-fill"
+              src={addCircleSVG}
+              alt="upload an icon"
+            />
+            <div className="add-circle-bg"></div>
+            <img className="camera-fill" src={cameraSVG} alt="upload an icon" />
+          </>
+        }
+        handleIcon={handleIcon}
+      />
       <form>
         <h5>Channel Name</h5>
         <InputField name="name" value={channelName} onChange={handleChange} />

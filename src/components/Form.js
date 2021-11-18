@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useContext } from 'react';
+import React, { useRef, useLayoutEffect, useContext, useState } from 'react';
 
 import useInputError from '../logic/custom-hooks/useInputError';
 import { UserContext } from '../logic/contexts/UserContext';
@@ -17,13 +17,15 @@ const Form = ({
   const formRef = useRef();
   const fieldNames = fields.map((f) => f.name);
   const { inputError, validateInput, submitForm } = useInputError(fieldNames);
-
+  const [loading, setLoading] = useState(false);
   return (
     <form
       ref={formRef}
-      autocomplete="nope"
-      onSubmit={(e) => {
-        submitForm(e, submitAction, close, setError);
+      autoComplete="nope"
+      onSubmit={async (e) => {
+        setLoading(true);
+        await submitForm(e, submitAction, close, setError);
+        setLoading(false);
       }}
     >
       <div className="content">
@@ -51,12 +53,13 @@ const Form = ({
         ))}
       </div>
       <footer>
-        <div className="btn-ctn">
+        <div className={loading ? 'btn-ctn no-pointer-events' : 'btn-ctn'}>
           <FlatBtn text="Cancel" isUnderline={true} onClick={close} />
           <FlatBtn
             type="submit"
             text={actionBtnText ? actionBtnText : 'Done'}
             className="filled"
+            loading={loading}
           />
         </div>
       </footer>

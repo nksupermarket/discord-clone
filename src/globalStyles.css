@@ -295,3 +295,7 @@ form .input-wrapper input:focus {
   position: relative;
   box-sizing: border-box;
 }
+
+.no-pointer-events {
+  pointer-events: none;
+}

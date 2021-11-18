@@ -6,18 +6,10 @@ function useInputError(inputNames) {
     () => inputNames.reduce((acc, curr) => ({ ...acc, [curr]: '' }), {}) //turn inputNames into object keys
   );
 
-  let isMounted = true;
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    return () => (isMounted = false);
-  });
-
   async function validateInput(el, isSubmit = false, pwConfirm = undefined) {
     const validationStatus = pwConfirm
       ? await dynamicValidation(el, isSubmit, pwConfirm)
       : await dynamicValidation(el, isSubmit);
-
-    if (!isMounted) return;
 
     if (validationStatus.error) {
       setInputError((prev) => ({
@@ -26,6 +18,10 @@ function useInputError(inputNames) {
       }));
       return false;
     }
+    setInputError((prev) => ({
+      ...prev,
+      [el.name]: '',
+    }));
     return true;
   }
 
@@ -53,7 +49,7 @@ function useInputError(inputNames) {
       }
       if (errors) return;
 
-      submitAction(
+      await submitAction(
         // submit action = update user info
         elements.namedItem(inputNames.find((fname) => fname.includes('new')))
           .value //inputName w/ new means that is the value to be updated

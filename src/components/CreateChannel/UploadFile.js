@@ -1,43 +1,36 @@
-import { set } from 'date-fns';
 import React, { useState, useRef } from 'react';
 
-import addCircleSVG from '../../assets/svg/add-circle-fill.svg';
-import cameraSVG from '../../assets/svg/camera-fill.svg';
-
-const UploadFile = ({ handleIcon }) => {
-  const [imgSrc, setImgSrc] = useState();
+const UploadFile = ({ mainIcon, handleIcon, isPreview }) => {
+  const [imgPreview, setImgPreview] = useState();
   const uploadFileRef = useRef();
 
-  function onUploadFile() {
+  function checkIfFileIsImg(file) {
+    return file['type'].includes('image');
+  }
+
+  function onUploadImg() {
     const file = uploadFileRef.current.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
-    reader.onloadend = () => setImgSrc(reader.result);
-    console.log(file);
-    handleIcon(file); // store file to channelInfo state
+    reader.onloadend = () => setImgPreview(reader.result);
+    handleIcon(file);
   }
   return (
-    <label className={imgSrc ? 'upload-file' : 'upload-file init'}>
-      {imgSrc && (
-        <img src={imgSrc} className="icon-preview" alt="your uploaded icon" />
+    <label className={imgPreview ? 'upload-file' : 'upload-file init'}>
+      {imgPreview && (
+        <img
+          src={imgPreview}
+          className="icon-preview"
+          alt="your uploaded icon"
+        />
       )}
-      {!imgSrc && (
-        <>
-          <img
-            className="add-circle-fill"
-            src={addCircleSVG}
-            alt="upload an icon"
-          />
-          <div className="add-circle-bg"></div>
-          <img className="camera-fill" src={cameraSVG} alt="upload an icon" />
-        </>
-      )}
+      {!imgPreview && { mainIcon }}
       <input
         type="file"
         name="icon"
         ref={uploadFileRef}
-        onChange={onUploadFile}
+        onChange={onUploadImg}
         style={{ display: 'none' }}
       />
     </label>

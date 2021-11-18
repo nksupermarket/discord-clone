@@ -42,7 +42,7 @@ function App() {
         {!user && <LoginScreen setUser={setUser} setError={setError} />}
       </Route>
       {user && (
-        <UserContext.Provider value={{ user, channelList }}>
+        <UserContext.Provider value={{ user, setUser, channelList }}>
           <div className="app">
             <MainNav />
             <Route

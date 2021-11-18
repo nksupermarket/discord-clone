@@ -22,6 +22,7 @@ const MyAccount = ({ editProfile }) => {
   const { error, setError } = useError();
   const { channelList } = useContext(UserContext);
   const [popupDetails, setPopupDetails] = useState();
+  const { setUser } = useContext(UserContext);
 
   const editUsername = useCallback(() => {
     setPopupDetails({
@@ -37,9 +38,9 @@ const MyAccount = ({ editProfile }) => {
         },
       ],
       submitAction: (value) =>
-        updateUserInfo('displayName', value, channelList),
+        updateUserInfo('displayName', value, setUser, channelList),
     });
-  }, [channelList]);
+  }, [channelList, setUser]);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
@@ -54,9 +55,9 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: (value) => updateUserInfo('email', value),
+      submitAction: (value) => updateUserInfo('email', value, setUser),
     });
-  }, []);
+  }, [setUser]);
 
   const editPassword = useCallback(() => {
     setPopupDetails({

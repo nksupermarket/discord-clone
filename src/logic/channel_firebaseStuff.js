@@ -138,26 +138,18 @@ async function createRoom(channelID, name, setError) {
   }
 }
 
-async function getChannelNames(channelList, updateChannelList, setError) {
-  try {
-    const resultArr = await Promise.all(
-      channelList.map((channel) => get(ref(db, `Channels/${channel.id}/name`)))
-    );
-    updateChannelList(resultArr.map((result) => result.val()));
-  } catch (error) {
-    setError && setError(error.message);
-  }
+async function getChannelNames(channelList, updateChannelList) {
+  const resultArr = await Promise.all(
+    channelList.map((channel) => get(ref(db, `Channels/${channel.id}/name`)))
+  );
+  updateChannelList(resultArr.map((result) => result.val()));
 }
 
-async function getChannelIcons(channelList, updateChannelList, setError) {
-  try {
-    const resultArr = await Promise.all(
-      channelList.map((channel) => get(ref(db, `Channels/${channel.id}/icon`)))
-    );
-    updateChannelList(resultArr.map((result) => result.val()));
-  } catch (error) {
-    setError && setError(error.message);
-  }
+async function getChannelIcons(channelList, updateChannelList) {
+  const resultArr = await Promise.all(
+    channelList.map((channel) => get(ref(db, `Channels/${channel.id}/icon`)))
+  );
+  updateChannelList(resultArr.map((result) => result.val()));
 }
 
 function createRoomCategory(channelID, name, setError) {
