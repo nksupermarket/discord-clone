@@ -1,18 +1,25 @@
 import React from 'react';
 
-const Avatar = ({ img, channelName, onClick }) => {
+import defaultBreadPNG from '../assets/png/icons8-bread-58.png';
+
+const Avatar = ({ img, color, channelName, onClick }) => {
   let filler = channelName ? (
     <span>{createInitials(channelName)}</span>
   ) : (
     <span></span>
   );
-
   const style = img
     ? { background: `url(${img})`, backgroundSize: 'cover' }
+    : color
+    ? {
+        background: color,
+      }
     : { background: 'var(--bg-color' };
+
   return (
     <div className="avatar" style={style} onClick={onClick}>
-      {!img && filler}
+      {!img && channelName && filler}
+      {!img && color && <img src={defaultBreadPNG} alt="default avatar" />}
     </div>
   );
 };

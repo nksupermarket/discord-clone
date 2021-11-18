@@ -16,7 +16,7 @@ const UserInfo = () => {
     <>
       <section className="user-info-panel">
         <div className="ctn">
-          <Avatar img={user.photoURL} />
+          <Avatar img={user.photoURL} color={user.color} />
           <div className="name-tag">
             <div className="username-wrapper">{user.displayName}</div>
           </div>

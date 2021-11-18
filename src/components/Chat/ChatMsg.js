@@ -11,6 +11,8 @@ import MsgHeader from './MsgHeader';
 const ChatMsg = ({ content, onReplyTo }) => {
   const {
     displayName,
+    avatar,
+    color,
     msg,
     timestamp,
     msgId,
@@ -19,44 +21,6 @@ const ChatMsg = ({ content, onReplyTo }) => {
   } = content;
 
   const [isShowBtns, setIsShowBtns] = useState(false); //buttons on hover
-
-  function convertPlaintextToHTML(text, mentions) {
-    if (!mentions || mentions.length === 0) return text;
-
-    let mentionRanges = []; // text indexes that contain a mention
-    let mentionOffsets = []; //beginning index of each mention
-    mentions.forEach((mention) => {
-      mentionOffsets.push(mention.range.offset);
-      for (
-        let i = mention.range.offset;
-        i < mention.range.offset + mention.range.length;
-        i++
-      ) {
-        mentionRanges.push(i);
-      }
-    });
-
-    let content = [];
-    text.split('').forEach((val, i) => {
-      const mentionIndex = mentionOffsets.indexOf(i); //find which mention has offset i
-      if (mentionIndex !== -1)
-        content.push(
-          <MentionWrapper
-            key={mentionIndex}
-            displayName={mentions[mentionIndex].displayName}
-            uid={mentions[mentionIndex].uid}
-          />
-        );
-
-      if (mentionRanges.includes(i)) return;
-
-      if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of string
-
-      content[content.length - 1] = content[content.length - 1].concat(val); // string continues
-    });
-
-    return content;
-  }
 
   return (
     <li
@@ -72,10 +36,12 @@ const ChatMsg = ({ content, onReplyTo }) => {
               replyContext.msg,
               replyContext.mentions
             )}
+            avatar={replyContext.avatar}
+            color={replyContext.color}
           />
         )}
         <div className="content">
-          <Avatar />
+          <Avatar img={avatar} color={color} />
           <MsgHeader displayName={displayName} timestamp={timestamp} />
           <div className="msg-content">
             {convertPlaintextToHTML(msg, mentions)}
@@ -93,3 +59,41 @@ const ChatMsg = ({ content, onReplyTo }) => {
 };
 
 export default ChatMsg;
+
+function convertPlaintextToHTML(text, mentions) {
+  if (!mentions || mentions.length === 0) return text;
+
+  let mentionRanges = []; // text indexes that contain a mention
+  let mentionOffsets = []; //beginning index of each mention
+  mentions.forEach((mention) => {
+    mentionOffsets.push(mention.range.offset);
+    for (
+      let i = mention.range.offset;
+      i < mention.range.offset + mention.range.length;
+      i++
+    ) {
+      mentionRanges.push(i);
+    }
+  });
+
+  let content = [];
+  text.split('').forEach((val, i) => {
+    const mentionIndex = mentionOffsets.indexOf(i); //find which mention has offset i
+    if (mentionIndex !== -1)
+      content.push(
+        <MentionWrapper
+          key={mentionIndex}
+          displayName={mentions[mentionIndex].displayName}
+          uid={mentions[mentionIndex].uid}
+        />
+      );
+
+    if (mentionRanges.includes(i)) return;
+
+    if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of string
+
+    content[content.length - 1] = content[content.length - 1].concat(val); // string continues
+  });
+
+  return content;
+}

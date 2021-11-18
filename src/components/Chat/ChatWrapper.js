@@ -9,7 +9,7 @@ const ChatWrapper = ({ room, msgList, userList, submitMsg }) => {
   const chatBarInputRef = useRef();
 
   function onReplyTo(displayName, msgID) {
-    setReplyTo(displayName, msgID);
+    setReplyTo({ displayName, msgID });
     chatBarInputRef.current.focus();
   }
 

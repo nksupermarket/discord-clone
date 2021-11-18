@@ -31,7 +31,12 @@ const OnlineUsers = ({ list, roles }) => {
                 return false;
               })
               .map((user) => (
-                <UserDisplay key={user.uid} displayName={user.displayName} />
+                <UserDisplay
+                  key={user.uid}
+                  displayName={user.displayName}
+                  avatar={user.avatar}
+                  color={user.color}
+                />
               ))}
           </CatList>
         );

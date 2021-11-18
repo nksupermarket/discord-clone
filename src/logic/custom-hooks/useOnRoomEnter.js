@@ -51,6 +51,8 @@ export default function useOnRoomEnter(
       mentions: mentions || [],
       user: user.uid,
       displayName: user.displayName,
+      avatar: user.photoURL,
+      color: user.color,
       timestamp: getUnixTime(new Date()),
     };
     const msgID = pushToMsgList(roomID, msgObj, setError);

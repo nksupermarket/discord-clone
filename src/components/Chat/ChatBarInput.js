@@ -74,8 +74,8 @@ const ChatBarInput = ({
     }
 
     function onMsgSubmit() {
-      const replyToMsgID = replyTo ? replyTo.msgId : null;
-      console.log(replyTo);
+      const replyToMsgID = replyTo ? replyTo.msgID : null;
+      console.log(replyToMsgID);
 
       const raw = convertToRaw(editorState.getCurrentContent());
 

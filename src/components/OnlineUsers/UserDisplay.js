@@ -6,11 +6,13 @@ const UserDisplay = ({
   className,
   id,
   displayName,
+  avatar,
+  color,
   onClick,
-  selectMention,
+  selectMention, // need this here so it doesn't get fed into parentProps
   mention,
-  theme,
-  searchValue,
+  theme, // need this here so it doesn't get fed into parentProps
+  searchValue, // need this here so it doesn't get fed into parentProps
   isFocused,
   ...parentProps
 }) => {
@@ -22,7 +24,7 @@ const UserDisplay = ({
       onClick={onClick}
       {...parentProps}
     >
-      <Avatar />
+      <Avatar img={avatar} color={color} />
       <div className="content">
         <span>{displayName || mention.displayName}</span>
 

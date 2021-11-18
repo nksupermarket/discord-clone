@@ -162,7 +162,7 @@ function getUserInfo(uid, setChannelList, setUserProfileColor) {
   onValue(userRef, async (snap) => {
     const data = snap.val();
 
-    setUserProfileColor && setUserProfileColor(data.color);
+    setUserProfileColor(data.color);
     updateChannelList();
 
     //helper
@@ -185,34 +185,6 @@ function getUserInfo(uid, setChannelList, setUserProfileColor) {
       }
     }
   });
-}
-
-function getChannelList(uid, setChannelList, setError) {
-  try {
-    const userChannelListRef = ref(db, `users/${uid}/channels`);
-
-    onValue(userChannelListRef, async (snap) => {
-      const data = snap.val();
-
-      let channelList = [];
-      for (const id in data) {
-        channelList.push({ id, role: data[id] });
-      }
-      await getChannelIcons(channelList, updateChannelListWithIcons, setError);
-      await getChannelNames(channelList, updateChannelListWithNames, setError);
-      setChannelList(channelList);
-
-      //helpers
-      function updateChannelListWithIcons(icons) {
-        icons.forEach((icon, i) => (channelList[i].icon = icon));
-      }
-      function updateChannelListWithNames(names) {
-        names.forEach((name, i) => (channelList[i].name = name));
-      }
-    });
-  } catch (error) {
-    setError && setError(error.message);
-  }
 }
 
 async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
@@ -324,7 +296,6 @@ export {
   getRoleOfUser,
   getMentions,
   subscribeToChannel,
-  getChannelList,
   updateUserOnline,
   updateMentions,
   getUnreadRooms,

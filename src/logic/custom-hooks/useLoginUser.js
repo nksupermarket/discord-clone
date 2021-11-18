@@ -11,31 +11,26 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function useLoginUser(setError) {
   const [user, setUser] = useState();
-  const [channelList, setChannelList] = useState([]);
+  const [channelList, setChannelList] = useState();
 
   useEffect(
     function getCurrentUser() {
       const auth = getAuth();
       onAuthStateChanged(auth, (currUser) => {
+        if (!currUser.uid) return setUser(currUser);
+        try {
+          getUserInfo(
+            currUser.uid,
+            setChannelList,
+            (val) => (currUser['color'] = val)
+          );
+        } catch (error) {
+          setError(error);
+        }
         setUser(currUser);
       });
     },
-    [setUser]
-  );
-  useEffect(
-    function afterLogin() {
-      if (!user) return;
-      try {
-        getUserInfo(user.uid, setChannelList);
-        //getUserProfileColor(user.uid);
-      } catch (error) {
-        setError(error.message);
-      }
-      return () => {
-        detachListenersForUser(user.uid);
-      };
-    },
-    [user, setError]
+    [setUser, setError]
   );
 
   useEffect(
@@ -43,19 +38,8 @@ export default function useLoginUser(setError) {
       if (!user || !channelList) return;
       try {
         updateUserOnline(user.uid, channelList);
-        // updateUserInfoForAllChannels(user.uid, channelList, {
-        //   displayName: 'jax',
-        // });
-
-        // updateNewProfileColor();
       } catch (error) {
         setError(error.message);
-      }
-      async function updateNewProfileColor() {
-        const profileColor = await updateUserProfileColor(user.uid);
-        updateUserInfoForAllChannels(user.uid, channelList, {
-          color: profileColor,
-        });
       }
     },
     [user, channelList, setError]

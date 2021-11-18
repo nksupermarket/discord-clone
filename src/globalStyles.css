@@ -153,6 +153,10 @@ body {
 
 .avatar {
   border-radius: 50%;
+  display: flex;
+}
+.avatar img {
+  margin: 6px;
 }
 
 .flat-btn.inactive {
