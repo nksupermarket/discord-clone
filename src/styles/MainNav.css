@@ -56,7 +56,8 @@
   background-color: black;
 }
 
-#main-nav .icon-btn:hover {
+#main-nav .icon-btn:hover,
+#main-nav .avatar:hover {
   border-radius: 10px;
 }
 

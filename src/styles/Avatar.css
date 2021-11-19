@@ -1,0 +1,25 @@
+.avatar {
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+}
+.avatar .user-status {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  height: 50%;
+  width: 50%;
+  border-radius: 50%;
+  border: 3px solid var(--fg-color);
+  box-sizing: border-box;
+}
+.avatar .user-status.online {
+  background-color: rgb(56, 157, 89);
+}
+.avatar .user-status.offline {
+  border: 4px solid var(--fg-color);
+  background-color: var(--text-muted);
+}
+.avatar img {
+  margin: 15%;
+}

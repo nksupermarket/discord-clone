@@ -2,10 +2,13 @@ import React from 'react';
 
 import '../../styles/ProfileColorSwatch.css';
 
-const ProfileColorSwatch = ({ isDefault, style }) => {
+const ProfileColorSwatch = ({ isDefault, color }) => {
   return (
     <div className="profile-color-swatch">
-      <label className={isDefault ? 'swatch' : 'swatch custom'} style={style}>
+      <label
+        className={isDefault ? 'swatch' : 'swatch custom'}
+        style={{ background: color }}
+      >
         {!isDefault && <input type="color" style={{ display: 'none' }} />}
       </label>
       <div className="swatch-description header-secondary">

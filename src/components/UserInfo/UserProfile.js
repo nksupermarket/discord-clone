@@ -3,12 +3,13 @@ import React, { useContext } from 'react';
 import { UserContext } from '../../logic/contexts/UserContext';
 import FlatBtn from '../FlatBtn';
 import AccountProfileCard from '../UserInfo/AccountProfileCard';
+import UploadFile from '../UploadFile';
 
 import '../../styles/UserProfile.css';
 import ProfileColorSwatch from './ProfileColorSwatch';
 
 const UserProfile = () => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   return (
     <section className="user_profile">
       <header>
@@ -20,13 +21,15 @@ const UserProfile = () => {
             <div className="customization-wrapper">
               <h3 className="caps-title header-secondary">Avatar</h3>
               <div className="btn-ctn">
-                <FlatBtn text="Change Avatar" className="filled" />
+                <UploadFile>
+                  <FlatBtn text="Change Avatar" className="filled" />
+                </UploadFile>
               </div>
             </div>
             <div className="customization-wrapper">
               <h3 className="caps-title">Profile Color</h3>
               <div className="btn-ctn">
-                <ProfileColorSwatch isDefault={true} />
+                <ProfileColorSwatch isDefault={true} color={user.color} />
                 <ProfileColorSwatch />
               </div>
             </div>

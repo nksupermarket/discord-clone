@@ -151,14 +151,6 @@ body {
   font-weight: 500;
 }
 
-.avatar {
-  border-radius: 50%;
-  display: flex;
-}
-.avatar img {
-  margin: 6px;
-}
-
 .flat-btn.inactive {
   opacity: 0.5;
   pointer-events: none;

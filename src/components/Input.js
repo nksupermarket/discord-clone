@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Input = ({ ...props }) => {
-  return <input {...props} autocomplete="off" />;
+  return <input {...props} />;
 };
 
 export default Input;

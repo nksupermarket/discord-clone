@@ -5,9 +5,7 @@ import Avatar from '../Avatar';
 const UserDisplay = ({
   className,
   id,
-  displayName,
-  avatar,
-  color,
+  user,
   onClick,
   selectMention, // need this here so it doesn't get fed into parentProps
   mention,
@@ -18,15 +16,18 @@ const UserDisplay = ({
 }) => {
   if (isFocused) className += ' user-focused';
 
+  user = user || mention;
+  const { avatar, color, status, displayName } = user;
+
   return (
     <li
       className={`user-wrapper ${className}`}
       onClick={onClick}
       {...parentProps}
     >
-      <Avatar img={avatar} color={color} />
+      <Avatar img={avatar} color={color} userStatus={status} />
       <div className="content">
-        <span>{displayName || mention.displayName}</span>
+        <span>{displayName}</span>
 
         <span className="subText"></span>
       </div>

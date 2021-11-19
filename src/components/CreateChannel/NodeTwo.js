@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UploadFile from './UploadFile';
+import UploadFile from '../UploadFile';
 import Popup from '../Popup';
 import FlatBtn from '../FlatBtn';
 import InputField from '../InputField';
@@ -38,20 +38,15 @@ const NodeTwo = ({
         </div>
       }
     >
-      <UploadFile
-        mainIcon={
-          <>
-            <img
-              className="add-circle-fill"
-              src={addCircleSVG}
-              alt="upload an icon"
-            />
-            <div className="add-circle-bg"></div>
-            <img className="camera-fill" src={cameraSVG} alt="upload an icon" />
-          </>
-        }
-        handleIcon={handleIcon}
-      />
+      <UploadFile handleIcon={handleIcon}>
+        <img
+          className="add-circle-fill"
+          src={addCircleSVG}
+          alt="upload an icon"
+        />
+        <div className="add-circle-bg"></div>
+        <img className="camera-fill" src={cameraSVG} alt="upload an icon" />
+      </UploadFile>
       <form>
         <h5>Channel Name</h5>
         <InputField name="name" value={channelName} onChange={handleChange} />

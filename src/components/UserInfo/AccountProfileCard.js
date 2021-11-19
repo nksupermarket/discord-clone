@@ -17,9 +17,9 @@ const AccountProfileCard = ({
   const { user } = useContext(UserContext);
   return (
     <div className="account-profile-card">
-      <div className="banner"></div>
+      <div className="banner" style={{ background: user.color }}></div>
       <div className="user-info">
-        <Avatar img={user.photoURL} />
+        <Avatar img={user.photoURL} color={user.color} />
         <div className="profile-card-username">{user.displayName}</div>
         {!isSmall && (
           <FlatBtn

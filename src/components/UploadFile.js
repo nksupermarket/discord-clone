@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-const UploadFile = ({ mainIcon, handleIcon, isPreview }) => {
+const UploadFile = ({ children, handleIcon, isPreview }) => {
   const [imgPreview, setImgPreview] = useState();
   const uploadFileRef = useRef();
 
@@ -17,7 +17,10 @@ const UploadFile = ({ mainIcon, handleIcon, isPreview }) => {
     handleIcon(file);
   }
   return (
-    <label className={imgPreview ? 'upload-file' : 'upload-file init'}>
+    <label
+      className={imgPreview ? 'upload-file' : 'upload-file init'}
+      htmlFor="upload"
+    >
       {imgPreview && (
         <img
           src={imgPreview}
@@ -25,10 +28,11 @@ const UploadFile = ({ mainIcon, handleIcon, isPreview }) => {
           alt="your uploaded icon"
         />
       )}
-      {!imgPreview && { mainIcon }}
+      {!imgPreview && children}
       <input
+        id="upload"
         type="file"
-        name="icon"
+        name="upload"
         ref={uploadFileRef}
         onChange={onUploadImg}
         style={{ display: 'none' }}

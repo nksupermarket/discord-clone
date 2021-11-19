@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import defaultBreadPNG from '../assets/png/icons8-bread-58.png';
 
-const Avatar = ({ img, color, channelName, onClick }) => {
+import '../styles/Avatar.css';
+
+const Avatar = ({ img, color, userStatus, channelName, onClick }) => {
   let filler = channelName ? (
     <span>{createInitials(channelName)}</span>
   ) : (
@@ -20,6 +22,7 @@ const Avatar = ({ img, color, channelName, onClick }) => {
     <div className="avatar" style={style} onClick={onClick}>
       {!img && channelName && filler}
       {!img && color && <img src={defaultBreadPNG} alt="default avatar" />}
+      {userStatus && <div className={`user-status ${userStatus}`}></div>}
     </div>
   );
 };
