@@ -1,11 +1,15 @@
 import React, { useReducer } from 'react';
 
+import { logout } from '../../logic/user_firebaseStuff';
+import useError from '../../logic/custom-hooks/useError';
+
 import Settings from '../Settings/Settings';
 import MyAccount from './MyAccount';
 import UserProfile from './UserProfile';
-import Notifications from './Notifications';
+import Error from '../Error';
 
 const UserSettings = ({ close }) => {
+  const { error, SetError } = useError();
   const [state, dispatch] = useReducer((state, action) => {
     if (action.type === 'swap_to') {
       switch (action.payload) {
@@ -19,8 +23,13 @@ const UserSettings = ({ close }) => {
           );
         case 'user profile':
           return <UserProfile />;
-        case 'notifications':
-          return <Notifications />;
+        case 'log out':
+          try {
+            logout();
+          } catch (error) {
+            SetError(error.message);
+          }
+          break;
         default:
           throw new Error("that doesn't exist!");
       }
@@ -34,19 +43,21 @@ const UserSettings = ({ close }) => {
     };
   }
   return (
-    <Settings
-      close={close}
-      categories={['user settings', 'app settings', 'none']}
-      btnList={[
-        createSettingsButton('my account', 'user settings'),
-        createSettingsButton('user profile', 'user settings'),
-        createSettingsButton('notifications', 'app settings'),
-        createSettingsButton('log out', 'none'),
-      ]}
-      dispatch={dispatch}
-    >
-      {state && state}
-    </Settings>
+    <>
+      {error && <Error errorMsg={error} />}
+      <Settings
+        close={close}
+        categories={['user settings', 'none']}
+        btnList={[
+          createSettingsButton('my account', 'user settings'),
+          createSettingsButton('user profile', 'user settings'),
+          createSettingsButton('log out', 'none'),
+        ]}
+        dispatch={dispatch}
+      >
+        {state && state}
+      </Settings>
+    </>
   );
 };
 

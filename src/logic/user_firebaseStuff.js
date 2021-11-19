@@ -20,6 +20,7 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   reload,
+  signOut,
 } from 'firebase/auth';
 import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
@@ -285,6 +286,11 @@ async function verifyPW(pw) {
   }
 }
 
+async function logout() {
+  const auth = getAuth();
+  signOut(auth);
+}
+
 export {
   updateUserInfoForAllChannels,
   updateUserProfileColor,
@@ -302,4 +308,5 @@ export {
   detachListenersForUser,
   verifyPW,
   removeUser,
+  logout,
 };

@@ -56,8 +56,8 @@
   background-color: black;
 }
 
-#main-nav .icon-btn:hover,
-#main-nav .avatar:hover {
+#main-nav .btn-ctn .icon-btn:hover,
+#main-nav .channel-list .avatar:hover {
   border-radius: 10px;
 }
 

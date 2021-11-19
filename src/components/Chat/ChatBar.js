@@ -25,10 +25,6 @@ const ChatBar = ({ replyTo, ...props }) => {
         </UploadFile>
       </div>
       <ChatBarInput replyTo={replyTo} {...props} />
-      <div className="btn-ctn">
-        <IconBtn icon="flaticon-gif" isRectangle={true} />
-        <IconBtn icon="flaticon-happy" />
-      </div>
     </div>
   );
 };
