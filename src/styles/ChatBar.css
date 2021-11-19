@@ -102,3 +102,7 @@
 .chat-bar .icon-btn i.flaticon-plus:before {
   top: 20%;
 }
+
+.chat-bar label {
+  margin-bottom: 0;
+}

@@ -12,6 +12,7 @@
   border-radius: 50%;
   border: 3px solid var(--fg-color);
   box-sizing: border-box;
+  overflow: hidden;
 }
 .avatar .user-status.online {
   background-color: rgb(56, 157, 89);

@@ -77,7 +77,9 @@ input:-webkit-autofill:active {
   background: inherit !important;
 }
 
-button {
+button,
+.icon-btn,
+.flat-btn {
   cursor: pointer;
 }
 
@@ -169,6 +171,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   transition: background-color 0.17s ease, color 0.17s ease;
 }
 .flat-btn.filled {

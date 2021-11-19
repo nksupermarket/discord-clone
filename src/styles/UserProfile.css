@@ -12,5 +12,23 @@
 
 .user_profile .preview {
   flex: 0 0 auto;
-  margin-left: 20px;
+  margin-left: 120px;
+}
+
+.user_profile .preview .account-profile-card {
+  position: relative;
+  width: 300px;
+  min-width: 300px;
+  min-height: 180px;
+}
+.user_profile .preview .account-profile-card .banner {
+  height: 60px;
+}
+.user_profile .preview .account-profile-card .user-info .avatar {
+  top: 16px;
+  left: 16px;
+}
+.user_profile .preview .account-profile-card .user-info {
+  display: block;
+  padding: 64px 16px 16px;
 }

@@ -19,6 +19,9 @@
   padding: 16px 16px 0 120px;
   box-sizing: border-box;
 }
+.account-profile-card .user-info .upload-file .avatar {
+  cursor: pointer;
+}
 .account-profile-card .user-info .avatar {
   width: 80px;
   height: 80px;

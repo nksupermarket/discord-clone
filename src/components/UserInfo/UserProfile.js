@@ -22,7 +22,7 @@ const UserProfile = () => {
               <h3 className="caps-title header-secondary">Avatar</h3>
               <div className="btn-ctn">
                 <UploadFile>
-                  <FlatBtn text="Change Avatar" className="filled" />
+                  <div className="flat-btn filled">Change Avatar</div>
                 </UploadFile>
               </div>
             </div>

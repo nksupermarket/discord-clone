@@ -7,6 +7,7 @@ import FlatBtn from '../FlatBtn';
 import Avatar from '../Avatar';
 
 import '../../styles/AccountProfileCard.css';
+import UploadFile from '../UploadFile';
 
 const AccountProfileCard = ({
   editProfile,
@@ -19,7 +20,13 @@ const AccountProfileCard = ({
     <div className="account-profile-card">
       <div className="banner" style={{ background: user.color }}></div>
       <div className="user-info">
-        <Avatar img={user.photoURL} color={user.color} />
+        {isSmall ? (
+          <UploadFile>
+            <Avatar img={user.photoURL} color={user.color} />
+          </UploadFile>
+        ) : (
+          <Avatar img={user.photoURL} color={user.color} />
+        )}
         <div className="profile-card-username">{user.displayName}</div>
         {!isSmall && (
           <FlatBtn

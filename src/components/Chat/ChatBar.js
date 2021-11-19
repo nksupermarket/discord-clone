@@ -1,13 +1,14 @@
 import React from 'react';
 
 import IconBtn from '../IconBtn';
+import ChatBarInput from './ChatBarInput';
+import UploadFile from '../UploadFile';
 
 import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
 import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
 import '../../styles/MentionsPopup.css';
 import 'draft-js/dist/Draft.css';
-import ChatBarInput from './ChatBarInput';
 
 const ChatBar = ({ replyTo, ...props }) => {
   let style = replyTo
@@ -17,7 +18,11 @@ const ChatBar = ({ replyTo, ...props }) => {
   return (
     <div className="chat-wrapper" style={style}>
       <div className="add-wrapper">
-        <IconBtn svg={addCircleSvg} alt="upload a file" />
+        <UploadFile>
+          <div className="icon-btn">
+            <img src={addCircleSvg} alt="upload a file" />
+          </div>
+        </UploadFile>
       </div>
       <ChatBarInput replyTo={replyTo} {...props} />
       <div className="btn-ctn">
