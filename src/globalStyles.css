@@ -1,5 +1,6 @@
 :root {
   --bg-color: rgba(37, 36, 59, 255);
+  --light-bg-color: #d5d6db;
   --background-accent: #4f545c;
   --fg-color: rgba(32, 31, 53, 255);
   --secondary-fg-color: #161823;
@@ -162,33 +163,6 @@ body {
   background-color: var(--fg-color);
 }
 
-.flat-btn {
-  border-radius: 3px;
-  padding: 2px 16px;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  transition: background-color 0.17s ease, color 0.17s ease;
-}
-.flat-btn.filled {
-  background-color: var(--action-normal);
-}
-.flat-btn.filled:hover {
-  background-color: var(--action-hover);
-}
-.flat-btn:hover .underline-hover {
-  text-decoration: underline;
-}
-
-.flat-btn.hollow {
-  color: var(--action-normal);
-  border: 1px solid var(--action-normal);
-}
-
 .field {
   display: flex;
   flex-direction: row;
@@ -268,9 +242,10 @@ form .input-wrapper input {
   font-size: 16px;
   box-sizing: border-box;
   border-radius: 3px;
-  background-color: var(--interactive-hover);
   border: 1px solid var(--background-accent);
   box-shadow: none;
+  background-color: inherit;
+  color: var(--text-normal);
 }
 
 form .input-wrapper input:focus {
@@ -297,4 +272,18 @@ form .input-wrapper input:focus {
 
 .no-pointer-events {
   pointer-events: none;
+}
+
+.link {
+  display: block;
+  color: var(--header-secondary);
+  font-size: 12px;
+  margin-top: 8px;
+  font-style: italic;
+  cursor: pointer;
+  transition: color 0.17s ease;
+}
+.link:hover {
+  text-decoration: underline;
+  color: var(--text-normal);
 }

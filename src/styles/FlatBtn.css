@@ -1,0 +1,37 @@
+.flat-btn {
+  border-radius: 3px;
+  padding: 2px 16px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  transition: background-color 0.17s ease, color 0.17s ease;
+}
+.flat-btn.filled {
+  background-color: var(--action-normal);
+}
+.flat-btn.filled:hover {
+  background-color: var(--action-hover);
+}
+.flat-btn:hover .underline-hover {
+  text-decoration: underline;
+}
+
+.flat-btn.hollow {
+  color: var(--action-normal);
+  border: 1px solid var(--action-normal);
+}
+
+.flat-btn.small {
+  height: 38px;
+  min-width: 78px;
+  min-height: 38px;
+}
+.flat-btn.medium {
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+}

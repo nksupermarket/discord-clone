@@ -30,10 +30,10 @@ function App() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    if (history.location.pathname === '/')
-      history.push('/channels/-MkoRSxTqkrS9mlivGfs');
-  }, [history]);
+  // useEffect(() => {
+  //   if (history.location.pathname === '/')
+  //     history.push('/channels/-MkoRSxTqkrS9mlivGfs');
+  // }, [history]);
 
   return (
     <>

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import useInputValues from '../logic/custom-hooks/useInputValues';
 
 import IconBtn from './IconBtn';
 
@@ -17,11 +19,6 @@ const Popup = ({
   close,
   ...props
 }) => {
-  const [info, setInfo] = useState({});
-
-  function handleChange(e) {
-    setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
   return (
     <div
       className={className ? className + ' popup' : 'popup'}
@@ -34,14 +31,7 @@ const Popup = ({
         </div>
         <IconBtn svg={closeSVG} onClick={close} className="close-btn" />
       </header>
-      {fields && (
-        <Form
-          handleChange={handleChange}
-          fields={fields}
-          close={close}
-          {...props}
-        />
-      )}
+      {fields && <Form fields={fields} close={close} {...props} />}
       {children && (
         <>
           <div className="content">{children}</div>

@@ -9,8 +9,12 @@ import FlatBtn from './FlatBtn';
 const Form = ({
   fields,
   actionBtnText,
+  noCancelBtn,
+  cancelBtnText,
+  textBtns,
   handleChange,
   submitAction,
+  cleanUp,
   close,
   setError,
 }) => {
@@ -18,18 +22,21 @@ const Form = ({
   const fieldNames = fields.map((f) => f.name);
   const { inputError, validateInput, submitForm } = useInputError(fieldNames);
   const [loading, setLoading] = useState(false);
+
   return (
     <form
       ref={formRef}
       autoComplete="nope"
       onSubmit={async (e) => {
         setLoading(true);
-        await submitForm(e, submitAction, close, setError);
+        cleanUp = cleanUp ? cleanUp : close;
+        await submitForm(e, submitAction, cleanUp, setError);
         setLoading(false);
       }}
     >
       <div className="content">
         <input type="password" hidden />
+        {/*need this to turn off autocomplete */}
         {fields.map((f, idx) => (
           <InputField
             key={idx}
@@ -54,14 +61,32 @@ const Form = ({
       </div>
       <footer>
         <div className={loading ? 'btn-ctn no-pointer-events' : 'btn-ctn'}>
-          <FlatBtn text="Cancel" isUnderline={true} onClick={close} />
+          {!noCancelBtn && (
+            <FlatBtn
+              text={cancelBtnText ? cancelBtnText : 'Cancel'}
+              isUnderline={true}
+              onClick={close}
+            />
+          )}
           <FlatBtn
             type="submit"
             text={actionBtnText ? actionBtnText : 'Done'}
-            className="filled"
+            className="filled small"
             loading={loading}
           />
         </div>
+        {textBtns && (
+          <div className="text-btn-ctn">
+            {textBtns.map((t) => {
+              console.log(t);
+              return (
+                <span className="link" onClick={t.onClick}>
+                  {t.text}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </footer>
     </form>
   );

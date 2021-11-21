@@ -18,6 +18,7 @@ function useInputError(inputNames) {
       }));
       return false;
     }
+
     setInputError((prev) => ({
       ...prev,
       [el.name]: '',
@@ -25,7 +26,7 @@ function useInputError(inputNames) {
     return true;
   }
 
-  async function submitForm(e, submitAction, close, setError) {
+  async function submitForm(e, submitAction, cleanUp, setError) {
     e.preventDefault();
 
     const {
@@ -49,12 +50,8 @@ function useInputError(inputNames) {
       }
       if (errors) return;
 
-      await submitAction(
-        // submit action = update user info
-        elements.namedItem(inputNames.find((fname) => fname.includes('new')))
-          .value //inputName w/ new means that is the value to be updated
-      );
-      close();
+      await submitAction();
+      cleanUp();
     } catch (error) {
       setError && setError(error.message);
     }

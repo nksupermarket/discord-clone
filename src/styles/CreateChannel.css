@@ -4,8 +4,11 @@
 }
 
 .create-channel {
-  background-color: #d5d6db;
+  background-color: var(--light-bg-color);
   height: 396px;
+}
+.create-channel form .input-wrapper input {
+  background-color: var(--interactive-hover);
 }
 
 .create-channel footer {

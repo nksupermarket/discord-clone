@@ -2,6 +2,8 @@ import React from 'react';
 
 import LoadingEllipsis from './LoadingEllipsis';
 
+import '../styles/FlatBtn.css';
+
 const FlatBtn = ({ className, type, text, isUnderline, loading, onClick }) => {
   return (
     <button

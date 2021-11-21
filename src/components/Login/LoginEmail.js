@@ -1,47 +1,35 @@
 import React, { useState } from 'react';
 
 import { signIn } from '../../logic/user_firebaseStuff';
+import useInputValues from '../../logic/custom-hooks/useInputValues';
 
-import InputField from '../InputField';
-import FlatBtn from '../FlatBtn';
-import InputErrorMsg from '../InputErrorMsg';
+import Form from '../Form';
 
-const LoginEmail = ({ onRegister, setError }) => {
-  const [email, setEmail] = useState();
-  const [pw, setPw] = useState();
-
-  const [formError, setFormError] = useState();
+const LoginEmail = ({ onRegister, onForgotPW, setError }) => {
+  const { inputValues, handleChange, resetInputValues } = useInputValues();
 
   return (
-    <form
-      name="login-email"
-      onSubmit={(e) => {
-        e.preventDefault();
-        signIn(email, pw, setError);
-      }}
-    >
+    <div className="login login-email">
       <header>
         <h3>Welcome!</h3>
         <h4>Come on in</h4>
       </header>
-      <div className="input-ctn">
-        {formError && <InputErrorMsg error={formError} />}
-        <InputField label="Email" type="email" onChange={setEmail} />
-        <InputField label="Password" type="password" onChange={setPw} />
-        <span className="link">Forgot your password?</span>
-      </div>
-      <FlatBtn
-        type="submit"
-        text="Login"
-        onClick={() => signIn(email, pw, setError)}
+      <Form
+        fields={[
+          { label: 'Email', type: 'email', name: 'email' },
+          { label: 'Password', type: 'password', name: 'password' },
+        ]}
+        noCancelBtn={true}
+        textBtns={[
+          { text: 'Forgot your password?', onClick: onForgotPW },
+          { text: 'Need an account? Register', onClick: onRegister },
+        ]}
+        handleChange={handleChange}
+        submitAction={() => signIn(inputValues.email, inputValues.password)}
+        setError={setError}
+        cleanUp={() => 'do nothing'}
       />
-      <p>
-        Need an account?
-        <span className="link" onClick={onRegister}>
-          Register
-        </span>
-      </p>
-    </form>
+    </div>
   );
 };
 

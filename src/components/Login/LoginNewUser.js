@@ -2,37 +2,39 @@ import React from 'react';
 
 import InputField from '../InputField';
 import FlatBtn from '../FlatBtn';
+import Form from '../Form';
 
 const LoginNewUser = ({
   channel,
-  setDisplayName,
+  handleChange,
   onContinue,
   onReturningUser,
+  close,
 }) => {
   return (
-    <form name="new-user-username" onSubmit={(e) => e.preventDefault()}>
-      {channel && (
+    <div className="login new-user-username">
+      {channel ? (
         <header>
           <h4>You are invited to join</h4>
           <h2>{channel.name}</h2>
         </header>
+      ) : (
+        <header>
+          <h3>Create an account</h3>
+        </header>
       )}
-      <InputField label="Username" type="text" onChange={setDisplayName} />
-      <FlatBtn
-        text="Continue"
-        type="submit"
-        onClick={onContinue}
-        onKeyDown={(e) => {
-          if ((e.key = 'Enter')) {
-            e.preventDefault();
-            onContinue();
-          }
-        }}
+      <Form
+        fields={[{ type: 'text', name: 'username', label: 'username' }]}
+        actionBtnText="Continue"
+        textBtns={[
+          { text: 'Already have an account?', onClick: onReturningUser },
+        ]}
+        handleChange={handleChange}
+        submitAction={onContinue}
+        cleanUp={onContinue}
+        close={close}
       />
-      <span className="link" onClick={onReturningUser}>
-        Already have an account?
-      </span>
-    </form>
+    </div>
   );
 };
 

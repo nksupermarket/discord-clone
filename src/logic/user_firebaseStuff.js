@@ -17,6 +17,7 @@ import {
   updatePassword,
   deleteUser,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   reauthenticateWithCredential,
   EmailAuthProvider,
   reload,
@@ -25,6 +26,11 @@ import {
 import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
 import { db } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
+
+function sendPWResetEmail(email) {
+  const auth = getAuth();
+  sendPasswordResetEmail(auth, email);
+}
 
 function detachListenersForUser(uid) {
   const channelListRef = ref(db, `users/${uid}/channels`);
@@ -98,63 +104,39 @@ async function removeUser(channelList, setError) {
   }
 }
 
-async function createUser(
-  email,
-  password,
-  displayName,
-  channelID,
-  setUser,
-  setError
-) {
+async function createUser(email, password, displayName, channelID, setUser) {
   const auth = getAuth();
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    await updateProfile(userCredential.user, { displayName });
-    const profileColor = await updateUserProfileColor();
-    userCredential.user.color = profileColor;
-    console.log(userCredential.user);
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  await updateProfile(userCredential.user, { displayName });
+  const profileColor = await updateUserProfileColor();
+  userCredential.user.color = profileColor;
+  console.log(userCredential.user);
 
-    if (channelID) subscribeToChannel(userCredential.user, channelID, setError);
+  if (channelID) subscribeToChannel(userCredential.user, channelID);
 
-    setUser(userCredential.user);
-
-    return true;
-  } catch (error) {
-    setError && setError(error.message);
-    return false;
-    //setError(error.code);
-  }
+  setUser(userCredential.user);
 }
 
-function signIn(email, password, setError) {
+function signIn(email, password) {
   const auth = getAuth();
-  try {
-    signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    setError && setError(error.message);
-    //setError(error.code);
-  }
+  signInWithEmailAndPassword(auth, email, password);
 }
 
-async function subscribeToChannel(user, channelID, setError) {
-  try {
-    let updates = {};
-    updates[`users/${user.uid}/channels/${channelID}`] = '';
+async function subscribeToChannel(user, channelID) {
+  let updates = {};
+  updates[`users/${user.uid}/channels/${channelID}`] = '';
 
-    updates[`Channels/${channelID}/users/${user.uid}`] = {
-      displayName: user.displayName,
-      avatar: user.photoURL || '',
-      color: user.color,
-    };
+  updates[`Channels/${channelID}/users/${user.uid}`] = {
+    displayName: user.displayName,
+    avatar: user.photoURL || '',
+    color: user.color,
+  };
 
-    update(ref(db), updates);
-  } catch (error) {
-    setError && setError(error);
-  }
+  update(ref(db), updates);
 }
 
 function getUserInfo(uid, setChannelList, setUserProfileColor) {
@@ -274,7 +256,7 @@ function isUserOnline(uid) {
 async function verifyPW(pw) {
   const auth = getAuth();
   const user = auth.currentUser;
-
+  if (!user) return { isValid: true };
   try {
     const credential = EmailAuthProvider.credential(user.email, pw);
 
@@ -292,6 +274,7 @@ async function logout() {
 }
 
 export {
+  sendPWResetEmail,
   updateUserInfoForAllChannels,
   updateUserProfileColor,
   updateUserInfo,

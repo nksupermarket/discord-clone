@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import { updateUserInfo, removeUser } from '../../logic/user_firebaseStuff';
+import useInputValues from '../../logic/custom-hooks/useInputValues';
 import useError from '../../logic/custom-hooks/useError';
 import { UserContext } from '../../logic/contexts/UserContext';
 
@@ -22,6 +23,7 @@ const MyAccount = ({ editProfile }) => {
   const { error, setError } = useError();
   const { channelList } = useContext(UserContext);
   const [popupDetails, setPopupDetails] = useState();
+  const { inputValues, handleChange, resetInputValues } = useInputValues();
   const { setUser } = useContext(UserContext);
 
   const editUsername = useCallback(() => {
@@ -37,10 +39,16 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: (value) =>
-        updateUserInfo('displayName', value, setUser, channelList),
+      inputsToSubmit: 'new_username',
+      submitAction: () =>
+        updateUserInfo(
+          'displayName',
+          inputValues.username,
+          setUser,
+          channelList
+        ),
     });
-  }, [channelList, setUser]);
+  }, [channelList, setUser, inputValues.username]);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
@@ -55,9 +63,10 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: (value) => updateUserInfo('email', value, setUser),
+      inputsToSubmit: 'new_email',
+      submitAction: () => updateUserInfo('email', inputValues.email, setUser),
     });
-  }, [setUser]);
+  }, [setUser, inputValues.email]);
 
   const editPassword = useCallback(() => {
     setPopupDetails({
@@ -77,9 +86,10 @@ const MyAccount = ({ editProfile }) => {
           type: 'password',
         },
       ],
-      submitAction: (value) => updateUserInfo('password', value),
+      inputsToSubmit: 'new_password',
+      submitAction: () => updateUserInfo('password', inputValues.new_password),
     });
-  }, []);
+  }, [inputValues.new_password]);
 
   const deleteAcc = useCallback(() => {
     setPopupDetails({
@@ -119,9 +129,15 @@ const MyAccount = ({ editProfile }) => {
         </div>
       </section>
       {popupDetails && (
-        <Modal close={() => setPopupDetails()}>
+        <Modal
+          close={() => {
+            setPopupDetails();
+            resetInputValues();
+          }}
+        >
           <Popup
             close={() => setPopupDetails()}
+            handleChange={handleChange}
             {...popupDetails}
             setError={setError}
           ></Popup>

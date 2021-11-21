@@ -43,6 +43,11 @@ function confirmPW(pw, otherPW) {
 
 function dynamicValidation(el, isSubmit = false, otherPW = undefined) {
   switch (true) {
+    case el.name.includes('username'): {
+      return el.value.length > 0
+        ? { isValid: 0 }
+        : { error: 'username is empty' };
+    }
     case el.name.includes('email'): {
       return validateEmail(el.value);
     }

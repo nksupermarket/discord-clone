@@ -17,7 +17,7 @@ export default function useLoginUser(setError) {
     function getCurrentUser() {
       const auth = getAuth();
       onAuthStateChanged(auth, (currUser) => {
-        if (!currUser.uid) return setUser(currUser);
+        if (!currUser) return setUser(currUser);
         try {
           getUserInfo(
             currUser.uid,
