@@ -121,9 +121,9 @@ async function createUser(email, password, displayName, channelID, setUser) {
   setUser(userCredential.user);
 }
 
-function signIn(email, password) {
+async function signIn(email, password) {
   const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password);
+  await signInWithEmailAndPassword(auth, email, password);
 }
 
 async function subscribeToChannel(user, channelID) {

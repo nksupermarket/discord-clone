@@ -16,6 +16,7 @@ import './globalStyles.css';
 //import icons
 import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
+import { logout } from './logic/user_firebaseStuff';
 
 function App() {
   const { error, setError } = useError();

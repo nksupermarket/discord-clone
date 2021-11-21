@@ -13,13 +13,12 @@ import ResetPassword from './ResetPassword';
 import loginArtwork from '../../assets/png/Waffle_Coffee Dessert.png';
 
 const LoginScreen = ({ setUser, setError }) => {
-  const [node, setNode] = useState('new user');
+  const [node, setNode] = useState('returning user');
   const {
     inputValues: newUserInfo,
     handleChange,
     resetInputValues,
   } = useInputValues();
-  console.log(loginArtwork);
   const { channelID: channel } = useParams();
 
   const history = useHistory();

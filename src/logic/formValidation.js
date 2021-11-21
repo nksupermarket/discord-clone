@@ -61,7 +61,7 @@ function dynamicValidation(el, isSubmit = false, otherPW = undefined) {
         (el.name === 'current_password' || el.name === 'password') &&
         isSubmit
       )
-        return verifyPW(el.value);
+        return verifyPW(el.value); // this returns a promise
       return { isValid: true };
     }
 

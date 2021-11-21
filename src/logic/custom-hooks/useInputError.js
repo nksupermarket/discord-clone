@@ -9,7 +9,7 @@ function useInputError(inputNames) {
   async function validateInput(el, isSubmit = false, pwConfirm = undefined) {
     const validationStatus = pwConfirm
       ? await dynamicValidation(el, isSubmit, pwConfirm)
-      : await dynamicValidation(el, isSubmit);
+      : await dynamicValidation(el, isSubmit); // have to await bc it might return a promise (depends on input name)
 
     if (validationStatus.error) {
       setInputError((prev) => ({

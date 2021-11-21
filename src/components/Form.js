@@ -78,7 +78,6 @@ const Form = ({
         {textBtns && (
           <div className="text-btn-ctn">
             {textBtns.map((t) => {
-              console.log(t);
               return (
                 <span className="link" onClick={t.onClick}>
                   {t.text}

@@ -11,8 +11,8 @@ const LoginEmail = ({ onRegister, onForgotPW, setError }) => {
   return (
     <div className="login login-email">
       <header>
-        <h3>Welcome!</h3>
-        <h4>Come on in</h4>
+        <h3>Welcome to bread!</h3>
+        <h4>a discord clone</h4>
       </header>
       <Form
         fields={[
