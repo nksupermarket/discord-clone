@@ -19,6 +19,7 @@
   box-shadow: var(--low-shadow);
   flex: 0 0 auto;
   font-weight: 600;
+  overflow: auto;
 }
 
 .room-list {

@@ -15,7 +15,7 @@ import NodeTwo from './NodeTwo';
 import { UserContext } from '../../logic/contexts/UserContext';
 
 const CreateChannel = ({ close }) => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [node, setNode] = useState(1);
   const [channelInfo, setChannelInfo] = useState({
     name: `${user.displayName}'s channel`,

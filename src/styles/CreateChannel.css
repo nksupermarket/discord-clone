@@ -8,6 +8,7 @@
   height: 396px;
 }
 .create-channel form .input-wrapper input {
+  color: var(--header-primary);
   background-color: var(--interactive-hover);
 }
 

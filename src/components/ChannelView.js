@@ -20,11 +20,11 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
-const ChannelView = ({ setError }) => {
+const ChannelView = ({ finishLoading, setError }) => {
   const { user } = useContext(UserContext);
-  const [channel, setChannel] = useState();
   const { channelID, roomID } = useParams();
-  const [room, setRoom] = useState();
+  const [channel, setChannel] = useState({ id: channelID });
+  const [room, setRoom] = useState({ id: roomID });
 
   const updateChannel = useCallback(
     (name, icon) => setChannel({ name, icon, id: channelID }),
@@ -42,13 +42,16 @@ const ChannelView = ({ setError }) => {
 
   // room stuff
   const history = useHistory();
+  const moveToDefaultRoom = useCallback(() => {
+    if (roomList.length === 0) return history.push(`/channels/${channelID}/`);
+    if (!roomID && roomList[0])
+      history.push(`/channels/${channelID}/${roomList[0].id}`);
+  }, [channelID, roomID, roomList, history]);
 
   useEffect(() => {
-    if (roomList.length === 0) return;
-
-    if (!roomID && roomList[0])
-      history.push(`/channels/${channel.id}/${roomList[0].id}`); //enter default room for channel
-  }, [roomList, history, channel, roomID]);
+    moveToDefaultRoom();
+    finishLoading();
+  }, [moveToDefaultRoom, channelID, finishLoading]);
 
   const updateRoom = useCallback(
     (name) => setRoom({ name, id: roomID }),

@@ -3,8 +3,10 @@
   position: relative;
   width: 80px;
   height: 80px;
-  transform: scale(0.4);
   opacity: 0.8;
+}
+.lds-ellipsis.small {
+  transform: scale(0.4);
 }
 .lds-ellipsis div {
   position: absolute;

@@ -12,7 +12,7 @@ const FlatBtn = ({ className, type, text, isUnderline, loading, onClick }) => {
       onClick={onClick}
     >
       {loading ? (
-        <LoadingEllipsis />
+        <LoadingEllipsis size={'small'} />
       ) : (
         <span className={isUnderline ? 'underline-hover' : null}>{text}</span>
       )}

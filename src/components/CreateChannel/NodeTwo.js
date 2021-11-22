@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import UploadFile from '../UploadFile';
 import Popup from '../Popup';
@@ -18,6 +18,8 @@ const NodeTwo = ({
   handleChange,
   handleIcon,
 }) => {
+  const uploadFileRef = useRef();
+
   return (
     <Popup
       className="create-channel create-channel-node_two"

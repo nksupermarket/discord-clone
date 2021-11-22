@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import { getAuth, signOut } from '@firebase/auth';
 
@@ -10,6 +10,7 @@ import ChannelView from './components/ChannelView';
 import LoginScreen from './components/Login/LoginScreen';
 import MainNav from './components/MainNav/MainNav';
 import Error from './components/Error';
+import LoadingScreen from './components/LoadingScreen';
 
 import './globalStyles.css';
 
@@ -21,7 +22,7 @@ import { logout } from './logic/user_firebaseStuff';
 function App() {
   const { error, setError } = useError();
   const { user, setUser, channelList } = useLoginUser(setError);
-  const [channel, setChannel] = useState();
+  const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
   //   if (!user) return;
@@ -30,19 +31,13 @@ function App() {
   //   signOut(auth);
   // }, [user]);
 
-  // const history = useHistory();
-  // useEffect(() => {
-  //   if (!user || !channelList) return;
-  //   if (channelList.length === 0) return;
+  const history = useHistory();
+  const onFirstMount = useCallback(() => {
+    if (!channelList) return;
 
-  //   if (!roomID && channelList[0])
-  //     history.push(`/channels/${channelList[0].id}/`); //enter default room for channel
-  // }, [user, history, channelList]);
-
-  // useEffect(() => {
-  //   if (history.location.pathname === '/')
-  //     history.push('/channels/-MkoRSxTqkrS9mlivGfs');
-  // }, [history]);
+    if (channelList[0]) history.push(`/channels/${channelList[0].id}/`); //enter default room for channel
+  }, [channelList, history]);
+  useEffect(onFirstMount, [onFirstMount]);
 
   return (
     <>
@@ -51,20 +46,22 @@ function App() {
         {!user && <LoginScreen setUser={setUser} setError={setError} />}
       </Route>
       {user && (
-        <UserContext.Provider value={{ user, setUser, channelList }}>
-          <div className="app">
-            <MainNav />
-            <Route
-              path={['/channels/:channelID/:roomID', '/channels/:channelID']}
-            >
-              <ChannelView
-                channel={channel}
-                setChannel={setChannel}
-                setError={setError}
-              />
-            </Route>
-          </div>
-        </UserContext.Provider>
+        <>
+          {loading && <LoadingScreen />}
+          <UserContext.Provider value={{ user, setUser, channelList }}>
+            <div className="app">
+              <MainNav />
+              <Route
+                path={['/channels/:channelID/:roomID', '/channels/:channelID']}
+              >
+                <ChannelView
+                  setError={setError}
+                  finishLoading={() => setLoading(false)}
+                />
+              </Route>
+            </div>
+          </UserContext.Provider>
+        </>
       )}
     </>
   );

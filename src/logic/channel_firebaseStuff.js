@@ -17,14 +17,11 @@ import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
 async function createChannel(name) {
-  try {
-    const channelListRef = ref(db, 'Channels');
-    const newChannelRef = push(channelListRef);
-    await set(newChannelRef, { name });
-    return newChannelRef.key;
-  } catch (error) {
-    console.log(error);
-  }
+  const channelListRef = ref(db, 'Channels');
+  const newChannelRef = push(channelListRef);
+  await set(newChannelRef, { name });
+  await createRoom(newChannelRef.key, 'general');
+  return newChannelRef.key;
 }
 
 async function uploadChannelIcon(channelID, image, setError) {
@@ -72,14 +69,16 @@ function getChannelInfo(
 
       updateChannel(data.name, data.icon || '');
 
-      const roomCategories = Object.keys(data.room_categories);
+      const roomCategories = data.room_categories
+        ? Object.keys(data.room_categories)
+        : [];
       setRoomCategories(['none', ...roomCategories]);
 
       let roomListArr = [];
       pushToRoomListArr(data.rooms);
       setRoomList(roomListArr);
 
-      const userRoles = Object.keys(data.user_roles);
+      const userRoles = data.user_roles ? Object.keys(data.user_roles) : [];
       setUserRoles([...userRoles, 'Online']);
 
       let userList = [];
@@ -123,19 +122,15 @@ async function getRoomList(channelID, setRoomList, setError) {
   }
 }
 
-async function createRoom(channelID, name, setError) {
-  try {
-    const channelRoomListRef = ref(db, `Channels/${channelID}/rooms`);
-    const newRoomRef = push(channelRoomListRef);
-    set(newRoomRef, { name });
+async function createRoom(channelID, name) {
+  const channelRoomListRef = ref(db, `Channels/${channelID}/rooms`);
+  const newRoomRef = push(channelRoomListRef);
 
-    set(ref(db, `Rooms/${newRoomRef.key}`), {
-      name,
-    });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
+  set(newRoomRef, { name });
+
+  set(ref(db, `Rooms/${newRoomRef.key}`), {
+    name,
+  });
 }
 
 async function getChannelNames(channelList, updateChannelList) {
