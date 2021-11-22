@@ -21,6 +21,7 @@ import { logout } from './logic/user_firebaseStuff';
 function App() {
   const { error, setError } = useError();
   const { user, setUser, channelList } = useLoginUser(setError);
+  const [channel, setChannel] = useState();
 
   // useEffect(() => {
   //   if (!user) return;
@@ -29,7 +30,14 @@ function App() {
   //   signOut(auth);
   // }, [user]);
 
-  const history = useHistory();
+  // const history = useHistory();
+  // useEffect(() => {
+  //   if (!user || !channelList) return;
+  //   if (channelList.length === 0) return;
+
+  //   if (!roomID && channelList[0])
+  //     history.push(`/channels/${channelList[0].id}/`); //enter default room for channel
+  // }, [user, history, channelList]);
 
   // useEffect(() => {
   //   if (history.location.pathname === '/')
@@ -49,7 +57,11 @@ function App() {
             <Route
               path={['/channels/:channelID/:roomID', '/channels/:channelID']}
             >
-              <ChannelView setError={setError} />
+              <ChannelView
+                channel={channel}
+                setChannel={setChannel}
+                setError={setError}
+              />
             </Route>
           </div>
         </UserContext.Provider>

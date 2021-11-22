@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import { useHistory } from 'react-router';
 
 import { logout } from '../../logic/user_firebaseStuff';
 import useError from '../../logic/custom-hooks/useError';
@@ -9,6 +10,8 @@ import UserProfile from './UserProfile';
 import Error from '../Error';
 
 const UserSettings = ({ close }) => {
+  const history = useHistory();
+
   const { error, SetError } = useError();
   const [state, dispatch] = useReducer((state, action) => {
     if (action.type === 'swap_to') {
@@ -24,10 +27,14 @@ const UserSettings = ({ close }) => {
         case 'user profile':
           return <UserProfile />;
         case 'log out':
-          try {
-            logout();
-          } catch (error) {
-            SetError(error.message);
+          onLogout();
+          async function onLogout() {
+            try {
+              await logout();
+              history.push('/login');
+            } catch (error) {
+              SetError(error.message);
+            }
           }
           break;
         default:

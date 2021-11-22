@@ -45,30 +45,36 @@ const CreateChannel = ({ close }) => {
 
   return (
     <Modal close={close}>
-      {node === 1 && (
-        <NodeOne
-          nextNode={ontoNextNode}
-          setChannelInfo={(status) =>
-            setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
-          }
-          close={close}
-        />
-      )}
-      {node === 2 && (
-        <NodeTwo
-          createChannel={onCreateChannel}
-          prevNode={prevNode}
-          channelName={channelInfo.name}
-          handleChange={(e) =>
-            setChannelInfo((prev) => ({
-              ...prev,
-              [e.target.name]: e.target.value,
-            }))
-          }
-          handleIcon={(icon) => setChannelInfo((prev) => ({ ...prev, icon }))}
-          close={close}
-        />
-      )}
+      {
+        {
+          1: (
+            <NodeOne
+              nextNode={ontoNextNode}
+              setChannelInfo={(status) =>
+                setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
+              }
+              close={close}
+            />
+          ),
+          2: (
+            <NodeTwo
+              createChannel={onCreateChannel}
+              prevNode={prevNode}
+              channelName={channelInfo.name}
+              handleChange={(e) =>
+                setChannelInfo((prev) => ({
+                  ...prev,
+                  [e.target.name]: e.target.value,
+                }))
+              }
+              handleIcon={(icon) =>
+                setChannelInfo((prev) => ({ ...prev, icon }))
+              }
+              close={close}
+            />
+          ),
+        }[node] // renders component based on value of node
+      }
     </Modal>
   );
 };

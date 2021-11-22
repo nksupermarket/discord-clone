@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { dynamicValidation } from '../formValidation';
 
 function useInputError(inputNames) {
@@ -11,19 +11,13 @@ function useInputError(inputNames) {
       ? await dynamicValidation(el, isSubmit, pwConfirm)
       : await dynamicValidation(el, isSubmit); // have to await bc it might return a promise (depends on input name)
 
-    if (validationStatus.error) {
-      setInputError((prev) => ({
-        ...prev,
-        [el.name]: validationStatus.error,
-      }));
-      return false;
-    }
-
+    const value = validationStatus.error ? validationStatus.error : '';
     setInputError((prev) => ({
       ...prev,
-      [el.name]: '',
+      [el.name]: value,
     }));
-    return true;
+
+    return validationStatus.error ? false : true;
   }
 
   async function submitForm(e, submitAction, cleanUp, setError) {

@@ -6,7 +6,7 @@ import useInputValues from '../../logic/custom-hooks/useInputValues';
 import Form from '../Form';
 
 const LoginEmail = ({ onRegister, onForgotPW, setError }) => {
-  const { inputValues, handleChange, resetInputValues } = useInputValues();
+  const { inputValues, handleChange } = useInputValues();
 
   return (
     <div className="login login-email">

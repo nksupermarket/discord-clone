@@ -7,9 +7,5 @@ export default function useInputValues() {
     setInputValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function resetInputValues() {
-    setInputValues();
-  }
-
-  return { inputValues, setInputValues, handleChange, resetInputValues };
+  return { inputValues, handleChange };
 }

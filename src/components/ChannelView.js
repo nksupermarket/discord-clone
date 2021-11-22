@@ -22,8 +22,8 @@ import { getRoomName } from '../logic/room_firebaseStuff';
 
 const ChannelView = ({ setError }) => {
   const { user } = useContext(UserContext);
-  const { channelID, roomID } = useParams();
   const [channel, setChannel] = useState();
+  const { channelID, roomID } = useParams();
   const [room, setRoom] = useState();
 
   const updateChannel = useCallback(

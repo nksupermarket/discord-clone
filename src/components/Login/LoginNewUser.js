@@ -1,7 +1,5 @@
 import React from 'react';
 
-import InputField from '../InputField';
-import FlatBtn from '../FlatBtn';
 import Form from '../Form';
 
 const LoginNewUser = ({
@@ -31,7 +29,7 @@ const LoginNewUser = ({
         ]}
         handleChange={handleChange}
         submitAction={onContinue}
-        cleanUp={onContinue}
+        cleanUp={() => 'do nothing'}
         close={close}
       />
     </div>
