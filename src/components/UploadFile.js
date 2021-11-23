@@ -4,10 +4,6 @@ const UploadFile = ({ children, handleIcon, isPreview }) => {
   const [imgPreview, setImgPreview] = useState();
   const uploadFileRef = useRef();
 
-  useEffect(() => {
-    console.log(uploadFileRef.current);
-  });
-
   function checkIfFileIsImg(file) {
     return file['type'].includes('image');
   }

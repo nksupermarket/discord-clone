@@ -5,7 +5,10 @@ import Avatar from '../Avatar';
 
 const ChannelLink = ({ channelID, icon, name }) => {
   return (
-    <NavLink to={`/channels/${channelID}`} activeClassName="selected">
+    <NavLink
+      to={(location) => ({ ...location, pathname: `/channels/${channelID}` })}
+      activeClassName="selected"
+    >
       <div className="avatar-wrapper list-item">
         <Avatar img={icon} channelName={name} />
       </div>

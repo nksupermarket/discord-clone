@@ -112,9 +112,8 @@ async function createUser(email, password, displayName, channelID, setUser) {
     password
   );
   await updateProfile(userCredential.user, { displayName });
-  const profileColor = await updateUserProfileColor();
+  const profileColor = await updateUserProfileColor(userCredential.user.uid);
   userCredential.user.color = profileColor;
-  console.log(userCredential.user);
 
   if (channelID) subscribeToChannel(userCredential.user, channelID);
 
@@ -139,7 +138,7 @@ async function subscribeToChannel(user, channelID) {
   update(ref(db), updates);
 }
 
-function getUserInfo(uid, setChannelList, setUserProfileColor) {
+async function getUserInfo(uid, setChannelList, setUserProfileColor) {
   const userRef = ref(db, `users/${uid}/`);
 
   onValue(userRef, async (snap) => {
@@ -168,23 +167,6 @@ function getUserInfo(uid, setChannelList, setUserProfileColor) {
       }
     }
   });
-}
-
-async function getUnreadRooms(uid, channelID, setUnreadRooms, setError) {
-  try {
-    const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
-
-    onValue(unreadRoomsRef, (snap) => {
-      const data = snap.val();
-      if (!data) return setUnreadRooms([]);
-
-      const unreadRooms = Object.keys(data);
-
-      setUnreadRooms(unreadRooms);
-    });
-  } catch (error) {
-    setError && setError(error.message);
-  }
 }
 
 async function getRoleOfUser(channelID, userId, setRole, setError) {
@@ -287,7 +269,6 @@ export {
   subscribeToChannel,
   updateUserOnline,
   updateMentions,
-  getUnreadRooms,
   detachListenersForUser,
   verifyPW,
   removeUser,

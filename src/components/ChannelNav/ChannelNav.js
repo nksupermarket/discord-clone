@@ -1,13 +1,11 @@
 import React, { useRef } from 'react';
-import ReactDom from 'react-dom';
-import { setRoomExitTimestamp } from '../../logic/room_firebaseStuff';
 
 import '../../styles/ChannelNav.css';
 import UserInfo from '../UserInfo/UserInfo';
 import CatList from '../CatList';
 import RoomLink from './RoomLink';
 
-const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
+const ChannelNav = ({ channel, categories, list }) => {
   categories = categories || [];
 
   return (
@@ -28,15 +26,7 @@ const ChannelNav = ({ channel, categories, list, unread, onRoomExit }) => {
                 return false;
               })
               .map((room) => {
-                const isUnread = unread.includes(room.id);
-                return (
-                  <RoomLink
-                    key={room.id}
-                    isUnread={isUnread}
-                    channel={channel}
-                    room={room}
-                  />
-                );
+                return <RoomLink key={room.id} channel={channel} room={room} />;
               })}
           </CatList>
         ))}

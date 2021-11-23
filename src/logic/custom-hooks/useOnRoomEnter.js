@@ -3,13 +3,6 @@ import {
   detachListenersForRoom,
   getMsgList,
   pushToMsgList,
-  getRoomUnsubscribeStatus,
-  setRoomExitTimestamp,
-  attachUnreadMsgsListener,
-  //setCurrentlyInRoom,
-  setRoomExitTimestampOnDisconnect,
-  removeOnDisconnectForRoomExitTimestamp,
-  removeRoomFromUnread,
   getRoomStuff,
 } from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
@@ -27,18 +20,10 @@ export default function useOnRoomEnter(
   useEffect(() => {
     if (!user || !channelID || !roomID) return;
     detachListenersForRoom(roomID);
-    removeRoomFromUnread(channelID, roomID, user.uid, setError);
-    setRoomExitTimestampOnDisconnect(channelID, roomID, user.uid, setError);
     getRoomStuff(roomID, setRoomName, setMsgList);
-    //setCurrentlyInRoom(channelID, roomID, user.uid, setError);
 
     return async function () {
       detachListenersForRoom(roomID);
-      removeOnDisconnectForRoomExitTimestamp(channelID);
-      const isRoomUnsubscribed = await getRoomUnsubscribeStatus();
-      if (isRoomUnsubscribed) return;
-      setRoomExitTimestamp(channelID, roomID, user.uid, setError);
-      attachUnreadMsgsListener(channelID, roomID, user.uid, setError);
     };
   }, [roomID, channelID, user, setRoomName, setError]);
 

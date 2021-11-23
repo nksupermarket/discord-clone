@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { signIn } from '../../logic/user_firebaseStuff';
 import useInputValues from '../../logic/custom-hooks/useInputValues';
@@ -7,6 +8,8 @@ import Form from '../Form';
 
 const LoginEmail = ({ onRegister, onForgotPW, setError }) => {
   const { inputValues, handleChange } = useInputValues();
+
+  const history = useHistory();
 
   return (
     <div className="login login-email">
@@ -27,7 +30,7 @@ const LoginEmail = ({ onRegister, onForgotPW, setError }) => {
         handleChange={handleChange}
         submitAction={() => signIn(inputValues.email, inputValues.password)}
         setError={setError}
-        cleanUp={() => 'do nothing'}
+        cleanUp={() => history.push('/')}
       />
     </div>
   );

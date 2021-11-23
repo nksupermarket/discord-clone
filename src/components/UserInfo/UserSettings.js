@@ -31,7 +31,6 @@ const UserSettings = ({ close }) => {
           async function onLogout() {
             try {
               await logout();
-              history.push('/login');
             } catch (error) {
               SetError(error.message);
             }

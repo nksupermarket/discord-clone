@@ -36,23 +36,16 @@ const ChannelView = ({ finishLoading, setError }) => {
     roomList,
     userList,
     onlineUsers,
-    unreadRooms,
     userRole,
-  } = useOnChannelEnter(user, channelID, updateChannel, setError);
+  } = useOnChannelEnter(
+    user,
+    channelID,
+    updateChannel,
+    finishLoading,
+    setError
+  );
 
   // room stuff
-  const history = useHistory();
-  const moveToDefaultRoom = useCallback(() => {
-    if (roomList.length === 0) return history.push(`/channels/${channelID}/`);
-    if (!roomID && roomList[0])
-      history.push(`/channels/${channelID}/${roomList[0].id}`);
-  }, [channelID, roomID, roomList, history]);
-
-  useEffect(() => {
-    moveToDefaultRoom();
-    finishLoading();
-  }, [moveToDefaultRoom, channelID, finishLoading]);
-
   const updateRoom = useCallback(
     (name) => setRoom({ name, id: roomID }),
     [roomID]
@@ -72,7 +65,6 @@ const ChannelView = ({ finishLoading, setError }) => {
           channel={channel}
           categories={roomCategories}
           list={roomList}
-          unread={unreadRooms}
           setRoom={setRoom}
           currentRoom={room}
         />

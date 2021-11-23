@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAuth } from '@firebase/auth';
 
 import useInputValues from '../../logic/custom-hooks/useInputValues';
 
@@ -16,6 +17,8 @@ const LoginScreen = ({ setUser, setError }) => {
   const [node, setNode] = useState('returning user');
   const { inputValues: newUserInfo, handleChange } = useInputValues();
   const { channelID: channel } = useParams();
+
+  const auth = getAuth();
 
   const history = useHistory();
   // useEffect(() => {

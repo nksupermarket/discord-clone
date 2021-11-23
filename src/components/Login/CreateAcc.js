@@ -38,7 +38,9 @@ const CreateAcc = ({
             setUser
           )
         }
-        cleanUp={() => history.push(`/channels/${channel}`)}
+        cleanUp={() => {
+          if (channel) history.push(`/channels/${channel}`);
+        }}
         setError={setError}
       />
     </div>
