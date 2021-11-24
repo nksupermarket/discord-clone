@@ -8,7 +8,7 @@ const FlatBtn = ({ className, type, text, isUnderline, loading, onClick }) => {
   return (
     <button
       type={type || 'button'}
-      className={`flat-btn ${className}`}
+      className={className ? `flat-btn ${className}` : 'flat-btn'}
       onClick={onClick}
     >
       {loading ? (

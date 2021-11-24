@@ -2,6 +2,10 @@
   margin-bottom: 8px;
 }
 
+.user_profile .row-layout {
+  justify-content: space-between;
+}
+
 .user_profile .customization-wrapper {
   margin-bottom: 40px;
 }
@@ -9,10 +13,12 @@
 .user_profile .btn-ctn {
   margin-top: 16px;
 }
+.user_profile .btn-ctn .flat-btn {
+  margin-right: 4px;
+}
 
 .user_profile .preview {
   flex: 0 0 auto;
-  margin-left: 120px;
 }
 
 .user_profile .preview .account-profile-card {

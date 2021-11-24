@@ -14,14 +14,16 @@ const AccountProfileCard = ({
   editUsername,
   editEmail,
   isSmall,
+  handleAvatarChange,
 }) => {
   const { user } = useContext(UserContext);
+  console.log(user);
   return (
     <div className="account-profile-card">
       <div className="banner" style={{ background: user.color }}></div>
       <div className="user-info">
         {isSmall ? (
-          <UploadFile>
+          <UploadFile handleImg={handleAvatarChange} isPreview={false}>
             <Avatar img={user.photoURL} color={user.color} />
           </UploadFile>
         ) : (

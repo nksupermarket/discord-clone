@@ -17,6 +17,7 @@ const UserProfile = () => {
   const [defaultColor] = useState(user.color);
   const [customColor, setCustomColor] = useState();
   const [isDefaultActive, setIsDefaultActive] = useState(true);
+  const [avatarPreview, setAvatarPreview] = useState();
   const { error, setError } = useError();
 
   // event listeners
@@ -53,6 +54,13 @@ const UserProfile = () => {
       setError(error.message);
     }
   }
+  function removeAvatar() {
+    try {
+      updateUserInfo('avatar', '', setUser, channelList);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   return (
     <>
@@ -67,9 +75,16 @@ const UserProfile = () => {
               <div className="customization-wrapper">
                 <h3 className="caps-title header-secondary">Avatar</h3>
                 <div className="btn-ctn">
-                  <UploadFile handleIcon={handleAvatarChange}>
+                  <UploadFile handleImg={handleAvatarChange} isPreview={false}>
                     <div className="flat-btn filled">Change Avatar</div>
                   </UploadFile>
+                  {user.photoURL && (
+                    <FlatBtn
+                      text={'Remove Avatar'}
+                      isUnderline={true}
+                      onClick={removeAvatar}
+                    />
+                  )}
                 </div>
               </div>
               <div className="customization-wrapper">
@@ -89,10 +104,18 @@ const UserProfile = () => {
                   />
                 </div>
               </div>
+              <div className="customization-wrapper">
+                <div className="btn-ctn">
+                  <FlatBtn text="Save Changes" className="hollow" />
+                </div>
+              </div>
             </div>
             <div className="customization-wrapper preview">
               <h3 className="caps-title header-secondary">Preview</h3>
-              <AccountProfileCard isSmall={true} />
+              <AccountProfileCard
+                isSmall={true}
+                handleAvatarChange={handleAvatarChange}
+              />
             </div>
           </div>
         </div>

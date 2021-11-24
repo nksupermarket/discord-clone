@@ -18,7 +18,7 @@ import Error from '../Error';
 
 const CreateChannel = ({ close }) => {
   const { user } = useContext(UserContext);
-  const [error, setError] = useError();
+  const { error, setError } = useError();
   const [node, setNode] = useState(1);
   const [channelInfo, setChannelInfo] = useState({
     name: `${user.displayName}'s channel`,

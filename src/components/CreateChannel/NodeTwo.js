@@ -38,7 +38,7 @@ const NodeTwo = ({
         </div>
       }
     >
-      <UploadFile handleIcon={handleIcon} isPreview={true}>
+      <UploadFile handleImg={handleIcon} isPreview={true}>
         <img
           className="add-circle-fill"
           src={addCircleSVG}
