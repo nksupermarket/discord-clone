@@ -13,21 +13,21 @@ const UploadFile = ({ children, handleIcon, isPreview }) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
-    reader.onloadend = () => setImgPreview(reader.result);
-    console.log('finished onloadend');
-    console.log(children);
+    reader.onloadend = () => {
+      if (checkIfFileIsImg(file)) setImgPreview(reader.result);
+    };
     handleIcon && handleIcon(file);
   }
   return (
     <label className={imgPreview ? 'upload-file' : 'upload-file init'}>
-      {imgPreview && (
+      {isPreview && imgPreview && (
         <img
           src={imgPreview}
           className="icon-preview"
           alt="your uploaded icon"
         />
       )}
-      {!imgPreview && children}
+      {!imgPreview && isPreview && children}
       <input
         type="file"
         name="upload"

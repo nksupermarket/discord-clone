@@ -18,8 +18,6 @@ const NodeTwo = ({
   handleChange,
   handleIcon,
 }) => {
-  const uploadFileRef = useRef();
-
   return (
     <Popup
       className="create-channel create-channel-node_two"
@@ -40,7 +38,7 @@ const NodeTwo = ({
         </div>
       }
     >
-      <UploadFile handleIcon={handleIcon}>
+      <UploadFile handleIcon={handleIcon} isPreview={true}>
         <img
           className="add-circle-fill"
           src={addCircleSVG}

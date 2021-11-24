@@ -18,6 +18,7 @@ import './globalStyles.css';
 import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
 import { logout } from './logic/user_firebaseStuff';
+import Explore from './components/Explore/Explore';
 
 function App() {
   const { error, setError } = useError();
@@ -37,6 +38,13 @@ function App() {
           <UserContext.Provider value={{ user, setUser, channelList }}>
             <div className="app">
               <MainNav />
+              <Route path={'/explore'}>
+                <Explore
+                  finishLoading={() => {
+                    setLoading(false);
+                  }}
+                />
+              </Route>
               <Route
                 path={['/channels/:channelID/:roomID', '/channels/:channelID']}
               >

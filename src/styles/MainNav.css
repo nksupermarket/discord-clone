@@ -48,12 +48,23 @@
 #main-nav .btn-ctn {
   flex-direction: column;
 }
-
 #main-nav .icon-btn {
   height: 48px;
   width: 48px;
   border-radius: 50%;
-  background-color: black;
+  background-color: var(--bg-color);
+}
+#main-nav .btn-ctn .icon-btn.active,
+#main-nav .btn-ctn .icon-btn:hover {
+  background-color: var(--action-normal);
+  border-radius: 10px;
+}
+#main-nav .btn-ctn .icon-btn img {
+  filter: var(--action-normal-filter);
+}
+#main-nav .btn-ctn .icon-btn.active img,
+#main-nav .btn-ctn .icon-btn:hover img {
+  filter: var(--text-normal-filter);
 }
 
 #main-nav .btn-ctn .icon-btn:hover,

@@ -23,8 +23,9 @@ import {
   reload,
   signOut,
 } from 'firebase/auth';
+import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
-import { db } from '../firebaseStuff';
+import { db, storage } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
 function sendPWResetEmail(email) {
@@ -36,6 +37,13 @@ function detachListenersForUser(uid) {
   const channelListRef = ref(db, `users/${uid}/channels`);
 
   off(channelListRef);
+}
+
+async function uploadAvatar(uid, image) {
+  const userAvatarRef = store(storage, `user_avatars/${uid}`);
+  await uploadBytes(userAvatarRef, image);
+  const avatarURL = await getDownloadURL(userAvatarRef);
+  return avatarURL;
 }
 
 async function updateUserInfo(infoType, value, setUser, channelList) {
@@ -256,6 +264,7 @@ async function logout() {
 }
 
 export {
+  uploadAvatar,
   sendPWResetEmail,
   updateUserInfoForAllChannels,
   updateUserProfileColor,

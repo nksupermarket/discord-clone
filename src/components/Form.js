@@ -1,7 +1,6 @@
-import React, { useRef, useLayoutEffect, useContext, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import useInputError from '../logic/custom-hooks/useInputError';
-import { UserContext } from '../logic/contexts/UserContext';
 
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
@@ -23,6 +22,9 @@ const Form = ({
   const { inputError, validateInput, submitForm } = useInputError(fieldNames);
   const [loading, setLoading] = useState(false);
 
+  let isMounted = true;
+  useEffect(() => () => (isMounted = false));
+
   return (
     <form
       ref={formRef}
@@ -31,7 +33,7 @@ const Form = ({
         setLoading(true);
         cleanUp = cleanUp ? cleanUp : close;
         await submitForm(e, submitAction, cleanUp, setError);
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }}
     >
       <div className="content">

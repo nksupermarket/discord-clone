@@ -2,11 +2,15 @@ import React from 'react';
 
 import IconBtn from '../IconBtn';
 
-const MainNavBtn = ({ icon, svg, onClick }) => {
+const MainNavBtn = ({ icon, svg, active, onClick }) => {
   return (
     <div className="list-item" onClick={onClick}>
-      {icon && <IconBtn icon={icon} isCircle={true} />}
-      {svg && <svgBtn svg={svg} isCircle={true} />}
+      <IconBtn
+        icon={icon}
+        svg={svg}
+        className={active ? 'active' : null}
+        isCircle={true}
+      />
     </div>
   );
 };

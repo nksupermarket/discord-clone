@@ -1,0 +1,85 @@
+.explore-view {
+  flex: 1 0 auto;
+  display: flex;
+}
+
+.explore-view nav {
+  width: 240px;
+  padding-right: 2px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}
+.explore-view nav header {
+  height: auto;
+  box-shadow: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.explore-view nav .sidebar {
+  flex: 1 0 auto;
+}
+.explore-view nav .sidebar .list-wrapper {
+  padding-left: 7px;
+  padding-right: 4px;
+}
+.explore-view nav .sidebar .list-item {
+  border-radius: 4px;
+  padding: 8px 25px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+.explore-view nav .sidebar .list-item:hover {
+  background-color: var(--hover-main);
+}
+
+.explore-view main {
+  flex: 1 0 auto;
+  padding: 15px;
+}
+
+.explore-view main header {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #573374;
+  border-radius: 4px;
+}
+.explore-view main header .container {
+  padding-top: 30px;
+  padding-bottom: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.explore-view main header .subheader {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+.explore-view main header .search {
+  max-width: 560px;
+}
+.explore-view main header .searchBar {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--interactive-hover);
+  border-radius: 4px;
+  padding-right: 8px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+.explore-view main header .searchBar .input-wrapper {
+  width: 100%;
+  display: flex;
+}
+.explore-view main header .searchBar .input-wrapper input {
+  flex: 1 1 auto;
+  padding: 8px;
+  color: var(--text-dark);
+}
+
+.explore-view main header .searchBar img {
+  filter: var(--text-muted-filter);
+  padding: 3px;
+}

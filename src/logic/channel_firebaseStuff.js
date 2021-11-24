@@ -25,23 +25,14 @@ async function createChannel(name) {
 }
 
 async function uploadChannelIcon(channelID, image, setError) {
-  try {
-    const channelIconRef = store(storage, `channel_icons/${channelID}`);
-    await uploadBytes(channelIconRef, image);
-    const channelIconURL = await getDownloadURL(channelIconRef);
-    return channelIconURL;
-  } catch (error) {
-    setError && setError(error.message);
-  }
+  const channelIconRef = store(storage, `channel_icons/${channelID}`);
+  await uploadBytes(channelIconRef, image);
+  const channelIconURL = await getDownloadURL(channelIconRef);
+  return channelIconURL;
 }
 
-async function changeChannelIcon(channelID, imageURL, setError) {
-  try {
-    const iconsRef = ref(db, `Channels/${channelID}`);
-    update(iconsRef, { icon: imageURL });
-  } catch (error) {
-    setError && setError(error.message);
-  }
+async function changeChannelIcon(channelID, imageURL) {
+  update(ref(db, `Channels/${channelID}`), { icon: imageURL });
 }
 
 function detachListenersForChannel(channelID, uid) {

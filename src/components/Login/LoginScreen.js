@@ -11,7 +11,7 @@ import CreateAcc from './CreateAcc';
 import { useParams, useHistory } from 'react-router';
 import ResetPassword from './ResetPassword';
 
-import loginArtwork from '../../assets/png/Waffle_Coffee Dessert.png';
+import loginArtwork from '../../assets/png/Waffle_Coffee_Dessert.png';
 
 const LoginScreen = ({ setUser, setError }) => {
   const [node, setNode] = useState('returning user');
