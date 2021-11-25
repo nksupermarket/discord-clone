@@ -20,6 +20,8 @@ export default function useOnChannelEnter(
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [userRole, setUserRole] = useState();
 
+  const location = useLocation();
+  const history = useHistory();
   useEffect(() => {
     if (!channelID || !user) return;
     getChannelInfo(
@@ -38,11 +40,10 @@ export default function useOnChannelEnter(
       setRoomList([]);
       detachListenersForChannel(channelID, user.uid);
     };
-  }, [channelID, updateChannel, user, setError]);
+  }, [channelID, history, updateChannel, user, setError]);
 
-  const location = useLocation();
-  const history = useHistory();
   useEffect(() => {
+    console.log({ roomList, pathname: location.pathname });
     if (roomList.length === 0) return;
     if (location.pathname === `/channels/${channelID}`)
       history.replace(`/channels/${channelID}/${roomList[0].id}`);

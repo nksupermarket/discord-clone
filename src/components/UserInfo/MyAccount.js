@@ -8,8 +8,8 @@ import React, {
 
 import { updateUserInfo, removeUser } from '../../logic/user_firebaseStuff';
 import useInputValues from '../../logic/custom-hooks/useInputValues';
-import useError from '../../logic/custom-hooks/useError';
 import { UserContext } from '../../logic/contexts/UserContext';
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import AccountProfileCard from './AccountProfileCard';
 import Divider from '../Settings/Divider';
@@ -17,10 +17,9 @@ import PasswordSection from './PasswordSection';
 import AccountRemoval from './AccountRemoval';
 import Modal from '../Modal';
 import Popup from '../Popup';
-import Error from '../Error';
 
 const MyAccount = ({ editProfile }) => {
-  const { error, setError } = useError();
+  const { setError } = useContext(ErrorContext);
   const { channelList } = useContext(UserContext);
   const [popupDetails, setPopupDetails] = useState();
   const { inputValues, handleChange, resetInputValues } = useInputValues();
@@ -111,7 +110,6 @@ const MyAccount = ({ editProfile }) => {
 
   return (
     <>
-      {error && <Error errorMsg={error} />}
       <section className="my_account">
         <header>
           <h2>My Account</h2>

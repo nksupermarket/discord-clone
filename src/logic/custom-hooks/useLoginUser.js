@@ -40,7 +40,6 @@ export default function useLoginUser(setLoading, setError) {
 
   useEffect(
     function afterSetChannelList() {
-      console.log({ user, channelList });
       if (!user || !channelList) return;
 
       if (location.pathname === '/' || location.pathname === '/login')

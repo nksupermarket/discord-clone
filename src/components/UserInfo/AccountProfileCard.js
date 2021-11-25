@@ -15,16 +15,25 @@ const AccountProfileCard = ({
   editEmail,
   isSmall,
   handleAvatarChange,
+  avatarPreview,
+  bannerColor,
+  handleUpload,
 }) => {
   const { user } = useContext(UserContext);
-  console.log(user);
   return (
     <div className="account-profile-card">
-      <div className="banner" style={{ background: user.color }}></div>
+      <div
+        className="banner"
+        style={{ background: bannerColor ? bannerColor : user.color }}
+      ></div>
       <div className="user-info">
         {isSmall ? (
-          <UploadFile handleImg={handleAvatarChange} isPreview={false}>
-            <Avatar img={user.photoURL} color={user.color} />
+          <UploadFile
+            handlePreview={handleAvatarChange}
+            handleUpload={handleUpload}
+            isPreview={false}
+          >
+            <Avatar img={avatarPreview} color={user.color} />
           </UploadFile>
         ) : (
           <Avatar img={user.photoURL} color={user.color} />

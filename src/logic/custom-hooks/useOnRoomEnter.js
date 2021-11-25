@@ -35,9 +35,6 @@ export default function useOnRoomEnter(
       replyTo: replyTo || '',
       mentions: mentions || [],
       user: user.uid,
-      displayName: user.displayName,
-      avatar: user.photoURL,
-      color: user.color,
       timestamp: getUnixTime(new Date()),
     };
     const msgID = await pushToMsgList(roomID, msgObj, mentions);

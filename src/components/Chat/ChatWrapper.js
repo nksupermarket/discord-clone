@@ -17,6 +17,7 @@ const ChatWrapper = ({ room, msgList, userList, submitMsg }) => {
     <main id="chat">
       <ChatDisplay
         msgList={msgList}
+        userList={userList}
         setReplyTo={setReplyTo}
         onReplyTo={onReplyTo}
       />

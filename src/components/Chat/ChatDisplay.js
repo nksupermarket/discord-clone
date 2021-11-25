@@ -4,12 +4,12 @@ import ChatMsg from './ChatMsg';
 
 import '../../styles/ChatDisplay.css';
 
-const ChatDisplay = ({ msgList, ...props }) => {
+const ChatDisplay = ({ msgList, userList, ...props }) => {
   const messagesEndRef = useRef();
 
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: 'auto',
       block: 'end',
     });
   }
@@ -22,9 +22,20 @@ const ChatDisplay = ({ msgList, ...props }) => {
       <div className="scroller">
         <div className="scroller-content">
           <ol>
-            {msgList.map((content, i) => (
-              <ChatMsg key={content.msgId} content={content} {...props} />
-            ))}
+            {msgList.map((obj) => {
+              const sender = userList.find((uObj) => uObj.uid === obj.user);
+              return (
+                <ChatMsg
+                  key={obj.msgId}
+                  content={obj}
+                  displayName={sender.displayName}
+                  avatar={sender.avatar}
+                  color={sender.color}
+                  userList={userList}
+                  {...props}
+                />
+              );
+            })}
           </ol>
         </div>
         <span ref={messagesEndRef}></span>

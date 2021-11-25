@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 
 import UploadFile from '../UploadFile';
 import Popup from '../Popup';
@@ -18,6 +18,8 @@ const NodeTwo = ({
   handleChange,
   handleIcon,
 }) => {
+  const [imgPreview, setImgPreview] = useState();
+
   return (
     <Popup
       className="create-channel create-channel-node_two"
@@ -38,7 +40,12 @@ const NodeTwo = ({
         </div>
       }
     >
-      <UploadFile handleImg={handleIcon} isPreview={true}>
+      <UploadFile
+        handleUpload={handleIcon}
+        handlePreview={setImgPreview}
+        isPreview={true}
+        imgPreview={imgPreview}
+      >
         <img
           className="add-circle-fill"
           src={addCircleSVG}

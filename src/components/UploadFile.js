@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const UploadFile = ({ children, handleImg, isPreview }) => {
-  const [imgPreview, setImgPreview] = useState();
+const UploadFile = ({
+  children,
+  handleUpload,
+  handlePreview,
+  imgPreview,
+  isPreview,
+}) => {
   const uploadFileRef = useRef();
 
   function checkIfFileIsImg(file) {
@@ -14,9 +19,9 @@ const UploadFile = ({ children, handleImg, isPreview }) => {
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      if (checkIfFileIsImg(file)) setImgPreview(reader.result);
+      if (checkIfFileIsImg(file)) handlePreview(reader.result);
     };
-    handleImg && handleImg(file);
+    handleUpload && handleUpload(file);
   }
   return (
     <label className={imgPreview ? 'upload-file' : 'upload-file init'}>

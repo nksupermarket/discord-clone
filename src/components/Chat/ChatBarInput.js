@@ -25,10 +25,6 @@ const ChatBarInput = ({
   const [suggestions, setSuggestions] = useState(userList);
   const { setError } = useContext(ErrorContext);
 
-  useEffect(() => {
-    chatBarInputRef.current.focus();
-  }, [chatBarInputRef]);
-
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
       mentionComponent: MentionWrapper,
@@ -91,7 +87,6 @@ const ChatBarInput = ({
         for (const key in raw.entityMap) {
           mentionArr.push({
             uid: raw.entityMap[key].data.mention.uid,
-            displayName: raw.entityMap[key].data.mention.displayName,
           });
         }
 
@@ -99,6 +94,7 @@ const ChatBarInput = ({
           mentionArr[i] = {
             ...mentionArr[i],
             range: raw.blocks[0].entityRanges[i],
+            // the range of indexes the mention belongs in, need to parse later as the msg replaces all mentions with the string 'undefined'
           };
         });
       }
