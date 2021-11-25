@@ -212,16 +212,12 @@ function updateUserOnline(uid, userChannelList) {
   });
 }
 
-function updateMentions(uid, channelID, roomID, msgID, setError) {
+function updateMentions(uid, channelID, roomID, msgID) {
   const mentionsRef = ref(
     db,
     `users/${uid}/mentions/${channelID}/${roomID}/${msgID}`
   );
-  try {
-    set(mentionsRef, true);
-  } catch (error) {
-    setError(error.message);
-  }
+  set(mentionsRef, true);
 }
 
 async function getMentions(uid, channelID, setRoomsMentioned, setError) {

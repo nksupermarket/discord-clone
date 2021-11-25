@@ -13,12 +13,11 @@ import NodeOne from './NodeOne';
 import '../../styles/CreateChannel.css';
 import NodeTwo from './NodeTwo';
 import { UserContext } from '../../logic/contexts/UserContext';
-import useError from '../../logic/custom-hooks/useError';
-import Error from '../Error';
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 const CreateChannel = ({ close }) => {
   const { user } = useContext(UserContext);
-  const { error, setError } = useError();
+  const { setError } = useContext(ErrorContext);
   const [node, setNode] = useState(1);
   const [channelInfo, setChannelInfo] = useState({
     name: `${user.displayName}'s channel`,
@@ -51,41 +50,38 @@ const CreateChannel = ({ close }) => {
   );
 
   return (
-    <>
-      {error && <Error errorMsg={error} />}
-      <Modal close={close}>
+    <Modal close={close}>
+      {
         {
-          {
-            1: (
-              <NodeOne
-                nextNode={ontoNextNode}
-                setChannelInfo={(status) =>
-                  setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
-                }
-                close={close}
-              />
-            ),
-            2: (
-              <NodeTwo
-                createChannel={onCreateChannel}
-                prevNode={prevNode}
-                channelName={channelInfo.name}
-                handleChange={(e) =>
-                  setChannelInfo((prev) => ({
-                    ...prev,
-                    [e.target.name]: e.target.value,
-                  }))
-                }
-                handleIcon={(icon) =>
-                  setChannelInfo((prev) => ({ ...prev, icon }))
-                }
-                close={close}
-              />
-            ),
-          }[node] // renders component based on value of node
-        }
-      </Modal>
-    </>
+          1: (
+            <NodeOne
+              nextNode={ontoNextNode}
+              setChannelInfo={(status) =>
+                setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
+              }
+              close={close}
+            />
+          ),
+          2: (
+            <NodeTwo
+              createChannel={onCreateChannel}
+              prevNode={prevNode}
+              channelName={channelInfo.name}
+              handleChange={(e) =>
+                setChannelInfo((prev) => ({
+                  ...prev,
+                  [e.target.name]: e.target.value,
+                }))
+              }
+              handleIcon={(icon) =>
+                setChannelInfo((prev) => ({ ...prev, icon }))
+              }
+              close={close}
+            />
+          ),
+        }[node] // renders component based on value of node
+      }
+    </Modal>
   );
 };
 

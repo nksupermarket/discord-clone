@@ -54,17 +54,12 @@ async function getRoomStuff(roomID, setRoomName, setMsgList, setError) {
   }
 }
 
-function pushToMsgList(roomId, msgObj, setError) {
-  try {
-    const roomMsgList = ref(db, `Rooms/${roomId}/messages`);
-    const newMsgRef = push(roomMsgList);
-    set(newMsgRef, msgObj);
+async function pushToMsgList(roomId, msgObj) {
+  const roomMsgList = ref(db, `Rooms/${roomId}/messages`);
+  const newMsgRef = push(roomMsgList);
+  set(newMsgRef, msgObj);
 
-    return newMsgRef.key;
-  } catch (error) {
-    setError(error.message);
-    return null;
-  }
+  return newMsgRef.key;
 }
 
 export { detachListenersForRoom, getRoomStuff, pushToMsgList };

@@ -29,7 +29,7 @@ export default function useOnRoomEnter(
 
   return { msgList, submitMsg };
 
-  function submitMsg(msg, replyTo, mentions) {
+  async function submitMsg(msg, replyTo, mentions) {
     const msgObj = {
       msg,
       replyTo: replyTo || '',
@@ -40,14 +40,11 @@ export default function useOnRoomEnter(
       color: user.color,
       timestamp: getUnixTime(new Date()),
     };
-    const msgID = pushToMsgList(roomID, msgObj, setError);
-    if (!msgID) return 'error';
+    const msgID = await pushToMsgList(roomID, msgObj, mentions);
 
     if (mentions.length > 0)
       mentions.forEach((mention) =>
-        updateMentions(mention.uid, channelID, roomID, msgID, setError)
+        updateMentions(mention.uid, channelID, roomID, msgID)
       );
-
-    return 'success';
   }
 }

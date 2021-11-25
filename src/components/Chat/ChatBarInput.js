@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
 import createMentionPlugin from '@draft-js-plugins/mention';
+
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import UserDisplay from '../OnlineUsers/UserDisplay';
 import MentionsPopup from './MentionsPopup';
@@ -21,6 +23,11 @@ const ChatBarInput = ({
 
   const [isMentionPopup, setIsMentionPopup] = useState(false);
   const [suggestions, setSuggestions] = useState(userList);
+  const { setError } = useContext(ErrorContext);
+
+  useEffect(() => {
+    chatBarInputRef.current.focus();
+  }, [chatBarInputRef]);
 
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
@@ -73,30 +80,33 @@ const ChatBarInput = ({
         return;
     }
 
-    function onMsgSubmit() {
+    async function onMsgSubmit() {
       const replyToMsgID = replyTo ? replyTo.msgID : null;
 
       const raw = convertToRaw(editorState.getCurrentContent());
 
       let mentionArr = [];
-      for (const key in raw.entityMap) {
-        mentionArr.push({
-          uid: raw.entityMap[key].data.mention.uid,
-          displayName: raw.entityMap[key].data.mention.displayName,
+      fillMentionArr();
+      function fillMentionArr() {
+        for (const key in raw.entityMap) {
+          mentionArr.push({
+            uid: raw.entityMap[key].data.mention.uid,
+            displayName: raw.entityMap[key].data.mention.displayName,
+          });
+        }
+
+        Object.keys(raw.blocks[0].entityRanges).forEach((key, i) => {
+          mentionArr[i] = {
+            ...mentionArr[i],
+            range: raw.blocks[0].entityRanges[i],
+          };
         });
       }
 
-      Object.keys(raw.blocks[0].entityRanges).forEach((key, i) => {
-        mentionArr[i] = {
-          ...mentionArr[i],
-          range: raw.blocks[0].entityRanges[i],
-        };
-      });
-
       const msg = raw.blocks[0].text;
 
-      const status = submit(msg, replyToMsgID, mentionArr);
-      if (status === 'success') {
+      try {
+        await submit(msg, replyToMsgID, mentionArr);
         setReplyTo();
 
         //clear draftjs input
@@ -104,7 +114,14 @@ const ChatBarInput = ({
           editorState,
           ContentState.createFromText('')
         );
-        setEditorState(newEditorState);
+        const currentState = editorState.getSelection();
+        const newEditorWithCurrentState = EditorState.forceSelection(
+          newEditorState,
+          currentState
+        );
+        setEditorState(newEditorWithCurrentState);
+      } catch (error) {
+        setError(error.message);
       }
     }
   }
