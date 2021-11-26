@@ -27,6 +27,10 @@ function App() {
 
   const { user, setUser, channelList } = useLoginUser(setLoading, setError);
 
+  const finishLoading = useCallback(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <>
       {error && <Error errorMsg={error} />}
@@ -41,11 +45,7 @@ function App() {
               <div className="app">
                 <MainNav />
                 <Route path={'/explore'}>
-                  <Explore
-                    finishLoading={() => {
-                      setLoading(false);
-                    }}
-                  />
+                  <Explore finishLoading={finishLoading} />
                 </Route>
                 <Route
                   path={[
@@ -53,11 +53,7 @@ function App() {
                     '/channels/:channelID',
                   ]}
                 >
-                  <ChannelView
-                    finishLoading={() => {
-                      setLoading(false);
-                    }}
-                  />
+                  <ChannelView finishLoading={finishLoading} />
                 </Route>
               </div>
             </UserContext.Provider>

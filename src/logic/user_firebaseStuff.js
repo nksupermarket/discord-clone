@@ -24,7 +24,11 @@ import {
   signOut,
 } from 'firebase/auth';
 import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getChannelIcons, getChannelNames } from './channel_firebaseStuff';
+import {
+  getChannelIcons,
+  getChannelNames,
+  getInfoForChannelList,
+} from './channel_firebaseStuff';
 import { db, storage } from '../firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
 
@@ -161,17 +165,26 @@ async function getUserInfo(uid, setChannelList, setUserProfileColor) {
       for (const id in data.channels) {
         channelList.push({ id, role: data.channels[id] });
       }
-      await getChannelIcons(channelList, updateChannelListWithIcons);
-      await getChannelNames(channelList, updateChannelListWithNames);
-
-      setChannelList(channelList);
+      await getInfoForChannelList(
+        'icon',
+        channelList,
+        updateChannelListWithInfo
+      );
+      await getInfoForChannelList(
+        'name',
+        channelList,
+        updateChannelListWithInfo
+      );
+      await getInfoForChannelList(
+        'defaultRoom',
+        channelList,
+        updateChannelListWithInfo
+      );
+      await setChannelList(channelList);
 
       //helpers
-      function updateChannelListWithIcons(icons) {
-        icons.forEach((icon, i) => (channelList[i].icon = icon));
-      }
-      function updateChannelListWithNames(names) {
-        names.forEach((name, i) => (channelList[i].name = name));
+      function updateChannelListWithInfo(type, vals) {
+        vals.forEach((v, i) => (channelList[i][type] = v));
       }
     }
   });

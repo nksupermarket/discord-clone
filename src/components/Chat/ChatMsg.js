@@ -8,17 +8,22 @@ import '../../styles/ChatMsg.css';
 import ReplyContext from './ReplyContext';
 import MsgHeader from './MsgHeader';
 
-const ChatMsg = ({
-  content,
-  displayName,
-  avatar,
-  color,
-  userList,
-  onReplyTo,
-}) => {
-  const { msg, timestamp, msgId, mentions, replyTo: replyContext } = content;
+const ChatMsg = ({ content, userList, onReplyTo }) => {
+  const {
+    user,
+    msg,
+    timestamp,
+    msgId,
+    mentions,
+    replyTo: replyContext,
+  } = content;
 
   const [isShowBtns, setIsShowBtns] = useState(false); //buttons on hover
+
+  const sender = useMemo(
+    () => userList.find((uObj) => uObj.uid === user),
+    [userList, user]
+  );
 
   const replyUser = useMemo(
     () => userList.find((uObj) => uObj.uid === replyContext?.user),
@@ -57,9 +62,9 @@ const ChatMsg = ({
             />
           );
 
-        if (mentionRanges.includes(i)) return;
+        if (mentionRanges.includes(i)) return; // rest of the mention
 
-        if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of string
+        if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of non-mentioin string
 
         content[content.length - 1] = content[content.length - 1].concat(val); // string continues
       });
@@ -88,15 +93,15 @@ const ChatMsg = ({
           />
         )}
         <div className="content">
-          <Avatar img={avatar} color={color} />
-          <MsgHeader displayName={displayName} timestamp={timestamp} />
+          <Avatar img={sender.avatar} color={sender.color} />
+          <MsgHeader displayName={sender.displayName} timestamp={timestamp} />
           <div className="msg-content">
             {convertPlaintextToHTML(msg, mentions)}
           </div>
           {isShowBtns && (
             <MsgButtons
               msgId={msgId}
-              setReplyTo={() => onReplyTo(displayName, msgId)}
+              setReplyTo={() => onReplyTo(sender.displayName, msgId)}
             />
           )}
         </div>

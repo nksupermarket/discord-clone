@@ -23,14 +23,10 @@ const ChatDisplay = ({ msgList, userList, ...props }) => {
         <div className="scroller-content">
           <ol>
             {msgList.map((obj) => {
-              const sender = userList.find((uObj) => uObj.uid === obj.user);
               return (
                 <ChatMsg
                   key={obj.msgId}
                   content={obj}
-                  displayName={sender.displayName}
-                  avatar={sender.avatar}
-                  color={sender.color}
                   userList={userList}
                   {...props}
                 />

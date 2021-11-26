@@ -37,13 +37,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     userList,
     onlineUsers,
     userRole,
-  } = useOnChannelEnter(
-    user,
-    channelID,
-    updateChannel,
-    finishLoading,
-    setError
-  );
+  } = useOnChannelEnter(user, channelID, updateChannel, setError);
 
   // room stuff
   const updateRoom = useCallback(
@@ -55,6 +49,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     channelID,
     roomID,
     updateRoom,
+    finishLoading,
     setError
   );
 

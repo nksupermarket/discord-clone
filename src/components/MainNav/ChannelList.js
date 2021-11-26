@@ -16,6 +16,7 @@ const ChannelList = () => {
             <ChannelLink
               key={channel.id}
               channelID={channel.id}
+              roomID={Object.keys(channel.defaultRoom)[0]}
               icon={channel.icon ? channel.icon : undefined}
               name={channel.icon ? undefined : channel.name}
             />

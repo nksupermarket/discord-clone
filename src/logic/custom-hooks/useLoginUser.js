@@ -15,7 +15,9 @@ export default function useLoginUser(setLoading, setError) {
       const auth = getAuth();
       onAuthStateChanged(auth, async (currUser) => {
         if (!currUser) {
+          //on logout stuff
           setUser(currUser);
+          setChannelList();
           setLoading(false);
           history.replace('/login');
           return;
@@ -41,10 +43,11 @@ export default function useLoginUser(setLoading, setError) {
   useEffect(
     function afterSetChannelList() {
       if (!user || !channelList) return;
-
       if (location.pathname === '/' || location.pathname === '/login')
-        if (channelList[0]) history.replace(`channels/${channelList[0].id}`);
-        else {
+        if (channelList[0]) {
+          const defaultRoomID = Object.keys(channelList[0].defaultRoom)[0];
+          history.replace(`channels/${channelList[0].id}/${defaultRoomID}`);
+        } else {
           history.replace('explore');
         }
 

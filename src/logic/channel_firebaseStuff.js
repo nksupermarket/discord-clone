@@ -8,6 +8,7 @@ import {
   update,
   onValue,
   off,
+  query,
   orderByValue,
   limitToFirst,
   onDisconnect,
@@ -24,7 +25,7 @@ async function createChannel(name) {
   return newChannelRef.key;
 }
 
-async function uploadChannelIcon(channelID, image, setError) {
+async function uploadChannelIcon(channelID, image) {
   const channelIconRef = store(storage, `channel_icons/${channelID}`);
   await uploadBytes(channelIconRef, image);
   const channelIconURL = await getDownloadURL(channelIconRef);
@@ -43,7 +44,7 @@ function detachListenersForChannel(channelID, uid) {
   off(unreadRoomsRef);
 }
 
-function getChannelInfo(
+async function getChannelInfo(
   channelID,
   updateChannel,
   setRoomCategories,
@@ -124,18 +125,33 @@ async function createRoom(channelID, name) {
   });
 }
 
-async function getChannelNames(channelList, updateChannelList) {
+async function getInfoForChannelList(type, channelList, updateChannelList) {
   const resultArr = await Promise.all(
-    channelList.map((channel) => get(ref(db, `Channels/${channel.id}/name`)))
+    channelList.map((channel) => {
+      let infoRef;
+      switch (type) {
+        case 'name':
+          infoRef = ref(db, `Channels/${channel.id}/name`);
+          break;
+        case 'icon':
+          infoRef = ref(db, `Channels/${channel.id}/icon`);
+          break;
+        case 'defaultRoom':
+          infoRef = query(
+            ref(db, `Channels/${channel.id}/rooms`),
+            limitToFirst(1)
+          );
+          break;
+        default:
+          throw new Error('not a valid info type');
+      }
+      return get(infoRef);
+    })
   );
-  updateChannelList(resultArr.map((result) => result.val()));
-}
-
-async function getChannelIcons(channelList, updateChannelList) {
-  const resultArr = await Promise.all(
-    channelList.map((channel) => get(ref(db, `Channels/${channel.id}/icon`)))
+  updateChannelList(
+    type,
+    resultArr.map((result) => result.val())
   );
-  updateChannelList(resultArr.map((result) => result.val()));
 }
 
 function createRoomCategory(channelID, name, setError) {
@@ -198,8 +214,7 @@ export {
   uploadChannelIcon,
   changeChannelIcon,
   getChannelInfo,
-  getChannelNames,
-  getChannelIcons,
+  getInfoForChannelList,
   getRoomList,
   createRoomCategory,
   updateCategoryOfRoom,

@@ -9,7 +9,6 @@ export default function useOnChannelEnter(
   user,
   channelID,
   updateChannel,
-  finishLoading,
   setError
 ) {
   const [roleList, setRoleList] = useState(['Online']);
@@ -20,35 +19,32 @@ export default function useOnChannelEnter(
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [userRole, setUserRole] = useState();
 
-  const location = useLocation();
   const history = useHistory();
   useEffect(() => {
     if (!channelID || !user) return;
-    getChannelInfo(
-      channelID,
-      updateChannel,
-      setRoomCategories,
-      setRoomList,
-      setRoleList,
-      setUserList,
-      setOnlineUsers
-    );
-    //getRoleOfUser(channelID, user.uid, setUserRole, setError);
-    //getMentions(user.uid, channelID, setRoomsMentioned, setError);
+    onChannelEnter();
+    async function onChannelEnter() {
+      try {
+        await getChannelInfo(
+          channelID,
+          updateChannel,
+          setRoomCategories,
+          setRoomList,
+          setRoleList,
+          setUserList,
+          setOnlineUsers
+        );
+        //getRoleOfUser(channelID, user.uid, setUserRole, setError);
+        //getMentions(user.uid, channelID, setRoomsMentioned, setError);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
 
     return () => {
-      setRoomList([]);
       detachListenersForChannel(channelID, user.uid);
     };
   }, [channelID, history, updateChannel, user, setError]);
-
-  useEffect(() => {
-    console.log({ roomList, pathname: location.pathname });
-    if (roomList.length === 0) return;
-    if (location.pathname === `/channels/${channelID}`)
-      history.replace(`/channels/${channelID}/${roomList[0].id}`);
-    finishLoading();
-  }, [channelID, history, location.pathname, roomList, finishLoading]);
 
   return {
     roleList,

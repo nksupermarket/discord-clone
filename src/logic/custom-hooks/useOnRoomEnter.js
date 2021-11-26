@@ -13,6 +13,7 @@ export default function useOnRoomEnter(
   channelID,
   roomID,
   setRoomName,
+  finishLoading,
   setError
 ) {
   const [msgList, setMsgList] = useState([]);
@@ -20,12 +21,21 @@ export default function useOnRoomEnter(
   useEffect(() => {
     if (!user || !channelID || !roomID) return;
     detachListenersForRoom(roomID);
-    getRoomStuff(roomID, setRoomName, setMsgList);
+    onRoomEnter();
+    finishLoading();
 
-    return async function () {
+    async function onRoomEnter() {
+      try {
+        await getRoomStuff(roomID, setRoomName, setMsgList);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+    return function () {
       detachListenersForRoom(roomID);
+      setMsgList([]);
     };
-  }, [roomID, channelID, user, setRoomName, setError]);
+  }, [roomID, channelID, user, setRoomName, finishLoading, setError]);
 
   return { msgList, submitMsg };
 
