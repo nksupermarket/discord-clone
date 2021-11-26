@@ -3,3 +3,10 @@
   justify-content: center;
   align-items: center;
 }
+
+.channel-list .channelLink-wrapper {
+  position: relative;
+}
+.channel-list .channelLink-wrapper .tooltip {
+  right: -10px;
+}

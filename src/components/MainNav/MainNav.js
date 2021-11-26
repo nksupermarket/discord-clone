@@ -26,12 +26,14 @@ const MainNav = () => {
               svg={plusSVG}
               active={isCreateChannel}
               onClick={() => setIsCreateChannel(true)}
+              tooltipText={'Create a channel'}
             />
             {/* add a server */}
             <MainNavBtn
               svg={compassSVG}
               active={history.location.pathname.includes('explore')}
               onClick={() => history.push('/explore')}
+              tooltipText={'Explore public channels'}
             />
           </div>
           {/* explore servers */}
