@@ -1,5 +1,7 @@
 import React from 'react';
 
+import uniqid from 'uniqid';
+
 import CatList from '../CatList';
 import ListItem from './ListItem';
 
@@ -28,10 +30,10 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
                     if (!btn.category && category === 'none') return true;
                     return false;
                   })
-                  .map((btn, i) => {
+                  .map((btn) => {
                     return (
                       <ListItem
-                        key={i}
+                        key={uniqid()}
                         onClick={() =>
                           dispatch({ type: 'swap_to', payload: btn.text })
                         }
@@ -47,10 +49,10 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
             </>
           ))}
         {!categories &&
-          btnList.map((btn, i) => {
+          btnList.map((btn) => {
             return (
               <ListItem
-                key={i}
+                key={uniqid()}
                 onClick={() => dispatch({ type: 'swap_to', payload: btn.text })}
               >
                 {capitalize(btn.text)}

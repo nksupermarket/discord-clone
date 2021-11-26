@@ -1,8 +1,7 @@
-import React, { useReducer } from 'react';
-import { useHistory } from 'react-router';
+import React, { useContext, useReducer } from 'react';
 
 import { logout } from '../../logic/user_firebaseStuff';
-import useError from '../../logic/custom-hooks/useError';
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import Settings from '../Settings/Settings';
 import MyAccount from './MyAccount';
@@ -10,9 +9,7 @@ import UserProfile from './UserProfile';
 import Error from '../Error';
 
 const UserSettings = ({ close }) => {
-  const history = useHistory();
-
-  const { error, SetError } = useError();
+  const { SetError } = useContext(ErrorContext);
   const [state, dispatch] = useReducer((state, action) => {
     if (action.type === 'swap_to') {
       switch (action.payload) {
@@ -49,21 +46,19 @@ const UserSettings = ({ close }) => {
     };
   }
   return (
-    <>
-      {error && <Error errorMsg={error} />}
-      <Settings
-        close={close}
-        categories={['user settings', 'none']}
-        btnList={[
-          createSettingsButton('my account', 'user settings'),
-          createSettingsButton('user profile', 'user settings'),
-          createSettingsButton('log out', 'none'),
-        ]}
-        dispatch={dispatch}
-      >
-        {state && state}
-      </Settings>
-    </>
+    <Settings
+      close={close}
+      categories={['user settings', 'none']}
+      btnList={[
+        createSettingsButton('my account', 'user settings'),
+        createSettingsButton('user profile', 'user settings'),
+        createSettingsButton('log out', 'none'),
+      ]}
+      // active={}
+      dispatch={dispatch}
+    >
+      {state && state}
+    </Settings>
   );
 };
 

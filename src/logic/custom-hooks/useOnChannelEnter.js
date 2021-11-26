@@ -8,6 +8,7 @@ import {
 export default function useOnChannelEnter(
   user,
   channelID,
+  channelList,
   updateChannel,
   setError
 ) {
@@ -19,7 +20,6 @@ export default function useOnChannelEnter(
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [userRole, setUserRole] = useState();
 
-  const history = useHistory();
   useEffect(() => {
     if (!channelID || !user) return;
     onChannelEnter();
@@ -44,7 +44,19 @@ export default function useOnChannelEnter(
     return () => {
       detachListenersForChannel(channelID, user.uid);
     };
-  }, [channelID, history, updateChannel, user, setError]);
+  }, [channelID, updateChannel, user, setError]);
+
+  const history = useHistory();
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === `/channels/${channelID}/`) {
+      //`/channels/${channelID}/` is pathname when user clicks on the channel nav btn
+      const defaultRoomID = Object.keys(
+        channelList.find((c) => c.id === channelID).defaultRoom
+      )[0];
+      history.replace(`/channels/${channelID}/${defaultRoomID}/`);
+    }
+  }, [channelID, channelList, history, location.pathname]);
 
   return {
     roleList,

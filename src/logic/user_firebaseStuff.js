@@ -86,6 +86,7 @@ async function updateUserInfo(infoType, value, setUser, channelList) {
 
   await reload(user);
   setUser(user);
+  return;
 }
 function updateUserProfileColor(uid, color) {
   const defaultColors = [
@@ -102,8 +103,8 @@ function updateUserProfileColor(uid, color) {
   return color;
 }
 function updateUserInfoForAllChannels(uid, channelList, updateObj) {
-  channelList.forEach((c) => {
-    update(ref(db, `Channels/${c.id}/users/${uid}`), updateObj);
+  channelList.forEach(async (c) => {
+    await update(ref(db, `Channels/${c.id}/users/${uid}`), updateObj);
   });
 }
 async function removeUser(channelList, setError) {

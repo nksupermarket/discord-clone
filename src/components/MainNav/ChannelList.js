@@ -13,12 +13,11 @@ const ChannelList = () => {
   return (
     <ul className="channel-list">
       {list &&
-        list.map((channel, i) => {
+        list.map((channel) => {
           return (
             <li key={channel.id} className="channelLink-wrapper">
               <ChannelLink
                 channelID={channel.id}
-                roomID={Object.keys(channel.defaultRoom)[0]}
                 icon={channel.icon ? channel.icon : undefined}
                 name={channel.name}
               />

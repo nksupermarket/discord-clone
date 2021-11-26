@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Avatar from '../Avatar';
 import Tooltip from '../Tooltip';
 
-const ChannelLink = ({ channelID, roomID, icon, name }) => {
+const ChannelLink = ({ channelID, icon, name }) => {
   const linkRef = useRef();
 
   const [isTooltip, setIsTooltip] = useState(false);
@@ -14,7 +14,7 @@ const ChannelLink = ({ channelID, roomID, icon, name }) => {
         ref={linkRef}
         to={(location) => ({
           ...location,
-          pathname: `/channels/${channelID}/${roomID}`,
+          pathname: `/channels/${channelID}/`,
         })}
         activeClassName="selected"
         onMouseEnter={() => setIsTooltip(true)}

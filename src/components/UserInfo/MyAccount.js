@@ -19,15 +19,15 @@ import Modal from '../Modal';
 import Popup from '../Popup';
 
 const MyAccount = ({ editProfile }) => {
+  const { setUser } = useContext(UserContext);
   const { setError } = useContext(ErrorContext);
   const { channelList } = useContext(UserContext);
+
   const [popupDetails, setPopupDetails] = useState();
   const { inputValues, handleChange, resetInputValues } = useInputValues();
-  const { setUser } = useContext(UserContext);
 
   const editUsername = useCallback(() => {
     setPopupDetails({
-      className: 'settings-popup',
       title: 'Change your username',
       subheader: 'Enter a new username and your existing password',
       fields: [
@@ -39,19 +39,19 @@ const MyAccount = ({ editProfile }) => {
         },
       ],
       inputsToSubmit: 'new_username',
-      submitAction: () =>
-        updateUserInfo(
-          'displayName',
-          inputValues.username,
-          setUser,
-          channelList
-        ),
     });
-  }, [channelList, setUser, inputValues.username]);
+  }, []);
+  const updateUsername = useCallback(async () => {
+    await updateUserInfo(
+      'displayName',
+      inputValues.new_username,
+      setUser,
+      channelList
+    );
+  }, [inputValues.new_username, setUser, channelList]);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
-      className: 'settings-popup',
       title: 'Enter an email address',
       subheader: 'Enter a new email address and your existing password',
       fields: [
@@ -63,13 +63,14 @@ const MyAccount = ({ editProfile }) => {
         },
       ],
       inputsToSubmit: 'new_email',
-      submitAction: () => updateUserInfo('email', inputValues.email, setUser),
     });
-  }, [setUser, inputValues.email]);
+  }, []);
+  const updateEmail = useCallback(async () => {
+    await updateUserInfo('email', inputValues.new_email, setUser);
+  }, [inputValues.new_email, setUser]);
 
   const editPassword = useCallback(() => {
     setPopupDetails({
-      className: 'settings-popup',
       title: 'Enter an email address',
       subheader: 'Enter your current password and a new password',
       fields: [
@@ -86,13 +87,14 @@ const MyAccount = ({ editProfile }) => {
         },
       ],
       inputsToSubmit: 'new_password',
-      submitAction: () => updateUserInfo('password', inputValues.new_password),
     });
+  }, []);
+  const updatePassword = useCallback(async () => {
+    await updateUserInfo('password', inputValues.new_password);
   }, [inputValues.new_password]);
 
   const deleteAcc = useCallback(() => {
     setPopupDetails({
-      className: 'settings-popup',
       title: 'Delete Account',
       subheader:
         'Are you sure you want to delete your account? This will immediately log you out of your account and you will not be able to log in again. Forever.',
@@ -107,6 +109,24 @@ const MyAccount = ({ editProfile }) => {
       submitAction: removeUser,
     });
   }, []);
+
+  const getSubmitAction = useCallback(() => {
+    switch (popupDetails.inputsToSubmit) {
+      case 'new_username':
+        return updateUsername;
+      case 'new_email':
+        return updateEmail;
+      case 'new_password':
+        return updatePassword;
+      default:
+        return;
+    }
+  }, [
+    updateUsername,
+    updatePassword,
+    updateEmail,
+    popupDetails?.inputsToSubmit,
+  ]);
 
   return (
     <>
@@ -134,9 +154,14 @@ const MyAccount = ({ editProfile }) => {
           }}
         >
           <Popup
-            close={() => setPopupDetails()}
+            close={() => {
+              setPopupDetails();
+              resetInputValues();
+            }}
             handleChange={handleChange}
+            className="settings-popup"
             {...popupDetails}
+            submitAction={getSubmitAction()}
             setError={setError}
           ></Popup>
         </Modal>

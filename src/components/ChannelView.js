@@ -21,7 +21,7 @@ import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
 const ChannelView = ({ finishLoading, setError }) => {
-  const { user } = useContext(UserContext);
+  const { user, channelList } = useContext(UserContext);
   const { channelID, roomID } = useParams();
   const [channel, setChannel] = useState({ id: channelID });
   const [room, setRoom] = useState({ id: roomID });
@@ -37,7 +37,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     userList,
     onlineUsers,
     userRole,
-  } = useOnChannelEnter(user, channelID, updateChannel, setError);
+  } = useOnChannelEnter(user, channelID, channelList, updateChannel, setError);
 
   // room stuff
   const updateRoom = useCallback(
