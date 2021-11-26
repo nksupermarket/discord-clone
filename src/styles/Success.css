@@ -1,0 +1,23 @@
+#success-popup {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: #313339;
+  z-index: 99;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+#success-popup img {
+  display: block;
+  filter: invert(53%) sepia(63%) saturate(482%) hue-rotate(68deg)
+    brightness(99%) contrast(88%);
+}
+
+#success-popup div {
+  margin-right: 10px;
+}

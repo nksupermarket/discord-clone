@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router';
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import { createUser } from '../../logic/user_firebaseStuff';
 
 import Form from '../Form';
 
-const CreateAcc = ({
-  newUserInfo,
-  handleChange,
-  channel,
-  setUser,
-  goBack,
-  setError,
-}) => {
+const CreateAcc = ({ newUserInfo, handleChange, channel, setUser, goBack }) => {
   const history = useHistory();
+  const { setError } = useContext(ErrorContext);
 
   return (
     <div className="login create-acc">

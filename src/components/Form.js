@@ -22,8 +22,11 @@ const Form = ({
   const { inputError, validateInput, submitForm } = useInputError(fieldNames);
   const [loading, setLoading] = useState(false);
 
-  let isMounted = true;
-  useEffect(() => () => (isMounted = false));
+  const isMounted = useRef(false);
+  useEffect(() => {
+    isMounted.current = true;
+    return () => (isMounted.current = false);
+  });
 
   return (
     <form
@@ -33,7 +36,7 @@ const Form = ({
         setLoading(true);
         cleanUp = cleanUp ? cleanUp : close;
         await submitForm(e, submitAction, cleanUp, setError);
-        if (isMounted) setLoading(false);
+        if (isMounted.current) setLoading(false);
       }}
     >
       <div className="content">

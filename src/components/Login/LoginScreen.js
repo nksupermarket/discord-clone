@@ -13,17 +13,10 @@ import ResetPassword from './ResetPassword';
 
 import loginArtwork from '../../assets/png/Waffle_Coffee_Dessert.png';
 
-const LoginScreen = ({ setUser, setError }) => {
+const LoginScreen = ({ setUser }) => {
   const [node, setNode] = useState('returning user');
   const { inputValues: newUserInfo, handleChange } = useInputValues();
   const { channelID: channel } = useParams();
-
-  const auth = getAuth();
-
-  const history = useHistory();
-  // useEffect(() => {
-  //   if (!channel) history.push('/login/-MkoRSxTqkrS9mlivGfs');
-  // }, [channel, history]);
 
   function goHome() {
     setNode('returning user');
@@ -36,7 +29,6 @@ const LoginScreen = ({ setUser, setError }) => {
           {
             'returning user': (
               <LoginEmail
-                setError={setError}
                 onRegister={() => setNode('new user')}
                 onForgotPW={() => setNode('reset pw')}
               />
@@ -58,11 +50,10 @@ const LoginScreen = ({ setUser, setError }) => {
                 Menu
                 Game
                 channel={channel}
-                setError={setError}
                 setUser={setUser}
               />
             ),
-            'reset pw': <ResetPassword setError={setError} close={goHome} />,
+            'reset pw': <ResetPassword close={goHome} />,
           }[node]
         }
       </div>

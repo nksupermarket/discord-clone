@@ -9,7 +9,7 @@ const ChatDisplay = ({ msgList, userList, ...props }) => {
 
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({
-      behavior: 'auto',
+      behavior: 'smooth',
       block: 'end',
     });
   }
