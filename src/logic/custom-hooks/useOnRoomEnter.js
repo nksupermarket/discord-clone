@@ -22,11 +22,11 @@ export default function useOnRoomEnter(
     if (!user || !channelID || !roomID) return;
     detachListenersForRoom(roomID);
     onRoomEnter();
-    finishLoading();
 
     async function onRoomEnter() {
       try {
         await getRoomStuff(roomID, setRoomName, setMsgList);
+        finishLoading();
       } catch (error) {
         setError(error.message);
       }

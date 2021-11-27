@@ -1,7 +1,5 @@
 import React from 'react';
 
-import useInputValues from '../logic/custom-hooks/useInputValues';
-
 import IconBtn from './IconBtn';
 
 import closeSVG from '../assets/svg/close-line.svg';

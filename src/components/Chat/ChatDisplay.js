@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import ChatMsg from './ChatMsg';
 
@@ -6,10 +6,11 @@ import '../../styles/ChatDisplay.css';
 
 const ChatDisplay = ({ msgList, userList, ...props }) => {
   const messagesEndRef = useRef();
+  const scrollerRef = useRef();
 
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: 'auto',
       block: 'end',
     });
   }
@@ -17,9 +18,21 @@ const ChatDisplay = ({ msgList, userList, ...props }) => {
   useEffect(() => {
     scrollToBottom();
   }, [msgList]);
+
   return (
     <div className="messages-ctn">
-      <div className="scroller">
+      <div
+        className="scroller"
+        ref={scrollerRef}
+        style={{
+          opacity:
+            scrollerRef.current?.scrollTop ===
+            scrollerRef.current?.scrollHeight -
+              scrollerRef.current?.offsetHeight
+              ? 0
+              : 1,
+        }}
+      >
         <div className="scroller-content">
           <ol>
             {msgList.map((obj) => {

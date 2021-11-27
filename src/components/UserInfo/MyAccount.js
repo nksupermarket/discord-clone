@@ -111,7 +111,9 @@ const MyAccount = ({ editProfile }) => {
   }, []);
 
   const getSubmitAction = useCallback(() => {
-    switch (popupDetails.inputsToSubmit) {
+    switch (
+      popupDetails.inputsToSubmit //get submit action based which popupDetails is active
+    ) {
       case 'new_username':
         return updateUsername;
       case 'new_email':
