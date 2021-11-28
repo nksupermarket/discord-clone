@@ -1,9 +1,8 @@
-import React, { useRef, useContext, useLayoutEffect } from 'react';
+import React, { useContext } from 'react';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 
 import ChannelLink from './ChannelLink';
-import Tooltip from '../Tooltip';
 
 import '../../styles/ChannelList.css';
 

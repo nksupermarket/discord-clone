@@ -16,7 +16,6 @@ const NodeOne = ({ nextNode, setChannelInfo, close }) => {
         <FlatBtn
           text="Skip this question for now"
           onClick={() => {
-            setChannelInfo('private');
             nextNode();
           }}
         />
@@ -26,14 +25,14 @@ const NodeOne = ({ nextNode, setChannelInfo, close }) => {
         <FlatBtn
           text={'Private (invite only)'}
           onClick={() => {
-            setChannelInfo('private');
+            setChannelInfo(false);
             nextNode();
           }}
         />
         <FlatBtn
           text={'Public'}
           onClick={() => {
-            setChannelInfo('public');
+            setChannelInfo(true);
             nextNode();
           }}
         />

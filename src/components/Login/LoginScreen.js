@@ -47,8 +47,6 @@ const LoginScreen = ({ setUser }) => {
                 newUserInfo={newUserInfo}
                 goBack={() => setNode('new user')}
                 handleChange={handleChange}
-                Menu
-                Game
                 channel={channel}
                 setUser={setUser}
               />

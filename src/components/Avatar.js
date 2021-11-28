@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import defaultBreadPNG from '../assets/png/icons8-bread-58.png';
 

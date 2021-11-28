@@ -18,40 +18,37 @@ function detachListenersForRoom(roomID) {
   off(roomRef);
 }
 
-async function getRoomStuff(roomID, setRoomName, setMsgList, setError) {
-  try {
-    const roomRef = ref(db, `Rooms/${roomID}`, setError);
+async function getRoomStuff(roomID, setRoomName, setMsgList, finishLoading) {
+  const roomRef = ref(db, `Rooms/${roomID}`);
 
-    onValue(roomRef, (snap) => {
-      const data = snap.val();
+  onValue(roomRef, async (snap) => {
+    const data = snap.val();
 
-      setRoomName(data.name);
+    await setRoomName(data.name);
 
-      let messages = data.messages || {};
-      let msgList = [];
-      updateMsgList();
-      setMsgList(changeReplyFromIDtoMsgObj(msgList));
-      //helpers
-      function updateMsgList() {
-        for (const id in messages) {
-          messages[id].msgId = id; // set msgId
-          msgList.push(messages[id]);
-        }
+    let messages = data.messages || {};
+    let msgList = [];
+    updateMsgList();
+    await setMsgList(changeReplyFromIDtoMsgObj(msgList));
+    finishLoading();
+    //helpers
+    function updateMsgList() {
+      for (const id in messages) {
+        messages[id].msgId = id; // set msgId
+        msgList.push(messages[id]);
       }
-      function changeReplyFromIDtoMsgObj(arr) {
-        // iterate over entire msgList
-        // if msg has replyTo, replace the msgId with actual msgObj
-        return arr.map((obj, i, thisArr) => {
-          if (!obj.replyTo) return obj;
+    }
+    function changeReplyFromIDtoMsgObj(arr) {
+      // iterate over entire msgList
+      // if msg has replyTo, replace the msgId with actual msgObj
+      return arr.map((obj, i, thisArr) => {
+        if (!obj.replyTo) return obj;
 
-          obj.replyTo = thisArr.find((msgObj) => msgObj.msgId === obj.replyTo);
-          return obj;
-        });
-      }
-    });
-  } catch (error) {
-    setError && setError(error.message);
-  }
+        obj.replyTo = thisArr.find((msgObj) => msgObj.msgId === obj.replyTo);
+        return obj;
+      });
+    }
+  });
 }
 
 async function pushToMsgList(roomId, msgObj) {

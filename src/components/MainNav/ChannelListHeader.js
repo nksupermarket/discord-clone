@@ -6,9 +6,9 @@ import Avatar from '../Avatar';
 const ChannelListHeader = () => {
   return (
     <header>
-      <Link to="/" className="list-item">
+      <div className="list-item">
         <Avatar color="#cb3e5b" />
-      </Link>
+      </div>
       <div className="header-underline-wrapper list-item">
         <div className="header-underline"></div>
       </div>

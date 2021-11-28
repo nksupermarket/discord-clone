@@ -6,6 +6,10 @@
   font-weight: 500;
 }
 
+.users-ctn .user-wrapper {
+  cursor: default;
+}
+
 .role-users-wrapper {
   padding: 24px 8px 0 16px;
 }

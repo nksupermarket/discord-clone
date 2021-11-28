@@ -4,16 +4,23 @@ import ChatMsg from './ChatMsg';
 
 import '../../styles/ChatDisplay.css';
 
-const ChatDisplay = ({ msgList, userList, ...props }) => {
+const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
   const messagesEndRef = useRef();
   const scrollerRef = useRef();
 
+  const [isScrolled, setIsScrolled] = useState(true);
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({
       behavior: 'auto',
       block: 'end',
+      inline: 'center',
+      alignToTop: false,
     });
   }
+
+  useEffect(() => {
+    return () => setIsScrolled(false);
+  }, [roomID]);
 
   useEffect(() => {
     scrollToBottom();
@@ -24,13 +31,10 @@ const ChatDisplay = ({ msgList, userList, ...props }) => {
       <div
         className="scroller"
         ref={scrollerRef}
-        style={{
-          opacity:
-            scrollerRef.current?.scrollTop ===
-            scrollerRef.current?.scrollHeight -
-              scrollerRef.current?.offsetHeight
-              ? 0
-              : 1,
+        style={{ opacity: isScrolled ? 1 : 0 }}
+        onLoad={async () => {
+          await notifyWhenScrollingIsFinished(scrollerRef.current);
+          setIsScrolled(true);
         }}
       >
         <div className="scroller-content">
@@ -54,3 +58,18 @@ const ChatDisplay = ({ msgList, userList, ...props }) => {
 };
 
 export default ChatDisplay;
+
+function notifyWhenScrollingIsFinished(el) {
+  return new Promise((resolve) => {
+    requestAnimationFrame(check);
+    let sameFrame = 0;
+
+    function check() {
+      if (el.scrollHeight - el.offsetHeight - el.scrollTop < 50) {
+        if (sameFrame++ > 10) return resolve();
+
+        requestAnimationFrame(check);
+      }
+    }
+  });
+}

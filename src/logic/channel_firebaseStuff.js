@@ -10,6 +10,7 @@ import {
   off,
   query,
   orderByValue,
+  startAt,
   limitToFirst,
   onDisconnect,
 } from 'firebase/database';
@@ -17,31 +18,52 @@ import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
-async function createChannel(name) {
+async function createChannel(name, isPublic, icon) {
   const channelListRef = ref(db, 'Channels');
   const newChannelRef = push(channelListRef);
   await set(newChannelRef, { name });
+  console.log({
+    name,
+    description:
+      'This is a new channel and there is no description for it at the moment.',
+  });
+
+  let iconURL = icon ? await changeChannelIcon(newChannelRef.key, icon) : '';
+  if (isPublic)
+    await set(ref(db, `public_channels/${newChannelRef.key}`), {
+      name,
+      icon: iconURL,
+      description:
+        'This is a new channel and there is no description for it at the moment.',
+    });
   await createRoom(newChannelRef.key, 'general');
   return newChannelRef.key;
 }
 
-async function uploadChannelIcon(channelID, image) {
-  const channelIconRef = store(storage, `channel_icons/${channelID}`);
-  await uploadBytes(channelIconRef, image);
-  const channelIconURL = await getDownloadURL(channelIconRef);
-  return channelIconURL;
+async function getPublicChannels(startAtKey) {
+  let snap = startAtKey
+    ? await get(
+        query(ref(db, `public_channels/`), startAt(startAtKey).limitToFirst(10))
+      )
+    : await get(query(ref(db, `public_channels/`), limitToFirst(10)));
+
+  let data = snap.val();
+  const processed = Object.keys(data).map((key) => ({ ...data[key], id: key }));
+
+  return processed;
 }
 
-async function changeChannelIcon(channelID, imageURL) {
-  update(ref(db, `Channels/${channelID}`), { icon: imageURL });
+async function changeChannelIcon(channelID, image) {
+  const channelIconRef = store(storage, `channel_icons/${channelID}`);
+  await uploadBytes(channelIconRef, image);
+  const imageURL = await getDownloadURL(channelIconRef);
+  await update(ref(db, `Channels/${channelID}`), { icon: imageURL });
 }
 
 function detachListenersForChannel(channelID, uid) {
   const channelInfoRef = ref(db, `Channels/${channelID}`);
-  const unreadRoomsRef = ref(db, `users/${uid}/unread_rooms/${channelID}`);
 
   off(channelInfoRef);
-  off(unreadRoomsRef);
 }
 
 async function getChannelInfo(
@@ -203,15 +225,9 @@ async function updateRoleOfUser(channelID, userId, role, setError) {
   }
 }
 
-// async function getUnreadRooms(channelID, userId, roomList, setError) {
-// try {
-
-// }
-// }
-
 export {
+  getPublicChannels,
   createChannel,
-  uploadChannelIcon,
   changeChannelIcon,
   getChannelInfo,
   getInfoForChannelList,

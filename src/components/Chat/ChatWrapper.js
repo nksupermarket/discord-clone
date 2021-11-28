@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import ChatDisplay from './ChatDisplay';
 import ChatBarWrapper from './ChatBarWrapper';
@@ -16,6 +16,7 @@ const ChatWrapper = ({ room, msgList, userList, submitMsg }) => {
   return (
     <main id="chat">
       <ChatDisplay
+        roomID={room.id}
         msgList={msgList}
         userList={userList}
         setReplyTo={setReplyTo}

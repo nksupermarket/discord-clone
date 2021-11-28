@@ -22,7 +22,7 @@ const CreateChannel = ({ close }) => {
   const [channelInfo, setChannelInfo] = useState({
     name: `${user.displayName}'s channel`,
     icon: {},
-    isPrivate: '',
+    isPublic: false,
   });
 
   function ontoNextNode() {
@@ -36,12 +36,17 @@ const CreateChannel = ({ close }) => {
   const onCreateChannel = useCallback(
     async function onCreateChannel() {
       try {
-        const channelID = await createChannel(channelInfo.name);
+        let channelID;
         if (channelInfo.icon instanceof File) {
-          const iconURL = await uploadChannelIcon(channelID, channelInfo.icon);
-          changeChannelIcon(channelID, iconURL);
+          channelID = createChannel(
+            channelInfo.name,
+            channelInfo.isPublic,
+            channelInfo.icon
+          );
+        } else {
+          channelID = createChannel(channelInfo.name, channelInfo.isPublic);
         }
-        subscribeToChannel(user, channelID);
+        await subscribeToChannel(user, channelID);
       } catch (error) {
         setError(error.message);
       }
@@ -57,7 +62,7 @@ const CreateChannel = ({ close }) => {
             <NodeOne
               nextNode={ontoNextNode}
               setChannelInfo={(status) =>
-                setChannelInfo((prev) => ({ ...prev, isPrivate: status }))
+                setChannelInfo((prev) => ({ ...prev, isPublic: status }))
               }
               close={close}
             />

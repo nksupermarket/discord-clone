@@ -148,7 +148,7 @@ async function subscribeToChannel(user, channelID) {
     color: user.color,
   };
 
-  update(ref(db), updates);
+  await update(ref(db), updates);
 }
 
 async function getUserInfo(uid, setChannelList, setUserProfileColor) {

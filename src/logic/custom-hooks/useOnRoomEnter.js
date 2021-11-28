@@ -25,8 +25,7 @@ export default function useOnRoomEnter(
 
     async function onRoomEnter() {
       try {
-        await getRoomStuff(roomID, setRoomName, setMsgList);
-        finishLoading();
+        await getRoomStuff(roomID, setRoomName, setMsgList, finishLoading);
       } catch (error) {
         setError(error.message);
       }

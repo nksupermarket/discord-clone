@@ -38,7 +38,7 @@
   padding: 15px;
 }
 
-.explore-view main header {
+.explore-view main > header {
   width: 100%;
   text-align: center;
   display: flex;
@@ -82,4 +82,37 @@
 .explore-view main header .searchBar img {
   filter: var(--text-muted-filter);
   padding: 3px;
+}
+
+.explore-view main > .content {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.explore-view main > .content .page-navigation {
+  padding-bottom: 20px;
+}
+.explore-view main > .content .page-navigation .btn-ctn {
+  justify-content: center;
+  column-gap: 80px;
+}
+.explore-view .nav-btn {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.explore-view .nav-btn.flex-reverse {
+  flex-direction: row-reverse;
+}
+.explore-view .nav-btn .icon-wrapper img {
+  display: block;
+  filter: var(--action-normal-filter);
+}
+.explore-view .nav-btn:hover .icon-wrapper img {
+  filter: var(--action-hover-filter);
+}
+.explore-view .nav-btn .text-wrapper {
+  color: var(--text-muted);
+}
+.explore-view .nav-btn .text-wrapper:hover {
+  color: var(--text-normal);
 }
