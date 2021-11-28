@@ -10,6 +10,8 @@ import {
   off,
   query,
   orderByKey,
+  orderByChild,
+  startAt,
   startAfter,
   endBefore,
   limitToFirst,
@@ -17,6 +19,7 @@ import {
   onDisconnect,
 } from 'firebase/database';
 import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { version } from 'react-dom';
 import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
@@ -42,49 +45,65 @@ async function createChannel(name, isPublic, icon) {
   return newChannelRef.key;
 }
 
-async function deleteChannels() {
+// async function deleteChannels() {
+//   const snap = await get(
+//     query(ref(db, 'Channels'), orderByKey(), startAfter('-MpYw7QHcb5u99muczqb'))
+//   );
+//   const data = snap.val();
+
+//   let updates = {};
+//   Object.keys(data).forEach((key) => {
+//     updates[`public_channels/${key}`] = null;
+//     updates[`Channels/${key}`] = null;
+//   });
+
+//   update(ref(db), updates);
+// }
+
+async function searchPublicChannels(searchVal) {
   const snap = await get(
-    query(ref(db, 'Channels'), orderByKey(), startAfter('-MpYw7QHcb5u99muczqb'))
+    query(
+      ref(db, '/public_channels/'),
+      orderByChild('name'),
+      startAt(searchVal)
+    )
   );
   const data = snap.val();
-
-  let updates = {};
-  Object.keys(data).forEach((key) => {
-    updates[`public_channels/${key}`] = null;
-    updates[`Channels/${key}`] = null;
-  });
-
-  update(ref(db), updates);
+  const processed = Object.keys(data).map((key) => ({ ...data[key], id: key }));
+  return processed;
 }
 
-async function getPublicChannels(startAfterKey, endBeforeKey) {
-  const og = await get(ref(db, 'public_channels'));
-  const ogData = og.val();
-  console.log(Object.keys(ogData).map((key) => ({ ...ogData[key], id: key })));
-  const snap = endBeforeKey
-    ? await get(
+async function getPublicChannels(status, key) {
+  let snap;
+  switch (status) {
+    case 'init':
+      snap = await get(query(ref(db, `public_channels/`), limitToFirst(20)));
+      break;
+    case 'next':
+      snap = await get(
         query(
           ref(db, `public_channels/`),
           orderByKey(),
-          endBefore(endBeforeKey),
-          limitToLast(10)
+          startAfter(key),
+          limitToFirst(20)
         )
-      )
-    : startAfterKey
-    ? await get(
+      );
+      break;
+    case 'prev':
+      snap = await get(
         query(
           ref(db, `public_channels/`),
           orderByKey(),
-          startAfter(startAfterKey),
-          limitToFirst(10)
+          endBefore(key),
+          limitToLast(20)
         )
-      )
-    : await get(query(ref(db, `public_channels/`), limitToFirst(10)));
-
-  let data = snap.val();
-  console.log(data);
+      );
+      break;
+    default:
+      return;
+  }
+  const data = snap.val();
   const processed = Object.keys(data).map((key) => ({ ...data[key], id: key }));
-  console.log(processed);
   return processed;
 }
 
@@ -273,5 +292,6 @@ export {
   createUserRole,
   updateRoleOfUser,
   detachListenersForChannel,
-  deleteChannels,
+  // deleteChannels,
+  searchPublicChannels,
 };

@@ -7,7 +7,7 @@ export default function useError() {
     if (error)
       setTimeout(() => {
         setError();
-      }, 3500);
+      }, 5000);
   });
 
   return { error, setError };

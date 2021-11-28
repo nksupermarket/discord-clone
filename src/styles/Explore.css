@@ -36,7 +36,8 @@
 .explore-view main {
   flex: 1 0 auto;
   padding: 15px;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .explore-view main > header {
@@ -86,9 +87,12 @@
 }
 
 .explore-view main > .content {
+  position: relative;
   padding-top: 20px;
-  padding-bottom: 20px;
-  max-width: 600px;
+  overflow: hidden;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
 }
 .explore-view main > .content .page-navigation {
   padding-bottom: 20px;
@@ -101,6 +105,7 @@
   display: flex;
   align-items: center;
   padding: 4px;
+  font-size: 18px;
 }
 .explore-view .nav-btn.flex-reverse {
   flex-direction: row-reverse;
@@ -118,7 +123,32 @@
 .explore-view .nav-btn .text-wrapper:hover {
   color: var(--text-normal);
 }
+
+.explore-view main > .content > .text-wrapper {
+  padding-bottom: 20px;
+}
+
 .explore-view .content .publicChannels-ctn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex: 1 1 auto;
+  padding-bottom: 20px;
+}
+.explore-view .content .publicChannels-ctn .scroller {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+.explore-view .content .publicChannels-ctn .scroller .scroller-content ol {
   display: flex;
   flex-wrap: wrap;
+  gap: 30px 30px;
+  justify-content: center;
+  padding-bottom: 50px;
 }

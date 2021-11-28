@@ -1,42 +1,74 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  useContext,
+} from 'react';
+
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
+import {
+  getPublicChannels,
+  searchPublicChannels,
+} from '../../logic/channel_firebaseStuff';
 
 import Sidebar from '../Settings/Sidebar';
 import UserInfo from '../UserInfo/UserInfo';
 import ChannelCard from './ChannelCard';
-
-import '../../styles/Explore.css';
-import BannerSearch from './BannerSearch';
-import { getPublicChannels } from '../../logic/channel_firebaseStuff';
 import NavBtn from '../NavBtn';
+import BannerSearch from './BannerSearch';
 
 import prevSVG from '../../assets/svg/arrow-left-s-line.svg';
 import nextSVG from '../../assets/svg/arrow-right-s-line.svg';
 
+import '../../styles/Explore.css';
+import LoadingScreen from '../LoadingScreen';
+
 const Explore = ({ finishLoading }) => {
+  const { setError } = useContext(ErrorContext);
   const [publicChannelList, setPublicChannelList] = useState([]);
   const firstChannelID = useRef(null);
+  const [query, setQuery] = useState();
+  const [isSearch, setIsSearch] = useState(false);
+  const scrollerRef = useRef();
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => finishLoading());
+  useEffect(() => finishLoading(), [finishLoading]);
 
+  const getBatchOfChannels = useCallback(
+    async (status, key) => {
+      try {
+        const data = await getPublicChannels(status, key);
+        if (status === 'init') firstChannelID.current = data[0].id;
+        setPublicChannelList(data);
+        setLoading(false);
+        if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
+      } catch (error) {
+        setError(error.message);
+      }
+    },
+    [setError]
+  );
   useEffect(() => {
-    (async () => {
-      const data = await getPublicChannels();
-      firstChannelID.current = data[0].id;
+    getBatchOfChannels('init');
+  }, [getBatchOfChannels, setError]);
+
+  const searchChannels = useCallback(async () => {
+    try {
+      if (!query) {
+        setQuery('');
+        setIsSearch(false);
+        getBatchOfChannels('init');
+      }
+      const data = await searchPublicChannels(query);
+      setLoading(false);
+      setIsSearch(true);
       setPublicChannelList(data);
-    })();
-  }, []);
-
-  const getNextBatchOfChannels = useCallback(async () => {
-    const data = await getPublicChannels(
-      publicChannelList[publicChannelList.length - 1].id
-    );
-    setPublicChannelList(data);
-  }, [publicChannelList]);
-
-  const getPrevBatchOfChannels = useCallback(async () => {
-    const data = await getPublicChannels('', publicChannelList[0].id);
-    setPublicChannelList(data);
-  }, [publicChannelList]);
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    }
+  }, [query, getBatchOfChannels, setError]);
 
   return (
     <div className="explore-view">
@@ -55,33 +87,72 @@ const Explore = ({ finishLoading }) => {
       </nav>
       <main>
         <header>
-          <BannerSearch />
+          <BannerSearch
+            onSearch={searchChannels}
+            handleChange={(e) => setQuery(e.target.value)}
+            cancelSearch={() => {
+              setIsSearch(false);
+              setQuery('');
+              getBatchOfChannels('init');
+            }}
+            query={query}
+          />
         </header>
         <div className="content">
-          <div className="page-navigation">
-            <div className="btn-ctn">
-              <NavBtn
-                icon={prevSVG}
-                text={'Prev'}
-                className={
-                  publicChannelList.find((c) => c.id === firstChannelID.current)
-                    ? 'default_transition inactive'
-                    : 'default_transition'
-                }
-                onClick={getPrevBatchOfChannels}
-              />
-              <NavBtn
-                icon={nextSVG}
-                text={'Next'}
-                className="flex-reverse default_transition"
-                onClick={getNextBatchOfChannels}
-              />
+          {isSearch ? (
+            <div className="text-wrapper">
+              <h3>Search results for: "{query}"</h3>
             </div>
-          </div>
+          ) : (
+            <div className="page-navigation">
+              <div className="btn-ctn">
+                <NavBtn
+                  icon={prevSVG}
+                  text={'Prev'}
+                  className={
+                    publicChannelList.find(
+                      (c) => c.id === firstChannelID.current
+                    )
+                      ? 'default_transition inactive'
+                      : 'default_transition'
+                  }
+                  onClick={() =>
+                    getBatchOfChannels('prev', publicChannelList[0].id)
+                  }
+                />
+                <NavBtn
+                  icon={nextSVG}
+                  text={'Next'}
+                  className={
+                    publicChannelList.length % 20 !== 0 ||
+                    publicChannelList.length === 0
+                      ? 'flex-reverse default_transition inactive'
+                      : 'flex-reverse default_transition'
+                  }
+                  onClick={() =>
+                    getBatchOfChannels(
+                      'next',
+                      publicChannelList[publicChannelList.length - 1].id
+                    )
+                  }
+                />
+              </div>
+            </div>
+          )}
           <div className="publicChannels-ctn">
-            {publicChannelList.map((c) => (
-              <ChannelCard channel={c} />
-            ))}
+            {loading ? (
+              <LoadingScreen />
+            ) : (
+              <div className="scroller" ref={scrollerRef}>
+                <div className="scroller-content">
+                  <ol>
+                    {publicChannelList.map((c) => (
+                      <ChannelCard channel={c} />
+                    ))}
+                  </ol>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

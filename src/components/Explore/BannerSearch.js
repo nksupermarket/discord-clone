@@ -2,8 +2,9 @@ import React from 'react';
 
 import searchSVG from '../../assets/svg/search-line.svg';
 import bannerBG from '../../assets/png/Waffle_Coffee_Dessert.png';
+import closeSVG from '../../assets/svg/close-circle-fill.svg';
 
-const BannerSearch = () => {
+const BannerSearch = ({ query, onSearch, handleChange, cancelSearch }) => {
   return (
     <div
       className="container"
@@ -18,9 +19,25 @@ const BannerSearch = () => {
       <div className="search">
         <div className="searchBar">
           <div className="input-wrapper">
-            <input type="text" />
+            <input
+              type="text"
+              value={query}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') onSearch();
+              }}
+              onChange={handleChange}
+            />
           </div>
-          <img src={searchSVG} alt="search" />
+          {query ? (
+            <img
+              src={closeSVG}
+              alt="cancel search"
+              className="icon-btn"
+              onClick={cancelSearch}
+            />
+          ) : (
+            <img src={searchSVG} alt="search" />
+          )}
         </div>
       </div>
     </div>
