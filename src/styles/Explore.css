@@ -36,6 +36,7 @@
 .explore-view main {
   flex: 1 0 auto;
   padding: 15px;
+  overflow: auto;
 }
 
 .explore-view main > header {
@@ -87,6 +88,7 @@
 .explore-view main > .content {
   padding-top: 20px;
   padding-bottom: 20px;
+  max-width: 600px;
 }
 .explore-view main > .content .page-navigation {
   padding-bottom: 20px;
@@ -115,4 +117,8 @@
 }
 .explore-view .nav-btn .text-wrapper:hover {
   color: var(--text-normal);
+}
+.explore-view .content .publicChannels-ctn {
+  display: flex;
+  flex-wrap: wrap;
 }

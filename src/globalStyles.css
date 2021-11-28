@@ -161,6 +161,7 @@ body {
   font-weight: 500;
 }
 
+button.inactive,
 .flat-btn.inactive {
   opacity: 0.5;
   pointer-events: none;

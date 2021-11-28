@@ -6,7 +6,6 @@ import useError from './logic/custom-hooks/useError';
 import useLoginUser from './logic/custom-hooks/useLoginUser';
 import { UserContext } from './logic/contexts/UserContext';
 import { ErrorContext } from './logic/contexts/ErrorContext';
-import { createChannel } from './logic/channel_firebaseStuff';
 
 import ChannelView from './components/ChannelView';
 import LoginScreen from './components/Login/LoginScreen';
@@ -30,19 +29,6 @@ function App() {
   const finishLoading = useCallback(() => {
     setLoading(false);
   }, []);
-
-  useEffect(() => {
-    for (let i = 0; i < 50; i++) {
-      onCreateChannel(`sample channel ${i}`);
-    }
-    async function onCreateChannel(name) {
-      try {
-        createChannel(name, true);
-      } catch (error) {
-        setError(error.message);
-      }
-    }
-  }, [setError]);
 
   return (
     <>

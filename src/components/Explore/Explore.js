@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 
 import Sidebar from '../Settings/Sidebar';
 import UserInfo from '../UserInfo/UserInfo';
@@ -14,17 +14,29 @@ import nextSVG from '../../assets/svg/arrow-right-s-line.svg';
 
 const Explore = ({ finishLoading }) => {
   const [publicChannelList, setPublicChannelList] = useState([]);
-  const firstChannelRef = useRef(null);
+  const firstChannelID = useRef(null);
 
   useEffect(() => finishLoading());
 
   useEffect(() => {
     (async () => {
       const data = await getPublicChannels();
+      firstChannelID.current = data[0].id;
       setPublicChannelList(data);
-      firstChannelRef.current = data[0].id;
     })();
   }, []);
+
+  const getNextBatchOfChannels = useCallback(async () => {
+    const data = await getPublicChannels(
+      publicChannelList[publicChannelList.length - 1].id
+    );
+    setPublicChannelList(data);
+  }, [publicChannelList]);
+
+  const getPrevBatchOfChannels = useCallback(async () => {
+    const data = await getPublicChannels('', publicChannelList[0].id);
+    setPublicChannelList(data);
+  }, [publicChannelList]);
 
   return (
     <div className="explore-view">
@@ -51,12 +63,18 @@ const Explore = ({ finishLoading }) => {
               <NavBtn
                 icon={prevSVG}
                 text={'Prev'}
-                className="default_transition"
+                className={
+                  publicChannelList.find((c) => c.id === firstChannelID.current)
+                    ? 'default_transition inactive'
+                    : 'default_transition'
+                }
+                onClick={getPrevBatchOfChannels}
               />
               <NavBtn
                 icon={nextSVG}
                 text={'Next'}
                 className="flex-reverse default_transition"
+                onClick={getNextBatchOfChannels}
               />
             </div>
           </div>
