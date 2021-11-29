@@ -13,7 +13,8 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
-import ChannelNav from './ChannelNav/ChannelNav';
+import ChannelNav from './ChannelNav/ChannelNav_mobile';
+import UserSettings from './UserInfo/UserSettings';
 import MobileSidebar from './MobileSidebar';
 import OnlineUsers from './OnlineUsers/OnlineUsers';
 import TopBar from './TopBar';
@@ -70,49 +71,64 @@ const ChannelView = ({ finishLoading, setError }) => {
     onLeftSwipe
   );
 
+  const [showUserSettings, setShowUserSettings] = useState(false);
+  useEffect(() => {
+    console.log(showUserSettings);
+  }, [showUserSettings]);
   return (
-    <div
-      className="channel-view"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      {channel && showLeftSidebar && (
-        <MobileSidebar isLeft={true} hide={() => setShowLeftSidebar(false)}>
-          <MainNav />
-          <ChannelNav
-            channel={channel}
-            categories={roomCategories}
-            list={roomList}
-            setRoom={setRoom}
-            currentRoom={room}
-          />
-        </MobileSidebar>
+    <>
+      {showUserSettings && (
+        <UserSettings close={() => setShowUserSettings(false)} />
       )}
-      {room && (
-        <>
-          <div className="content">
-            <TopBar room={room} />
-            <div className="chat-ctn">
-              <ChatWrapper
-                room={room}
-                msgList={msgList}
-                userList={userList}
-                submitMsg={submitMsg}
+      {!showUserSettings && (
+        <div
+          className="channel-view"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {channel && showLeftSidebar && (
+            <MobileSidebar isLeft={true} hide={() => setShowLeftSidebar(false)}>
+              <MainNav />
+              <ChannelNav
+                channel={channel}
+                categories={roomCategories}
+                list={roomList}
+                setRoom={setRoom}
+                currentRoom={room}
+                showUserSettings={() => {
+                  console.log('im running');
+                  setShowUserSettings(true);
+                }}
               />
-            </div>
-          </div>
-          {showRightSidebar && (
-            <MobileSidebar
-              isLeft={false}
-              hide={() => setShowRightSidebar(false)}
-            >
-              <OnlineUsers list={onlineUsers} roles={roleList} />
             </MobileSidebar>
           )}
-        </>
+          {room && (
+            <>
+              <div className="content">
+                <TopBar room={room} />
+                <div className="chat-ctn">
+                  <ChatWrapper
+                    room={room}
+                    msgList={msgList}
+                    userList={userList}
+                    submitMsg={submitMsg}
+                  />
+                </div>
+              </div>
+              {showRightSidebar && (
+                <MobileSidebar
+                  isLeft={false}
+                  hide={() => setShowRightSidebar(false)}
+                >
+                  <OnlineUsers list={onlineUsers} roles={roleList} />
+                </MobileSidebar>
+              )}
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

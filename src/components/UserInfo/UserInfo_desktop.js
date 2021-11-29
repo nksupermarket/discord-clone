@@ -12,7 +12,6 @@ import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 const UserInfo = () => {
   const { user } = useContext(UserContext);
   const [isSettings, setIsSettings] = useState(false);
-  console.log(isSettings);
   return (
     <>
       <section className="user-info-panel">

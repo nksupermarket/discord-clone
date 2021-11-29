@@ -14,7 +14,7 @@ import {
 import useTouchEvents from '../../logic/custom-hooks/useTouchEvents';
 
 import Sidebar from '../Settings/Sidebar';
-import UserInfo from '../UserInfo/UserInfo';
+import UserInfo from '../UserInfo/UserInfo_mobile';
 import ChannelCard from './ChannelCard';
 import NavBtn from '../NavBtn';
 import BannerSearch from './BannerSearch';

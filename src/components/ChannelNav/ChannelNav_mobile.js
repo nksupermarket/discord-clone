@@ -1,13 +1,12 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import '../../styles/ChannelNav.css';
-import UserInfo from '../UserInfo/UserInfo';
+import UserInfo from '../UserInfo/UserInfo_mobile';
 import CatList from '../CatList';
 import RoomLink from './RoomLink';
 
-const ChannelNav = ({ channel, categories, list }) => {
+const ChannelNav = ({ channel, categories, list, showUserSettings }) => {
   categories = categories || [];
-
   return (
     <nav className="channel-nav sidebar">
       <header>{channel.name}</header>
@@ -31,7 +30,7 @@ const ChannelNav = ({ channel, categories, list }) => {
           </CatList>
         ))}
       </div>
-      <UserInfo />
+      <UserInfo showSettings={showUserSettings} />
     </nav>
   );
 };
