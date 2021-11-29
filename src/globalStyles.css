@@ -136,6 +136,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  overflow: hidden;
 }
 
 .btn-ctn {
@@ -301,4 +302,24 @@ form .input-wrapper input:focus {
 .avatar,
 .default_transition {
   transition: all 0.2s ease;
+}
+
+.right-sidebar,
+.left-sidebar {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.24);
+}
+.right-sidebar .content-wrapper {
+  position: absolute;
+  right: 0;
+}
+.left-sidebar .content-wrapper {
+  display: flex;
+  flex: 0 1 auto;
 }

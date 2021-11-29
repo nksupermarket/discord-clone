@@ -7,18 +7,19 @@ import useLoginUser from './logic/custom-hooks/useLoginUser';
 import { UserContext } from './logic/contexts/UserContext';
 import { ErrorContext } from './logic/contexts/ErrorContext';
 
-import ChannelView from './components/ChannelView';
+import ChannelView from './components/ChannelView_mobile';
+// import ChannelView from './components/ChannelView_desktop';
 import LoginScreen from './components/Login/LoginScreen';
-import MainNav from './components/MainNav/MainNav';
 import Error from './components/Error';
 import LoadingScreen from './components/LoadingScreen';
+// import Explore from './components/Explore/Explore_desktop';
+import Explore from './components/Explore/Explore_mobile';
 
 import './globalStyles.css';
 
 //import icons
 import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
-import Explore from './components/Explore/Explore';
 
 function App() {
   const { error, setError } = useError();
@@ -42,7 +43,6 @@ function App() {
           <>
             <UserContext.Provider value={{ user, setUser, channelList }}>
               <div className="app">
-                <MainNav />
                 <Route path={'/explore'}>
                   <Explore finishLoading={finishLoading} />
                 </Route>

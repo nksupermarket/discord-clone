@@ -1,5 +1,5 @@
 .channel-nav {
-  width: 80%;
+  width: 240px;
   padding-right: 2px;
   display: flex;
   flex-direction: column;
@@ -103,10 +103,4 @@
   display: block;
   width: 18px;
   height: 18px;
-}
-
-@media screen and (min-width: 500px) {
-  .channel-nav {
-    max-width: 240px;
-  }
 }

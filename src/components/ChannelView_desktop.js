@@ -20,6 +20,8 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
+import MainNav from './MainNav/MainNav';
+
 const ChannelView = ({ finishLoading, setError }) => {
   const { user, channelList } = useContext(UserContext);
   const { channelID, roomID } = useParams();

@@ -1,6 +1,6 @@
 .users-ctn {
   height: 100vh;
-  width: 80%;
+  width: 250px;
   overflow: hidden auto;
   background-color: var(--fg-color);
   font-weight: 500;
@@ -49,10 +49,4 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-
-@media screen and (min-width: 500px) {
-  .users-ctn {
-    max-width: 250px;
-  }
 }

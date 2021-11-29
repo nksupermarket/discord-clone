@@ -12,6 +12,7 @@ import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 const UserInfo = () => {
   const { user } = useContext(UserContext);
   const [isSettings, setIsSettings] = useState(false);
+  console.log(isSettings);
   return (
     <>
       <section className="user-info-panel">
@@ -21,7 +22,12 @@ const UserInfo = () => {
             <div className="username-wrapper">{user.displayName}</div>
           </div>
           <div className="btn-ctn">
-            <IconBtn svg={settingsSVG} onClick={() => setIsSettings(true)} />
+            <IconBtn
+              svg={settingsSVG}
+              onClick={() => {
+                setIsSettings(true);
+              }}
+            />
           </div>
         </div>
       </section>

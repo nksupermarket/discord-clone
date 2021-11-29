@@ -11,33 +11,39 @@ import {
   getPublicChannels,
   searchPublicChannels,
 } from '../../logic/channel_firebaseStuff';
+import useTouchEvents from '../../logic/custom-hooks/useTouchEvents';
 
 import Sidebar from '../Settings/Sidebar';
 import UserInfo from '../UserInfo/UserInfo';
 import ChannelCard from './ChannelCard';
 import NavBtn from '../NavBtn';
 import BannerSearch from './BannerSearch';
+import LoadingScreen from '../LoadingScreen';
+import MainNav from '../MainNav/MainNav_mobile';
+import MobileSidebar from '../MobileSidebar';
 
 import prevSVG from '../../assets/svg/arrow-left-s-line.svg';
 import nextSVG from '../../assets/svg/arrow-right-s-line.svg';
 
 import '../../styles/Explore.css';
-import LoadingScreen from '../LoadingScreen';
 
 const Explore = ({ finishLoading }) => {
   const { setError } = useContext(ErrorContext);
   const [publicChannelList, setPublicChannelList] = useState([]);
   const firstChannelID = useRef(null);
   const [query, setQuery] = useState();
+  const searchedQuery = useRef();
   const [isSearch, setIsSearch] = useState(false);
   const scrollerRef = useRef();
   const [loading, setLoading] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => finishLoading(), [finishLoading]);
 
   const getBatchOfChannels = useCallback(
     async (status, key) => {
       try {
+        setLoading(true);
         const data = await getPublicChannels(status, key);
         if (status === 'init') firstChannelID.current = data[0].id;
         setPublicChannelList(data);
@@ -54,13 +60,15 @@ const Explore = ({ finishLoading }) => {
   }, [getBatchOfChannels, setError]);
 
   const searchChannels = useCallback(async () => {
+    setLoading(true);
     try {
       if (!query) {
         setQuery('');
         setIsSearch(false);
-        getBatchOfChannels('init');
+        return await getBatchOfChannels('init');
       }
       const data = await searchPublicChannels(query);
+      searchedQuery.current = query;
       setLoading(false);
       setIsSearch(true);
       setPublicChannelList(data);
@@ -70,21 +78,46 @@ const Explore = ({ finishLoading }) => {
     }
   }, [query, getBatchOfChannels, setError]);
 
+  const showLeftSidebar = useCallback(() => {
+    setShowSidebar(true);
+  }, []);
+  const hideLeftSidebar = useCallback(() => {
+    setShowSidebar(false);
+  }, []);
+  const { handleTouchStart, handleTouchMove, handleTouchEnd } = useTouchEvents(
+    hideLeftSidebar,
+    showLeftSidebar
+  );
+
   return (
-    <div className="explore-view">
-      <nav className="sidebar">
-        <header>
-          <h2>Discover</h2>
-        </header>
-        <Sidebar
-          btnList={[
-            { text: 'Home' },
-            { text: 'Gaming' },
-            { text: 'Technology' },
-          ]}
-        />
-        <UserInfo />
-      </nav>
+    <div
+      className="explore-view mobile"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {showSidebar && (
+        <MobileSidebar
+          isLeft={true}
+          className="nav-ctn mobile"
+          hide={hideLeftSidebar}
+        >
+          <MainNav />
+          <nav className="sidebar view-sidebar">
+            <header>
+              <h2>Discover</h2>
+            </header>
+            <Sidebar
+              btnList={[
+                { text: 'Home' },
+                { text: 'Gaming' },
+                { text: 'Technology' },
+              ]}
+            />
+            <UserInfo />
+          </nav>
+        </MobileSidebar>
+      )}
       <main>
         <header>
           <BannerSearch
@@ -101,7 +134,7 @@ const Explore = ({ finishLoading }) => {
         <div className="content">
           {isSearch ? (
             <div className="text-wrapper">
-              <h3>Search results for: "{query}"</h3>
+              <h3>Search results for: "{searchedQuery.current}"</h3>
             </div>
           ) : (
             <div className="page-navigation">

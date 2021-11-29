@@ -20,7 +20,6 @@ const AccountProfileCard = ({
   handleUpload,
 }) => {
   const { user } = useContext(UserContext);
-  console.log(user.displayName);
   return (
     <div className="account-profile-card">
       <div
