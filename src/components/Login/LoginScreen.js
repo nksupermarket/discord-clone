@@ -5,7 +5,6 @@ import useInputValues from '../../logic/custom-hooks/useInputValues';
 
 import LoginEmail from './LoginEmail';
 
-import '../../styles/LoginScreen.css';
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
 import { useParams, useHistory } from 'react-router';
@@ -13,7 +12,9 @@ import ResetPassword from './ResetPassword';
 
 import loginArtwork from '../../assets/png/Waffle_Coffee_Dessert.png';
 
-const LoginScreen = ({ setUser }) => {
+import '../../styles/LoginScreen.css';
+
+const LoginScreen = ({ setUser, isMobile }) => {
   const [node, setNode] = useState('returning user');
   const { inputValues: newUserInfo, handleChange } = useInputValues();
   const { channelID: channel } = useParams();
@@ -21,7 +22,6 @@ const LoginScreen = ({ setUser }) => {
   function goHome() {
     setNode('returning user');
   }
-
   return (
     <div className="login-screen">
       <div className="login-formWrapper">
@@ -55,11 +55,13 @@ const LoginScreen = ({ setUser }) => {
           }[node]
         }
       </div>
-      <div className="login-artwork-wrapper">
-        <div className="artwork">
-          <img src={loginArtwork} alt="illustration of bread and coffee" />
+      {!isMobile && (
+        <div className="login-artwork-wrapper">
+          <div className="artwork">
+            <img src={loginArtwork} alt="illustration of bread and coffee" />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import Settings from '../Settings/Settings _mobile';
 import MyAccount from './MyAccount _mobile';
-import UserProfile from './UserProfile_mobile';
+import UserProfile from './UserProfile';
 import Error from '../Error';
 
 const UserSettings = ({ close }) => {
@@ -22,7 +22,7 @@ const UserSettings = ({ close }) => {
             />
           );
         case 'user profile':
-          return <UserProfile />;
+          return <UserProfile isMobile={true} />;
         case 'log out':
           onLogout();
           async function onLogout() {

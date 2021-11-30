@@ -14,7 +14,7 @@ import Success from '../Success';
 
 import '../../styles/UserProfile.css';
 
-const UserProfile = () => {
+const UserProfile = ({ isMobile }) => {
   const { user, setUser, channelList } = useContext(UserContext);
   const [defaultColor] = useState(user.color);
   const [customColor, setCustomColor] = useState();
@@ -38,7 +38,7 @@ const UserProfile = () => {
         if (isMounted.current) setChangesSaved(false);
       }, 3500);
   });
-
+  console.log(isMobile);
   // event listeners
   function onChangeColor(e) {
     setIsDefaultActive(false);
@@ -82,12 +82,12 @@ const UserProfile = () => {
   return (
     <>
       {changesSaved && <Success text={'Saved changes'} />}
-      <section className="user_profile mobile">
+      <section className={isMobile ? 'user_profile mobile' : 'user_profile'}>
         <header>
           <h2>User Profile</h2>
         </header>
         <div className="inner-content">
-          <div className="col-layout">
+          <div className={isMobile ? 'col-layout' : 'row-layout'}>
             <div>
               <div className="customization-wrapper">
                 <h3 className="caps-title header-secondary">Avatar</h3>

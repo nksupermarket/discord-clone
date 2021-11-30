@@ -74,7 +74,6 @@ const ChannelView = ({ finishLoading, setError }) => {
 
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [isCreateChannel, setIsCreateChannel] = useState(false);
-  console.log(isCreateChannel);
   return (
     <>
       {isCreateChannel && (
