@@ -14,12 +14,13 @@ import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
 import ChannelNav from './ChannelNav/ChannelNav_mobile';
-import UserSettings from './UserInfo/UserSettings';
+import UserSettings from './UserInfo/UserSettings_mobile';
 import MobileSidebar from './MobileSidebar';
 import OnlineUsers from './OnlineUsers/OnlineUsers';
 import TopBar from './TopBar';
 import ChatWrapper from './Chat/ChatWrapper';
 import MainNav from './MainNav/MainNav_mobile';
+import CreateChannel from './CreateChannel/CreateChannel';
 
 import '../styles/ChannelView.css';
 
@@ -72,11 +73,16 @@ const ChannelView = ({ finishLoading, setError }) => {
   );
 
   const [showUserSettings, setShowUserSettings] = useState(false);
-  useEffect(() => {
-    console.log(showUserSettings);
-  }, [showUserSettings]);
+  const [isCreateChannel, setIsCreateChannel] = useState(false);
+  console.log(isCreateChannel);
   return (
     <>
+      {isCreateChannel && (
+        <CreateChannel
+          isMobile={true}
+          close={() => setIsCreateChannel(false)}
+        />
+      )}
       {showUserSettings && (
         <UserSettings close={() => setShowUserSettings(false)} />
       )}
@@ -89,7 +95,10 @@ const ChannelView = ({ finishLoading, setError }) => {
         >
           {channel && showLeftSidebar && (
             <MobileSidebar isLeft={true} hide={() => setShowLeftSidebar(false)}>
-              <MainNav />
+              <MainNav
+                beginCreateChannel={() => setIsCreateChannel(true)}
+                isCreateChannel={isCreateChannel}
+              />
               <ChannelNav
                 channel={channel}
                 categories={roomCategories}
@@ -97,7 +106,6 @@ const ChannelView = ({ finishLoading, setError }) => {
                 setRoom={setRoom}
                 currentRoom={room}
                 showUserSettings={() => {
-                  console.log('im running');
                   setShowUserSettings(true);
                 }}
               />

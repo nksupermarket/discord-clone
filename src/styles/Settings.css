@@ -15,6 +15,14 @@
   flex: 1 0 218px;
   background-color: var(--fg-color);
 }
+.settings.mobile .sidebar-region {
+  background-color: rgba(0, 0, 0, 0.24);
+  justify-content: start;
+}
+.settings.mobile .sidebar-region .content-wrapper {
+  background-color: var(--fg-color);
+  width: 218px;
+}
 .settings .sidebar-scroller {
   overflow: hidden auto;
   flex: 1 0 auto;
@@ -101,6 +109,9 @@
   min-height: 100%;
   box-sizing: border-box;
 }
+.settings.mobile .content {
+  min-width: 0;
+}
 
 .settings .content header {
   box-sizing: border-box;
@@ -119,6 +130,13 @@
   flex: 0 0 36px;
   width: 60px;
   padding-top: 60px;
+}
+.settings.mobile .actions {
+  position: absolute;
+  top: 20px;
+  right: 36px;
+  width: auto;
+  padding-top: 0;
 }
 .settings .actions .close-btn {
   position: fixed;
@@ -178,6 +196,9 @@
 }
 .settings-popup footer {
   background-color: var(--fg-color);
+}
+.settings-popup.mobile footer {
+  background-color: transparent;
 }
 .settings-popup footer .btn-ctn {
   display: flex;

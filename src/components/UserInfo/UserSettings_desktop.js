@@ -4,7 +4,7 @@ import { logout } from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import Settings from '../Settings/Settings';
-import MyAccount from './MyAccount';
+import MyAccount from './MyAccount_desktop';
 import UserProfile from './UserProfile';
 import Error from '../Error';
 

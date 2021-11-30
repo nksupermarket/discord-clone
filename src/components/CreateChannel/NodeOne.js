@@ -1,14 +1,18 @@
 import React from 'react';
 
 import FlatBtn from '../FlatBtn';
-import Popup from '../Popup';
+import Popup from '../Popup_desktop';
 
 import '../../styles/CreateChannelNodeOne.css';
 
-const NodeOne = ({ nextNode, setChannelInfo, close }) => {
+const NodeOne = ({ nextNode, setChannelInfo, close, isMobile }) => {
   return (
     <Popup
-      className="create-channel create-channel-node_one"
+      className={
+        isMobile
+          ? 'create-channel create-channel-node_one mobile'
+          : 'create-channel create-channel-node_one'
+      }
       close={close}
       title="Tell us more about your server"
       subheader="In order to help you with your setup, will your new channel be private (invite-only) or public?"
@@ -18,6 +22,7 @@ const NodeOne = ({ nextNode, setChannelInfo, close }) => {
           onClick={() => {
             nextNode();
           }}
+          isUnderline={true}
         />
       }
     >

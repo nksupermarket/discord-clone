@@ -11,9 +11,7 @@ import CreateChannel from '../CreateChannel/CreateChannel';
 import plusSVG from '../../assets/svg/add-line.svg';
 import compassSVG from '../../assets/svg/compass-3-fill.svg';
 
-const MainNav = () => {
-  const [isCreateChannel, setIsCreateChannel] = useState(false);
-
+const MainNav = ({ beginCreateChannel, isCreateChannel }) => {
   const history = useHistory();
   return (
     <>
@@ -25,7 +23,7 @@ const MainNav = () => {
             <MainNavBtn
               svg={plusSVG}
               active={isCreateChannel}
-              onClick={() => setIsCreateChannel(true)}
+              onClick={beginCreateChannel}
               tooltipText={'Create a channel'}
             />
             {/* add a server */}
@@ -39,9 +37,6 @@ const MainNav = () => {
           {/* explore servers */}
         </div>
       </nav>
-      {isCreateChannel && (
-        <CreateChannel close={() => setIsCreateChannel(false)} />
-      )}
     </>
   );
 };

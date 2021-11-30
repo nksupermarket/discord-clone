@@ -124,8 +124,9 @@ body {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 20;
 }
 
@@ -276,6 +277,12 @@ form .input-wrapper input:focus {
 
 .row-layout {
   display: flex;
+  position: relative;
+  box-sizing: border-box;
+}
+.col-layout {
+  display: flex;
+  flex-direction: column;
   position: relative;
   box-sizing: border-box;
 }

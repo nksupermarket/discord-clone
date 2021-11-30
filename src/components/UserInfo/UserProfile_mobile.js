@@ -3,15 +3,16 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../../logic/contexts/UserContext';
 import { updateUserInfo, uploadAvatar } from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
+import useSuccess from '../../logic/custom-hooks/useSuccess';
 
 import FlatBtn from '../FlatBtn';
-import AccountProfileCard from '../UserInfo/AccountProfileCard';
+import AccountProfileCard from './AccountProfileCard';
 import UploadFile from '../UploadFile';
 
-import '../../styles/UserProfile.css';
 import ProfileColorSwatch from './ProfileColorSwatch';
 import Success from '../Success';
-import useSuccess from '../../logic/custom-hooks/useSuccess';
+
+import '../../styles/UserProfile.css';
 
 const UserProfile = () => {
   const { user, setUser, channelList } = useContext(UserContext);
@@ -81,12 +82,12 @@ const UserProfile = () => {
   return (
     <>
       {changesSaved && <Success text={'Saved changes'} />}
-      <section className="user_profile">
+      <section className="user_profile mobile">
         <header>
           <h2>User Profile</h2>
         </header>
         <div className="inner-content">
-          <div className="row-layout">
+          <div className="col-layout">
             <div>
               <div className="customization-wrapper">
                 <h3 className="caps-title header-secondary">Avatar</h3>

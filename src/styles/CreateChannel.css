@@ -7,6 +7,9 @@
   background-color: var(--light-bg-color);
   height: 396px;
 }
+.create-channel.mobile {
+  height: auto;
+}
 .create-channel form .input-wrapper input {
   color: var(--header-primary);
   background-color: var(--interactive-hover);
@@ -14,4 +17,8 @@
 
 .create-channel footer {
   background-color: #9699a3;
+}
+.create-channel.mobile footer {
+  background-color: transparent;
+  color: var(--text-muted);
 }

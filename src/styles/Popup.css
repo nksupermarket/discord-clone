@@ -8,6 +8,14 @@
   max-height: 720px;
   position: relative;
 }
+.popup.mobile {
+  width: auto;
+  flex: 1 1 auto;
+  align-self: stretch;
+  max-height: none;
+  justify-content: start;
+  border-radius: 0;
+}
 
 .popup header {
   padding: 24px 16px 0;
@@ -16,6 +24,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+}
+.popup.mobile header {
+  padding-top: 50px;
 }
 .popup header h3 {
   font-weight: 700;

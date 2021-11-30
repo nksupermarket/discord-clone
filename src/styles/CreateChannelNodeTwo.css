@@ -11,6 +11,10 @@
   justify-content: space-evenly;
   height: 100%;
 }
+.create-channel-node_two.mobile .content {
+  justify-content: start;
+  height: auto;
+}
 
 .create-channel-node_two .content .upload-file {
   position: relative;
@@ -23,6 +27,9 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
+}
+.create-channel-node_two.mobile .content .upload-file {
+  margin: 20px 0;
 }
 .create-channel-node_two .content .upload-file.init {
   border: 3px dashed gray;
@@ -63,4 +70,7 @@
 .create-channel-node_two footer .flat-btn.filled {
   height: 38px;
   min-width: 96px;
+}
+.create-channel-node_two.mobile footer .flat-btn.filled {
+  color: var(--text-normal);
 }

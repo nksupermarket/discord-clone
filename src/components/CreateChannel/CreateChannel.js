@@ -15,7 +15,7 @@ import NodeTwo from './NodeTwo';
 import { UserContext } from '../../logic/contexts/UserContext';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
-const CreateChannel = ({ close }) => {
+const CreateChannel = ({ close, isMobile }) => {
   const { user } = useContext(UserContext);
   const { setError } = useContext(ErrorContext);
   const [node, setNode] = useState(1);
@@ -65,6 +65,7 @@ const CreateChannel = ({ close }) => {
                 setChannelInfo((prev) => ({ ...prev, isPublic: status }))
               }
               close={close}
+              isMobile={isMobile}
             />
           ),
           2: (
@@ -82,6 +83,7 @@ const CreateChannel = ({ close }) => {
                 setChannelInfo((prev) => ({ ...prev, icon }))
               }
               close={close}
+              isMobile={isMobile}
             />
           ),
         }[node] // renders component based on value of node

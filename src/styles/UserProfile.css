@@ -5,7 +5,9 @@
 .user_profile .row-layout {
   justify-content: space-between;
 }
-
+.user_profile .col-layout {
+  flex-direction: column-reverse;
+}
 .user_profile .customization-wrapper {
   margin-bottom: 40px;
 }
@@ -26,6 +28,10 @@
   width: 300px;
   min-width: 300px;
   min-height: 180px;
+}
+.user_profile.mobile .preview .account-profile-card {
+  width: auto;
+  min-width: auto;
 }
 .user_profile .preview .account-profile-card .banner {
   height: 60px;

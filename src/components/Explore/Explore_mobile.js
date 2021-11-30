@@ -21,6 +21,8 @@ import BannerSearch from './BannerSearch';
 import LoadingScreen from '../LoadingScreen';
 import MainNav from '../MainNav/MainNav_mobile';
 import MobileSidebar from '../MobileSidebar';
+import CreateChannel from '../CreateChannel/CreateChannel';
+import UserSettings from '../UserInfo/UserSettings_mobile';
 
 import prevSVG from '../../assets/svg/arrow-left-s-line.svg';
 import nextSVG from '../../assets/svg/arrow-right-s-line.svg';
@@ -89,107 +91,124 @@ const Explore = ({ finishLoading }) => {
     showLeftSidebar
   );
 
+  const [isCreateChannel, setIsCreateChannel] = useState(false);
+  const [showUserSettings, setShowUserSettings] = useState(false);
+
   return (
-    <div
-      className="explore-view mobile"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      {showSidebar && (
-        <MobileSidebar
-          isLeft={true}
-          className="nav-ctn mobile"
-          hide={hideLeftSidebar}
-        >
-          <MainNav />
-          <nav className="sidebar view-sidebar">
-            <header>
-              <h2>Discover</h2>
-            </header>
-            <Sidebar
-              btnList={[
-                { text: 'Home' },
-                { text: 'Gaming' },
-                { text: 'Technology' },
-              ]}
-            />
-            <UserInfo />
-          </nav>
-        </MobileSidebar>
+    <>
+      {isCreateChannel && (
+        <CreateChannel
+          isMobile={true}
+          close={() => setIsCreateChannel(false)}
+        />
       )}
-      <main>
-        <header>
-          <BannerSearch
-            onSearch={searchChannels}
-            handleChange={(e) => setQuery(e.target.value)}
-            cancelSearch={() => {
-              setIsSearch(false);
-              setQuery('');
-              getBatchOfChannels('init');
-            }}
-            query={query}
-          />
-        </header>
-        <div className="content">
-          {isSearch ? (
-            <div className="text-wrapper">
-              <h3>Search results for: "{searchedQuery.current}"</h3>
-            </div>
-          ) : (
-            <div className="page-navigation">
-              <div className="btn-ctn">
-                <NavBtn
-                  icon={prevSVG}
-                  text={'Prev'}
-                  className={
-                    publicChannelList.find(
-                      (c) => c.id === firstChannelID.current
-                    )
-                      ? 'default_transition inactive'
-                      : 'default_transition'
-                  }
-                  onClick={() =>
-                    getBatchOfChannels('prev', publicChannelList[0].id)
-                  }
-                />
-                <NavBtn
-                  icon={nextSVG}
-                  text={'Next'}
-                  className={
-                    publicChannelList.length % 20 !== 0 ||
-                    publicChannelList.length === 0
-                      ? 'flex-reverse default_transition inactive'
-                      : 'flex-reverse default_transition'
-                  }
-                  onClick={() =>
-                    getBatchOfChannels(
-                      'next',
-                      publicChannelList[publicChannelList.length - 1].id
-                    )
-                  }
-                />
+      {showUserSettings && (
+        <UserSettings close={() => setShowUserSettings(false)} />
+      )}
+      <div
+        className="explore-view mobile"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {showSidebar && (
+          <MobileSidebar
+            isLeft={true}
+            className="nav-ctn mobile"
+            hide={hideLeftSidebar}
+          >
+            <MainNav
+              beginCreateChannel={() => setIsCreateChannel(true)}
+              isCreateChannel={isCreateChannel}
+            />
+            <nav className="sidebar view-sidebar">
+              <header>
+                <h2>Discover</h2>
+              </header>
+              <Sidebar
+                btnList={[
+                  { text: 'Home' },
+                  { text: 'Gaming' },
+                  { text: 'Technology' },
+                ]}
+              />
+              <UserInfo showSettings={() => setShowUserSettings(true)} />
+            </nav>
+          </MobileSidebar>
+        )}
+        <main>
+          <header>
+            <BannerSearch
+              onSearch={searchChannels}
+              handleChange={(e) => setQuery(e.target.value)}
+              cancelSearch={() => {
+                setIsSearch(false);
+                setQuery('');
+                getBatchOfChannels('init');
+              }}
+              query={query}
+            />
+          </header>
+          <div className="content">
+            {isSearch ? (
+              <div className="text-wrapper">
+                <h3>Search results for: "{searchedQuery.current}"</h3>
               </div>
-            </div>
-          )}
-          <div className="publicChannels-ctn">
-            {loading ? (
-              <LoadingScreen />
             ) : (
-              <div className="scroller" ref={scrollerRef}>
-                <div className="scroller-content">
-                  <ol>
-                    {publicChannelList.map((c) => (
-                      <ChannelCard channel={c} />
-                    ))}
-                  </ol>
+              <div className="page-navigation">
+                <div className="btn-ctn">
+                  <NavBtn
+                    icon={prevSVG}
+                    text={'Prev'}
+                    className={
+                      publicChannelList.find(
+                        (c) => c.id === firstChannelID.current
+                      )
+                        ? 'default_transition inactive'
+                        : 'default_transition'
+                    }
+                    onClick={() =>
+                      getBatchOfChannels('prev', publicChannelList[0].id)
+                    }
+                  />
+                  <NavBtn
+                    icon={nextSVG}
+                    text={'Next'}
+                    className={
+                      publicChannelList.length % 20 !== 0 ||
+                      publicChannelList.length === 0
+                        ? 'flex-reverse default_transition inactive'
+                        : 'flex-reverse default_transition'
+                    }
+                    onClick={() =>
+                      getBatchOfChannels(
+                        'next',
+                        publicChannelList[publicChannelList.length - 1].id
+                      )
+                    }
+                  />
                 </div>
               </div>
             )}
+            <div className="publicChannels-ctn">
+              {loading ? (
+                <LoadingScreen />
+              ) : (
+                <div className="scroller" ref={scrollerRef}>
+                  <div className="scroller-content">
+                    <ol>
+                      {publicChannelList.map((c) => (
+                        <ChannelCard channel={c} />
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 };
 

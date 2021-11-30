@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import UploadFile from '../UploadFile';
-import Popup from '../Popup';
+import Popup from '../Popup_desktop';
 import FlatBtn from '../FlatBtn';
 import InputField from '../InputField';
 
@@ -17,12 +17,17 @@ const NodeTwo = ({
   close,
   handleChange,
   handleIcon,
+  isMobile,
 }) => {
   const [imgPreview, setImgPreview] = useState();
 
   return (
     <Popup
-      className="create-channel create-channel-node_two"
+      className={
+        isMobile
+          ? 'create-channel create-channel-node_two mobile'
+          : 'create-channel create-channel-node_two'
+      }
       title="Customize your channel"
       subheader="Give your new channel some personality with a name and an icon. You can always change it later."
       close={close}
