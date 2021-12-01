@@ -1,8 +1,9 @@
 import React from 'react';
 
-const ListItem = ({ children, onClick }) => {
+const ListItem = ({ active, className, children, onClick, onLoad }) => {
+  className = active ? `active ${className || ''}` : ` ${className || ''}`;
   return (
-    <li className="list-item" onClick={onClick}>
+    <li className={`list-item ${className}`} onClick={onClick} onLoad={onLoad}>
       {children}
     </li>
   );

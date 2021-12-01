@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useRef, useReducer } from 'react';
 
 import { logout } from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
@@ -39,10 +39,11 @@ const UserSettings = ({ close }) => {
     }
   }, <MyAccount editProfile={() => dispatch({ type: 'swap_to', payload: 'user profile' })} />);
 
-  function createSettingsButton(text, category) {
+  function createSettingsButtonDetails(text, category, isDefault) {
     return {
       text,
       category,
+      isDefault,
     };
   }
   return (
@@ -50,11 +51,10 @@ const UserSettings = ({ close }) => {
       close={close}
       categories={['user settings', 'none']}
       btnList={[
-        createSettingsButton('my account', 'user settings'),
-        createSettingsButton('user profile', 'user settings'),
-        createSettingsButton('log out', 'none'),
+        createSettingsButtonDetails('my account', 'user settings', true),
+        createSettingsButtonDetails('user profile', 'user settings'),
+        createSettingsButtonDetails('log out', 'none'),
       ]}
-      // active={}
       dispatch={dispatch}
     >
       {state && state}

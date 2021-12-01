@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import uniqid from 'uniqid';
 
@@ -6,20 +6,16 @@ import CatList from '../CatList';
 import ListItem from './ListItem';
 
 const Sidebar = ({ btnList, categories, dispatch }) => {
-  function capitalize(str) {
-    return str
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
+  const [activeBtn, setActiveBtn] = useState();
+
   return (
     <aside className="sidebar">
       <div className="list-wrapper">
         {categories &&
-          categories.map((category, i) => (
+          categories.map((category) => (
             <>
               <CatList
-                key={i}
+                key={uniqid()}
                 cat={category}
                 className="settings-category-wrapper"
                 isHeader={category !== 'none'}
@@ -30,12 +26,16 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
                     if (!btn.category && category === 'none') return true;
                     return false;
                   })
-                  .map((btn) => {
+                  .map((btn, i) => {
                     return (
                       <ListItem
                         key={uniqid()}
-                        onClick={() =>
-                          dispatch({ type: 'swap_to', payload: btn.text })
+                        onClick={() => {
+                          setActiveBtn(btn.text);
+                          dispatch({ type: 'swap_to', payload: btn.text });
+                        }}
+                        active={
+                          activeBtn ? activeBtn === btn.text : btn.isDefault
                         }
                       >
                         {capitalize(btn.text)}
@@ -65,3 +65,10 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
 };
 
 export default Sidebar;
+
+function capitalize(str) {
+  return str
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}

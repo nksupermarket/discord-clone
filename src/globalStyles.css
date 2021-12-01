@@ -330,3 +330,7 @@ form .input-wrapper input:focus {
   display: flex;
   flex: 0 1 auto;
 }
+
+.active {
+  background-color: rgba(201, 201, 201, 0.1);
+}

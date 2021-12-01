@@ -38,7 +38,6 @@ const UserProfile = ({ isMobile }) => {
         if (isMounted.current) setChangesSaved(false);
       }, 3500);
   });
-  console.log(isMobile);
   // event listeners
   function onChangeColor(e) {
     setIsDefaultActive(false);

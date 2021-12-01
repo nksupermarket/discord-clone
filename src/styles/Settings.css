@@ -69,6 +69,7 @@
 .settings .sidebar .list-item:hover {
   background-color: var(--hover-main);
 }
+
 .settings .sidebar .list-underline-wrapper {
   height: 1px;
   background-color: var(--text-muted);

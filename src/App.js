@@ -14,7 +14,7 @@ import useLoginUser from './logic/custom-hooks/useLoginUser';
 import { UserContext } from './logic/contexts/UserContext';
 import { ErrorContext } from './logic/contexts/ErrorContext';
 import useMobileCheck from './logic/custom-hooks/useMobileCheck';
-import Import from './components/Import';
+import Import from './logic/Import';
 
 import LoginScreen from './components/Login/LoginScreen';
 import Error from './components/Error';
@@ -40,20 +40,6 @@ function App() {
   const finishLoading = useCallback(() => {
     setLoading(false);
   }, []);
-
-  const Explore = React.lazy(() => {
-    return isMobile
-      ? import('./components/Explore/Explore_mobile')
-      : import('./components/Explore/Explore_desktop');
-  });
-
-  const ChannelView = React.lazy(() => {
-    return isMobile
-      ? import('./components/ChannelView_mobile')
-      : import('./components/ChannelView_desktop');
-  });
-
-  useEffect(() => console.log('render'));
 
   return (
     <>
