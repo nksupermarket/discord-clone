@@ -4,10 +4,11 @@ import { UserContext } from '../../logic/contexts/UserContext';
 
 import Avatar from '../Avatar';
 import IconBtn from '../IconBtn';
-import UserSettings from './UserSettings';
+import UserSettings from './UserSettings_desktop';
+
+import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
 import '../../styles/UserInfo.css';
-import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
 const UserInfo = () => {
   const { user } = useContext(UserContext);

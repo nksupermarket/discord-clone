@@ -16,7 +16,7 @@ import Divider from '../Settings/Divider';
 import PasswordSection from './PasswordSection';
 import AccountRemoval from './AccountRemoval';
 import Modal from '../Modal';
-import Popup from '../Popup';
+import Popup from '../Popup_desktop';
 
 const MyAccount = ({ editProfile }) => {
   const { setUser } = useContext(UserContext);

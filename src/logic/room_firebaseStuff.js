@@ -30,7 +30,7 @@ async function getRoomStuff(roomID, setRoomName, setMsgList, finishLoading) {
     let msgList = [];
     updateMsgList();
     await setMsgList(changeReplyFromIDtoMsgObj(msgList));
-    finishLoading();
+    finishLoading && finishLoading();
     //helpers
     function updateMsgList() {
       for (const id in messages) {

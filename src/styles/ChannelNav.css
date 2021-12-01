@@ -1,5 +1,6 @@
 .channel-nav {
   width: 240px;
+  flex-shrink: 0;
   padding-right: 2px;
   display: flex;
   flex-direction: column;

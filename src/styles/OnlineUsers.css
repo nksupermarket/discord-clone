@@ -4,6 +4,7 @@
   overflow: hidden auto;
   background-color: var(--fg-color);
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .users-ctn .user-wrapper {

@@ -13,12 +13,12 @@ import {
 } from '../../logic/channel_firebaseStuff';
 
 import Sidebar from '../Settings/Sidebar';
-import UserInfo from '../UserInfo/UserInfo';
+import UserInfo from '../UserInfo/UserInfo_desktop';
 import ChannelCard from './ChannelCard';
 import NavBtn from '../NavBtn';
 import BannerSearch from './BannerSearch';
 import LoadingScreen from '../LoadingScreen';
-import MainNav from '../MainNav/MainNav';
+import MainNav from '../MainNav/MainNav_desktop';
 
 import prevSVG from '../../assets/svg/arrow-left-s-line.svg';
 import nextSVG from '../../assets/svg/arrow-right-s-line.svg';
@@ -78,7 +78,6 @@ const Explore = ({ finishLoading }) => {
   return (
     <div className="explore-view">
       <div className="nav-ctn">
-        <MainNav />
         <nav className="sidebar view-sidebar">
           <header>
             <h2>Discover</h2>

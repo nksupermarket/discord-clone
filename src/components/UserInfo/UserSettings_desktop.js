@@ -3,7 +3,7 @@ import React, { useContext, useReducer } from 'react';
 import { logout } from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
-import Settings from '../Settings/Settings';
+import Settings from '../Settings/Settings_desktop';
 import MyAccount from './MyAccount_desktop';
 import UserProfile from './UserProfile';
 import Error from '../Error';

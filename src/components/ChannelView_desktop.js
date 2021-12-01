@@ -9,7 +9,7 @@ import { useHistory, useParams } from 'react-router';
 
 import { UserContext } from '../logic/contexts/UserContext';
 
-import ChannelNav from './ChannelNav/ChannelNav';
+import ChannelNav from './ChannelNav/ChannelNav_desktop';
 import OnlineUsers from './OnlineUsers/OnlineUsers';
 import TopBar from './TopBar';
 import ChatWrapper from './Chat/ChatWrapper';
@@ -20,7 +20,7 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { getRoomName } from '../logic/room_firebaseStuff';
 
-import MainNav from './MainNav/MainNav';
+import MainNav from './MainNav/MainNav_desktop';
 
 const ChannelView = ({ finishLoading, setError }) => {
   const { user, channelList } = useContext(UserContext);
