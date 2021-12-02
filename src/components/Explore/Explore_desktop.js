@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useContext,
 } from 'react';
+import { Link } from 'react-router-dom';
 
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 import {
@@ -78,6 +79,7 @@ const Explore = ({ finishLoading }) => {
   return (
     <div className="explore-view">
       <div className="nav-ctn">
+        <MainNav />
         <nav className="sidebar view-sidebar">
           <header>
             <h2>Discover</h2>
@@ -154,7 +156,9 @@ const Explore = ({ finishLoading }) => {
                 <div className="scroller-content">
                   <ol>
                     {publicChannelList.map((c) => (
-                      <ChannelCard channel={c} />
+                      <Link to={`/channels/${c.id}`} key={c.id}>
+                        <ChannelCard channel={c} />
+                      </Link>
                     ))}
                   </ol>
                 </div>

@@ -19,7 +19,6 @@ import Import from './logic/Import';
 import LoginScreen from './components/Login/LoginScreen';
 import Error from './components/Error';
 import LoadingScreen from './components/LoadingScreen';
-import MainNav from './components/MainNav/MainNav_desktop';
 
 import './globalStyles.css';
 
@@ -53,7 +52,6 @@ function App() {
           <>
             <UserContext.Provider value={{ user, setUser, channelList }}>
               <div className="app">
-                {!isMobile && <MainNav />}
                 <Route path={'/explore'}>
                   <Import
                     mobile={() => import('./components/Explore/Explore_mobile')}

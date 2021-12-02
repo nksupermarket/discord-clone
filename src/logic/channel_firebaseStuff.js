@@ -230,6 +230,16 @@ async function getInfoForChannelList(type, channelList, updateChannelList) {
   );
 }
 
+async function getInfoForVisitingChannel(channelID) {
+  const resultArr = await Promise.all([
+    get(ref(db, `Channels/${channelID}/name`)),
+    get(ref(db, `Channels/${channelID}/icon`)),
+    get(query(ref(db, `Channels/${channelID}/rooms`), limitToFirst(1))),
+  ]);
+
+  return resultArr.map((result) => result.val());
+}
+
 function createRoomCategory(channelID, name, setError) {
   try {
     const channelRoomCategoriesRef = ref(
@@ -280,6 +290,7 @@ async function updateRoleOfUser(channelID, userId, role, setError) {
 }
 
 export {
+  getInfoForVisitingChannel,
   getPublicChannels,
   createChannel,
   changeChannelIcon,

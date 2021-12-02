@@ -39,13 +39,6 @@ const UserSettings = ({ close }) => {
     }
   }, <MyAccount editProfile={() => dispatch({ type: 'swap_to', payload: 'user profile' })} />);
 
-  function createSettingsButtonDetails(text, category, isDefault) {
-    return {
-      text,
-      category,
-      isDefault,
-    };
-  }
   return (
     <Settings
       close={close}
@@ -63,3 +56,11 @@ const UserSettings = ({ close }) => {
 };
 
 export default UserSettings;
+
+function createSettingsButtonDetails(text, category, isDefault) {
+  return {
+    text,
+    category,
+    isDefault,
+  };
+}

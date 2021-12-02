@@ -14,6 +14,7 @@
 }
 #main-nav > header .list-item:first-child .avatar {
   cursor: default;
+  align-items: stretch;
 }
 
 #main-nav .header-underline {
@@ -40,6 +41,8 @@
   width: 48px;
   border-radius: 50%;
   cursor: pointer;
+  justify-content: center;
+  align-items: center;
 }
 
 #main-nav .avatar-ctn:hover,
@@ -70,12 +73,6 @@
 }
 
 #main-nav .btn-ctn .icon-btn:hover,
-#main-nav .channel-list .avatar:hover {
+#main-nav .avatar-wrapper .avatar:hover {
   border-radius: 10px;
-}
-
-@media screen and (min-width: 500px) {
-  #main-nav {
-    max-width: 72px;
-  }
 }

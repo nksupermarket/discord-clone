@@ -22,8 +22,7 @@ export default function useOnChannelEnter(
 
   useEffect(() => {
     if (!channelID || !user) return;
-    onChannelEnter();
-    async function onChannelEnter() {
+    (async () => {
       try {
         await getChannelInfo(
           channelID,
@@ -39,7 +38,7 @@ export default function useOnChannelEnter(
       } catch (error) {
         setError(error.message);
       }
-    }
+    })();
 
     return () => {
       detachListenersForChannel(channelID, user.uid);

@@ -44,11 +44,10 @@ const UserSettings = ({ close }) => {
       close={close}
       categories={['user settings', 'none']}
       btnList={[
-        createSettingsButton('my account', 'user settings'),
-        createSettingsButton('user profile', 'user settings'),
-        createSettingsButton('log out', 'none'),
+        createSettingsButtonDetails('my account', 'user settings'),
+        createSettingsButtonDetails('user profile', 'user settings'),
+        createSettingsButtonDetails('log out', 'none'),
       ]}
-      // active={}
       dispatch={dispatch}
     >
       {state && state}
@@ -58,7 +57,7 @@ const UserSettings = ({ close }) => {
 
 export default UserSettings;
 
-function createSettingsButton(text, category) {
+function createSettingsButtonDetails(text, category) {
   return {
     text,
     category,
