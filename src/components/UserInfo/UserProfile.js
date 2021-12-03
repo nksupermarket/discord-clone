@@ -142,7 +142,7 @@ const UserProfile = ({ isMobile }) => {
                 handleAvatarChange={handleAvatarChange}
                 avatarPreview={avatarPreview}
                 bannerColor={isDefaultActive ? defaultColor : customColor}
-                handleUpload={(file) => (avatarFileRef.current = file)}
+                handleImg={(file) => (avatarFileRef.current = file)}
               />
             </div>
           </div>

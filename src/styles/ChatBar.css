@@ -5,14 +5,20 @@
   margin-top: -8px;
   margin-bottom: 24px;
 }
-.chat-bar .chat-wrapper {
+.chat-bar .chatbar-content {
   background-color: var(--fg-color);
   display: flex;
+  flex-direction: column;
   position: relative;
   width: 100%;
   border-radius: 10px;
   text-indent: 0;
 }
+.chat-bar .chatbar-content .chatbar-wrapper {
+  display: flex;
+  flex: 1 0 auto;
+}
+
 .chat-bar .input-wrapper {
   display: flex;
   width: 100%;

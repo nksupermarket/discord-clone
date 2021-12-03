@@ -24,7 +24,7 @@ export default function useOnChannelEnter(
   const [userRole, setUserRole] = useState();
 
   const isVisiting = useMemo(
-    () => !channelList?.find((c) => c.id === channelID),
+    () => channelList?.every((c) => c.id !== channelID),
     [channelList, channelID]
   );
   const history = useHistory();

@@ -18,7 +18,13 @@ import {
   limitToLast,
   onDisconnect,
 } from 'firebase/database';
-import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  ref as store,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 import { version } from 'react-dom';
 import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
@@ -289,8 +295,35 @@ async function updateRoleOfUser(channelID, userId, role, setError) {
   }
 }
 
-async function uploadFile() {}
-
+function beginUpload(file) {
+  const storageRef = store(storage, 'uploadedFiles/');
+  return uploadBytesResumable(storageRef, file);
+}
+function cancelUpload(task) {
+  if (task._state) return deleteFile(task._ref);
+  task.cancel();
+}
+function deleteFile(ref) {
+  deleteObject(ref);
+}
+function handleUploadStateChanges(task, setProgress, setError, setFileURL) {
+  task.on(
+    'state_changed',
+    (snap) => {
+      const progress = Math.round(
+        (snap.bytesTransferred / snap.totalBytes) * 100
+      );
+      setProgress(progress);
+    },
+    (error) => {
+      setError(error.message);
+    },
+    async () => {
+      const fileURL = await getDownloadURL(task.snapshot.ref);
+      setFileURL(fileURL);
+    }
+  );
+}
 export {
   getInfoForVisitingChannel,
   getPublicChannels,
@@ -307,4 +340,7 @@ export {
   detachListenersForChannel,
   // deleteChannels,
   searchPublicChannels,
+  beginUpload,
+  cancelUpload,
+  handleUploadStateChanges,
 };

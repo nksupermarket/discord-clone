@@ -45,7 +45,7 @@ const UploadFile = ({
     function uploadFile() {
       const file = uploadFileRef.current.files[0];
       if (file.size > 5000000) return setError('file exceeds 5mb');
-      handleFile();
+      handleFile(file);
     }
   }
 

@@ -1,0 +1,12 @@
+.upload-progress-wrapper {
+  display: flex;
+  column-gap: 10px;
+  font-size: 14px;
+  padding: 5px 16px;
+}
+
+.upload-progress-wrapper .icon-wrapper img {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
