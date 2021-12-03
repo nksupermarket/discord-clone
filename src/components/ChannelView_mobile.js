@@ -35,6 +35,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     [channelID]
   );
   const {
+    visitingChannel,
     roleList,
     roomCategories,
     roomList,
@@ -95,6 +96,7 @@ const ChannelView = ({ finishLoading, setError }) => {
           {channel && showLeftSidebar && (
             <MobileSidebar isLeft={true} hide={() => setShowLeftSidebar(false)}>
               <MainNav
+                visitingChannel={visitingChannel}
                 beginCreateChannel={() => setIsCreateChannel(true)}
                 isCreateChannel={isCreateChannel}
               />
@@ -120,6 +122,7 @@ const ChannelView = ({ finishLoading, setError }) => {
                     msgList={msgList}
                     userList={userList}
                     submitMsg={submitMsg}
+                    isVisitor={!!visitingChannel}
                   />
                 </div>
               </div>

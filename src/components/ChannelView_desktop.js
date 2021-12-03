@@ -31,6 +31,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     [channelID]
   );
   const {
+    visitingChannel,
     roleList,
     roomCategories,
     roomList,
@@ -55,7 +56,7 @@ const ChannelView = ({ finishLoading, setError }) => {
 
   return (
     <div className="channel-view">
-      <MainNav />
+      <MainNav visitingChannel={visitingChannel} />
       {channel && (
         <ChannelNav
           channel={channel}
@@ -74,6 +75,7 @@ const ChannelView = ({ finishLoading, setError }) => {
               msgList={msgList}
               userList={userList}
               submitMsg={submitMsg}
+              isVisitor={!!visitingChannel}
             />
             <OnlineUsers list={onlineUsers} roles={roleList} />
           </div>

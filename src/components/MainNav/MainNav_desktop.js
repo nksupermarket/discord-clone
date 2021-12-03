@@ -11,14 +11,14 @@ import CreateChannel from '../CreateChannel/CreateChannel';
 import plusSVG from '../../assets/svg/add-line.svg';
 import compassSVG from '../../assets/svg/compass-3-fill.svg';
 
-const MainNav = () => {
+const MainNav = ({ visitingChannel }) => {
   const [isCreateChannel, setIsCreateChannel] = useState(false);
 
   const history = useHistory();
   return (
     <>
       <nav id="main-nav">
-        <ChannelListHeader />
+        <ChannelListHeader visitingChannel={visitingChannel} />
         <div className="scroller">
           <ChannelList />
           <div className="btn-ctn">

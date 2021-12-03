@@ -3,9 +3,9 @@ import React, { useState, useRef } from 'react';
 import ChatDisplay from './ChatDisplay';
 import ChatBarWrapper from './ChatBarWrapper';
 
-const ChatWrapper = ({ room, msgList, userList, submitMsg }) => {
+const ChatWrapper = ({ room, msgList, userList, submitMsg, isVisitor }) => {
   const [replyTo, setReplyTo] = useState();
-
+  console.log();
   const chatBarInputRef = useRef();
 
   function onReplyTo(displayName, msgID) {
@@ -22,14 +22,16 @@ const ChatWrapper = ({ room, msgList, userList, submitMsg }) => {
         setReplyTo={setReplyTo}
         onReplyTo={onReplyTo}
       />
-      <ChatBarWrapper
-        userList={userList}
-        submit={submitMsg}
-        roomName={room.name}
-        replyTo={replyTo}
-        setReplyTo={setReplyTo}
-        chatBarInputRef={chatBarInputRef}
-      />
+      {!isVisitor && (
+        <ChatBarWrapper
+          userList={userList}
+          submit={submitMsg}
+          roomName={room.name}
+          replyTo={replyTo}
+          setReplyTo={setReplyTo}
+          chatBarInputRef={chatBarInputRef}
+        />
+      )}
     </main>
   );
 };
