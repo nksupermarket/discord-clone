@@ -57,7 +57,6 @@ export default function useOnChannelEnter(
     if (!channelID || !user) return;
     (async () => {
       try {
-        console.log(channelID);
         await getChannelInfo(
           channelID,
           updateChannel,

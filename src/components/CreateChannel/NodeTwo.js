@@ -46,10 +46,11 @@ const NodeTwo = ({
       }
     >
       <UploadFile
-        handleUpload={handleIcon}
+        handleFile={handleIcon}
         handlePreview={setImgPreview}
         isPreview={true}
         imgPreview={imgPreview}
+        actionOnChange={'set img preview'}
       >
         <img
           className="add-circle-fill"

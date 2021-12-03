@@ -5,7 +5,6 @@ import ChatBarWrapper from './ChatBarWrapper';
 
 const ChatWrapper = ({ room, msgList, userList, submitMsg, isVisitor }) => {
   const [replyTo, setReplyTo] = useState();
-  console.log();
   const chatBarInputRef = useRef();
 
   function onReplyTo(displayName, msgID) {

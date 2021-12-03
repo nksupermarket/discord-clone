@@ -289,6 +289,8 @@ async function updateRoleOfUser(channelID, userId, role, setError) {
   }
 }
 
+async function uploadFile() {}
+
 export {
   getInfoForVisitingChannel,
   getPublicChannels,

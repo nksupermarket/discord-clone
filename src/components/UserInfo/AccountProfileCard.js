@@ -17,7 +17,7 @@ const AccountProfileCard = ({
   handleAvatarChange,
   avatarPreview,
   bannerColor,
-  handleUpload,
+  handleImg,
 }) => {
   const { user } = useContext(UserContext);
   return (
@@ -30,8 +30,9 @@ const AccountProfileCard = ({
         {isSmall ? (
           <UploadFile
             handlePreview={handleAvatarChange}
-            handleUpload={handleUpload}
+            handleFile={handleImg}
             isPreview={false}
+            actionOnChange={'set img preview'}
           >
             <Avatar img={avatarPreview} color={user.color} />
           </UploadFile>
