@@ -1,0 +1,31 @@
+.attachment-wrapper {
+  display: flex;
+}
+
+.attachment-wrapper img {
+  height: 18px;
+  width: 18px;
+  display: block;
+}
+
+.attachment-wrapper .content {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.attachment-wrapper .content img {
+  filter: var(--text-muted-filter);
+}
+
+.attachment-wrapper .content .text-wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+  margin: 0 5px;
+}
+
+.attachment-wrapper .actions {
+  display: flex;
+}

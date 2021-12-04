@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import UploadFile from '../UploadFile';
+import UploadFile from '../Upload/UploadFile';
 import Popup from '../Popup_desktop';
 import FlatBtn from '../FlatBtn';
 import InputField from '../InputField';

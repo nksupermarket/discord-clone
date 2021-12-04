@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { ErrorContext } from '../logic/contexts/ErrorContext';
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 const UploadFile = ({
   children,
@@ -17,22 +17,23 @@ const UploadFile = ({
   }
 
   function handleChange(action) {
+    const file = uploadFileRef.current.files[0];
+    if (file.size > 5000000) return setError('file exceeds 5mb');
+
     switch (action) {
       case 'set img preview': {
+        if (!checkIfFileIsImg(file)) return setError('not an image');
         return setImgPreview();
       }
-      case 'upload file': {
-        return uploadFile();
+      case 'set attachment': {
+        return handleFile(file);
       }
       default:
         return;
     }
 
     //helpers
-    function setImgPreview() {
-      const file = uploadFileRef.current.files[0];
-      if (!checkIfFileIsImg(file)) return;
-
+    function setImgPreview(file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
@@ -40,12 +41,6 @@ const UploadFile = ({
         handlePreview(reader.result);
       };
       handleFile && handleFile(file);
-    }
-
-    function uploadFile() {
-      const file = uploadFileRef.current.files[0];
-      if (file.size > 5000000) return setError('file exceeds 5mb');
-      handleFile(file);
     }
   }
 

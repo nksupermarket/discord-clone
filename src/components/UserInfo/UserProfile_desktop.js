@@ -6,7 +6,7 @@ import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import FlatBtn from '../FlatBtn';
 import AccountProfileCard from './AccountProfileCard';
-import UploadFile from '../UploadFile';
+import UploadFile from '../Upload/UploadFile';
 
 import '../../styles/UserProfile.css';
 import ProfileColorSwatch from './ProfileColorSwatch';

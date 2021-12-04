@@ -15,6 +15,7 @@ const ChatBarInput = ({
   userList,
   replyTo,
   setReplyTo,
+  attachments,
   submit,
 }) => {
   const [editorState, setEditorState] = useState(() =>

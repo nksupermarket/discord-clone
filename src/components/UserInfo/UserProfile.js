@@ -7,7 +7,7 @@ import useSuccess from '../../logic/custom-hooks/useSuccess';
 
 import FlatBtn from '../FlatBtn';
 import AccountProfileCard from './AccountProfileCard';
-import UploadFile from '../UploadFile';
+import UploadFile from '../Upload/UploadFile';
 
 import ProfileColorSwatch from './ProfileColorSwatch';
 import Success from '../Success';

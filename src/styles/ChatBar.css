@@ -113,3 +113,7 @@
 .chat-bar label {
   margin-bottom: 0;
 }
+
+.chat-bar .attachments-ctn {
+  padding: 10px 16px;
+}

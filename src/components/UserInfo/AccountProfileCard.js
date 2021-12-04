@@ -7,7 +7,7 @@ import FlatBtn from '../FlatBtn';
 import Avatar from '../Avatar';
 
 import '../../styles/AccountProfileCard.css';
-import UploadFile from '../UploadFile';
+import UploadFile from '../Upload/UploadFile';
 
 const AccountProfileCard = ({
   editProfile,

@@ -38,15 +38,16 @@ export default function useOnRoomEnter(
 
   return { msgList, submitMsg };
 
-  async function submitMsg(msg, replyTo, mentions) {
+  async function submitMsg(msg, replyTo, mentions, attachments) {
     const msgObj = {
       msg,
+      user: user.uid,
       replyTo: replyTo || '',
       mentions: mentions || [],
-      user: user.uid,
+      attachments: attachments || [],
       timestamp: getUnixTime(new Date()),
     };
-    const msgID = await pushToMsgList(roomID, msgObj, mentions);
+    const msgID = await pushToMsgList(roomID, msgObj);
 
     if (mentions.length > 0)
       mentions.forEach((mention) =>

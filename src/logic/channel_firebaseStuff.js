@@ -296,7 +296,7 @@ async function updateRoleOfUser(channelID, userId, role, setError) {
 }
 
 function beginUpload(file) {
-  const storageRef = store(storage, 'uploadedFiles/');
+  const storageRef = store(storage, `uploadedFiles/${file.name}`);
   return uploadBytesResumable(storageRef, file);
 }
 function cancelUpload(task) {
@@ -306,23 +306,13 @@ function cancelUpload(task) {
 function deleteFile(ref) {
   deleteObject(ref);
 }
-function handleUploadStateChanges(task, setProgress, setError, setFileURL) {
-  task.on(
-    'state_changed',
-    (snap) => {
-      const progress = Math.round(
-        (snap.bytesTransferred / snap.totalBytes) * 100
-      );
-      setProgress(progress);
-    },
-    (error) => {
-      setError(error.message);
-    },
-    async () => {
-      const fileURL = await getDownloadURL(task.snapshot.ref);
-      setFileURL(fileURL);
-    }
-  );
+function listenToUploadProgress(task, setProgress) {
+  task.on('state_changed', (snap) => {
+    const progress = Math.round(
+      (snap.bytesTransferred / snap.totalBytes) * 100
+    );
+    setProgress(progress);
+  });
 }
 export {
   getInfoForVisitingChannel,
@@ -342,5 +332,5 @@ export {
   searchPublicChannels,
   beginUpload,
   cancelUpload,
-  handleUploadStateChanges,
+  listenToUploadProgress,
 };

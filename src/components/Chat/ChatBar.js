@@ -1,66 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 
-import {
-  beginUpload,
-  cancelUpload,
-  handleUploadStateChanges,
-} from '../../logic/channel_firebaseStuff';
-import uniqid from 'uniqid';
-
-import { ErrorContext } from '../../logic/contexts/ErrorContext';
-import IconBtn from '../IconBtn';
-import UploadProgress from '../UploadProgress';
+import AttachmentWrapper from '../Upload/AttachmentWrapper';
 import ChatBarInput from './ChatBarInput';
-import UploadFile from '../UploadFile';
+import UploadFile from '../Upload/UploadFile';
 
 import addCircleSvg from '../../assets/svg/add-circle-fill.svg';
-import { setRoomExitTimestampOnDisconnect } from '../../logic/room_firebaseStuff';
 
 import '../../styles/MentionsPopup.css';
 import 'draft-js/dist/Draft.css';
 
-const ChatBar = ({ replyTo, ...props }) => {
-  const { setError } = useContext(ErrorContext);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [filesUploading, setFilesUploading] = useState([]);
-  console.log(uploadedFiles);
-  useEffect(() => {
-    return () => filesUploading.forEach((f) => cancelUpload(f.task));
-  });
-
-  function handleUpload(file) {
-    const task = beginUpload(file);
-    const id = uniqid();
-    setFilesUploading((prev) => [
-      ...prev,
-      {
-        id,
-        task,
-        name: file.name,
-        progress: 0,
-      },
-    ]);
-    function updateProgress(percent) {
-      setFilesUploading((prev) =>
-        prev.map((t) => {
-          if (t.id === id) return { ...t, progress: percent };
-          return t;
-        })
-      );
-    }
-    function onFinishUpload(url) {
-      setUploadedFiles((prev) => [
-        ...prev,
-        {
-          id,
-          url,
-          name: file.name,
-        },
-      ]);
-    }
-    handleUploadStateChanges(task, updateProgress, setError, onFinishUpload);
-  }
-
+const ChatBar = ({
+  replyTo,
+  attachments,
+  handleNewAttachments,
+  removeAttachment,
+  ...props
+}) => {
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
@@ -69,27 +24,30 @@ const ChatBar = ({ replyTo, ...props }) => {
     <div className="chatbar-content" style={style}>
       <div className="chatbar-wrapper">
         <div className="add-wrapper">
-          <UploadFile handleFile={handleUpload} actionOnChange="upload file">
+          <UploadFile
+            handleFile={handleNewAttachments}
+            actionOnChange="set attachment"
+          >
             <div className="icon-btn">
               <img src={addCircleSvg} alt="upload a file" />
             </div>
           </UploadFile>
         </div>
-        <ChatBarInput replyTo={replyTo} {...props} />
+        <ChatBarInput replyTo={replyTo} attachments={attachments} {...props} />
       </div>
-      {filesUploading.length > 0 &&
-        filesUploading.map((f) => {
-          const uploadedObj = uploadedFiles.find((file) => file.id === f.id);
-          return uploadedObj ? (
-            <UploadProgress
-              file={uploadedObj}
-              isCompleted={true}
-              cancel={() => cancelUpload(f.task)}
-            />
-          ) : (
-            <UploadProgress file={f} cancel={() => cancelUpload(f.task)} />
-          );
-        })}
+      {attachments.length > 0 && (
+        <div className="attachments-ctn">
+          {attachments.map((f, idx) => {
+            return (
+              <AttachmentWrapper
+                key={idx}
+                file={f}
+                cancel={() => removeAttachment(f)}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
