@@ -307,6 +307,7 @@ function deleteFile(ref) {
   deleteObject(ref);
 }
 function listenToUploadProgress(task, setProgress) {
+  console.log(task);
   task.on('state_changed', (snap) => {
     const progress = Math.round(
       (snap.bytesTransferred / snap.totalBytes) * 100

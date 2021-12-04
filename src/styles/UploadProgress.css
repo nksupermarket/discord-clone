@@ -1,12 +1,26 @@
 .upload-progress-wrapper {
   display: flex;
+  align-items: center;
+  margin-top: 10px;
+  background-color: var(--background-accent);
+  border-radius: 4px;
   column-gap: 10px;
   font-size: 14px;
   padding: 5px 16px;
 }
+.upload-progress-wrapper .content .text-wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
 
-.upload-progress-wrapper .icon-wrapper img {
-  width: 16px;
-  height: 16px;
+.upload-progress-wrapper .content .progress-wrapper {
+  margin-left: 10px;
+}
+
+.upload-progress-wrapper .actions img {
+  width: 18px;
+  height: 18px;
   display: block;
 }

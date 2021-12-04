@@ -1,6 +1,9 @@
 .attachment-wrapper {
   display: flex;
 }
+.attachment-wrapper:not(:first-child) {
+  margin-top: 3px;
+}
 
 .attachment-wrapper img {
   height: 18px;

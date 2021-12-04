@@ -117,3 +117,11 @@
 .chat-bar .attachments-ctn {
   padding: 10px 16px;
 }
+
+.chat-bar .upload-tasks-ctn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 0 16px;
+  margin-bottom: 10px;
+}

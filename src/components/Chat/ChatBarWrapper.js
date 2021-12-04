@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useLayoutEffect, useRef, useContext } from 'react';
 
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 import {
@@ -19,12 +19,22 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
   const { setError } = useContext(ErrorContext);
   const [attachments, setAttachments] = useState([]);
   const [uploadTasks, setUploadTasks] = useState([]);
+  const uploadTasksCtnRef = useRef();
+
+  useLayoutEffect(function positionUploadTasksCtn() {
+    uploadTasksCtnRef.current.style.top = `-${
+      uploadTasksCtnRef.current.offsetHeight + 10
+    }px`;
+  });
 
   function handleAttachmentsOnSubmitMsg() {
     if (attachments.length === 0) return;
+    const copy = [...attachments];
+    setAttachments([]);
     return Promise.all(
-      attachments.map(async (f) => {
-        const task = await beginUpload(f);
+      copy.map(async (f) => {
+        const task = beginUpload(f);
+        console.log({ f, task });
         const id = uniqid();
         setUploadTasks((prev) => [
           ...prev,
@@ -43,7 +53,9 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
             })
           );
         });
+        await task;
         const fileURL = await getDownloadURL(task.snapshot.ref);
+
         return fileURL;
       })
     );
@@ -58,7 +70,7 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
   }
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
-      <div className="upload-tasks-ctn">
+      <div className="upload-tasks-ctn" ref={uploadTasksCtnRef}>
         {uploadTasks.map((t) => {
           return <UploadProgressWrapper task={t} />;
         })}
@@ -79,6 +91,7 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
           try {
             const attachmentsURL = await handleAttachmentsOnSubmitMsg();
             submit(msg, replyTo, mentions, attachmentsURL);
+            setUploadTasks([]);
           } catch (error) {
             console.log(error);
             setError(error.message);

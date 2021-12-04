@@ -7,9 +7,10 @@ import '../../styles/UploadProgress.css';
 
 const UploadProgressWrapper = ({ isCompleted, task, cancel }) => {
   return (
-    <div className="upload-progress-Wrapper">
+    <div className="upload-progress-wrapper">
       <div className="content">
-        Uploading {task.name.substring(0, 7)} {task.progress}%
+        Uploading <span className="text-wrapper">{task.name}</span>
+        <span className="progress-wrapper">{task.progress}%</span>
       </div>
 
       <div className="actions">
