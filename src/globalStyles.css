@@ -9,6 +9,8 @@
   --header-primary: #fff;
   --header-secondary: #b9bbbe;
   --hover-main: rgba(174, 174, 174, 0.1);
+  --background-mentioned: hsla(38, 95.7%, 54.1%, 0.1);
+  --background-mentioned-hover: hsla(38, 95.7%, 54.1%, 0.08);
   --action-normal: #cb3e5b;
   --action-hover: #ac354d;
   --action-muted: rgba(203, 62, 91, 0.5);
@@ -23,7 +25,7 @@
   --text-muted: #72767d;
   --text-muted-filter: invert(50%) sepia(1%) saturate(2278%) hue-rotate(179deg)
     brightness(90%) contrast(80%);
-  --text-danger: hsl(359, calc(var(--saturation-factor, 1) * 82.6%), 59.4%);
+  --text-danger: hsl(359, 82.6%, 59.4%);
   --interactive-normal: #b9bbbe;
   --interactive-hover: #dcddde;
   --interactive-normal-filter: invert(79%) sepia(6%) saturate(124%)

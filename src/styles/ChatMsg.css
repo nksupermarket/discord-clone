@@ -2,6 +2,14 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+.chat-msg.mentioned {
+  background-color: var(--background-mentioned);
+  border-left: 2px solid hsla(38, 95.7%, 54.1%, 1);
+}
+.chat-msg.mentioned:hover {
+  background-color: var(--background-mentioned-hover);
+}
+
 .chat-msg .msg {
   margin-top: 1.06rem;
   min-height: 2.75rem;

@@ -240,11 +240,17 @@ async function getMentions(uid, channelID, setRoomsMentioned, setError) {
   try {
     onValue(mentionsRef, (snap) => {
       const data = snap.val();
+      console.log(data);
       setRoomsMentioned(data);
     });
   } catch (error) {
     setError(error.message);
   }
+}
+
+async function dealWithReadMentions(uid, channelID, roomID) {
+  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}/${roomID}`);
+  set(mentionsRef, null);
 }
 
 function isUserOnline(uid) {
@@ -285,6 +291,7 @@ export {
   isUserOnline,
   getRoleOfUser,
   getMentions,
+  dealWithReadMentions,
   subscribeToChannel,
   updateUserOnline,
   updateMentions,

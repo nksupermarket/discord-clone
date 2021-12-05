@@ -6,6 +6,7 @@ import {
   detachListenersForChannel,
   getInfoForVisitingChannel,
 } from '../channel_firebaseStuff';
+import { getMentions } from '../user_firebaseStuff';
 
 export default function useOnChannelEnter(
   user,
@@ -67,7 +68,9 @@ export default function useOnChannelEnter(
           setOnlineUsers
         );
         //getRoleOfUser(channelID, user.uid, setUserRole, setError);
-        //getMentions(user.uid, channelID, setRoomsMentioned, setError);
+        if (!isVisiting) {
+          getMentions(user.uid, channelID, setRoomsMentioned, setError);
+        }
       } catch (error) {
         setError(error.message);
       }
@@ -76,7 +79,7 @@ export default function useOnChannelEnter(
     return () => {
       detachListenersForChannel(channelID, user.uid);
     };
-  }, [channelID, updateChannel, user, setError]);
+  }, [channelID, isVisiting, updateChannel, user, setError]);
 
   useEffect(
     function redirectToDefaultRoom() {

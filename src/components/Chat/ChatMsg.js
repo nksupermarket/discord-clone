@@ -1,17 +1,19 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useContext, useState, useMemo, useCallback } from 'react';
+
+import { UserContext } from '../../logic/contexts/UserContext';
 
 import Avatar from '../Avatar';
 import MsgButtons from './MsgButtons';
 import MentionWrapper from './MentionWrapper';
 import AttachmentWrapper from '../Upload/AttachmentWrapper';
-
-import '../../styles/ChatMsg.css';
 import ReplyContext from './ReplyContext';
 import MsgHeader from './MsgHeader';
 
+import '../../styles/ChatMsg.css';
+
 const ChatMsg = ({ content, userList, onReplyTo }) => {
   const {
-    user,
+    user: senderID,
     msg,
     timestamp,
     msgId,
@@ -21,10 +23,13 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
   } = content;
 
   const [isShowBtns, setIsShowBtns] = useState(false); //buttons on hover
+  const { user: currentUser } = useContext(UserContext);
+  const isMentioned =
+    mentions?.some((m) => m.uid === currentUser.uid) || replyContext?.user;
 
   const sender = useMemo(
-    () => userList.find((uObj) => uObj.uid === user),
-    [userList, user]
+    () => userList.find((uObj) => uObj.uid === senderID),
+    [userList, senderID]
   );
 
   const replyUser = useMemo(
@@ -79,7 +84,7 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
 
   return (
     <li
-      className="chat-msg"
+      className={isMentioned ? 'chat-msg mentioned' : 'chat-msg'}
       onMouseOver={() => setIsShowBtns(true)}
       onMouseLeave={() => setIsShowBtns(false)}
     >
@@ -103,8 +108,10 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
           </div>
           {attachments && (
             <div className="attachments-ctn">
-              {attachments.map((a) => {
-                return <AttachmentWrapper url={a.url} name={a.name} />;
+              {attachments.map((a, idx) => {
+                return (
+                  <AttachmentWrapper key={idx} url={a.url} name={a.name} />
+                );
               })}
             </div>
           )}

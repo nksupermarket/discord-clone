@@ -6,7 +6,7 @@ import {
   getRoomStuff,
 } from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
-import { updateMentions } from '../user_firebaseStuff';
+import { dealWithReadMentions, updateMentions } from '../user_firebaseStuff';
 
 export default function useOnRoomEnter(
   user,
@@ -26,6 +26,7 @@ export default function useOnRoomEnter(
     async function onRoomEnter() {
       try {
         await getRoomStuff(roomID, setRoomName, setMsgList, finishLoading);
+        dealWithReadMentions();
       } catch (error) {
         setError(error.message);
       }
