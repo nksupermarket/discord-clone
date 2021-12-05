@@ -15,7 +15,7 @@ import UploadProgressWrapper from '../Upload/UploadProgressWrapper';
 
 import '../../styles/ChatBar.css';
 
-const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
+const ChatBarWrapper = ({ replyTo, setReplyTo, ...props }) => {
   const { setError } = useContext(ErrorContext);
   const [attachments, setAttachments] = useState([]);
   const [uploadTasks, setUploadTasks] = useState([]);
@@ -56,7 +56,10 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
         await task;
         const fileURL = await getDownloadURL(task.snapshot.ref);
 
-        return fileURL;
+        return {
+          name: f.name,
+          url: fileURL,
+        };
       })
     );
   }
@@ -71,8 +74,8 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
   return (
     <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
       <div className="upload-tasks-ctn" ref={uploadTasksCtnRef}>
-        {uploadTasks.map((t) => {
-          return <UploadProgressWrapper task={t} />;
+        {uploadTasks.map((t, idx) => {
+          return <UploadProgressWrapper key={idx} task={t} />;
         })}
       </div>
       {replyTo && (
@@ -87,16 +90,8 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, submit, ...props }) => {
         handleNewAttachments={handleNewAttachments}
         removeAttachment={removeAttachment}
         setReplyTo={setReplyTo}
-        submit={async (msg, replyTo, mentions) => {
-          try {
-            const attachmentsURL = await handleAttachmentsOnSubmitMsg();
-            submit(msg, replyTo, mentions, attachmentsURL);
-            setUploadTasks([]);
-          } catch (error) {
-            console.log(error);
-            setError(error.message);
-          }
-        }}
+        getAttachmentsURL={handleAttachmentsOnSubmitMsg}
+        cleanUpAttachments={() => setUploadTasks([])}
         {...props}
       />
     </form>

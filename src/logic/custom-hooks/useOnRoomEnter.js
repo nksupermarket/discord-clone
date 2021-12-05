@@ -42,9 +42,9 @@ export default function useOnRoomEnter(
     const msgObj = {
       msg,
       user: user.uid,
-      replyTo: replyTo || '',
-      mentions: mentions || [],
-      attachments: attachments || [],
+      replyTo: replyTo || null,
+      mentions: mentions || null,
+      attachments: attachments || null,
       timestamp: getUnixTime(new Date()),
     };
     const msgID = await pushToMsgList(roomID, msgObj);

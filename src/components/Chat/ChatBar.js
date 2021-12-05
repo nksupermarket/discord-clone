@@ -19,7 +19,6 @@ const ChatBar = ({
   let style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
-
   return (
     <div className="chatbar-content" style={style}>
       <div className="chatbar-wrapper">
@@ -33,7 +32,11 @@ const ChatBar = ({
             </div>
           </UploadFile>
         </div>
-        <ChatBarInput replyTo={replyTo} attachments={attachments} {...props} />
+        <ChatBarInput
+          replyTo={replyTo}
+          isAttachments={attachments.length > 0}
+          {...props}
+        />
       </div>
       {attachments.length > 0 && (
         <div className="attachments-ctn">
@@ -41,7 +44,7 @@ const ChatBar = ({
             return (
               <AttachmentWrapper
                 key={idx}
-                file={f}
+                name={f.name}
                 cancel={() => removeAttachment(f)}
               />
             );

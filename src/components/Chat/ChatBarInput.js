@@ -15,7 +15,9 @@ const ChatBarInput = ({
   userList,
   replyTo,
   setReplyTo,
-  attachments,
+  isAttachments,
+  getAttachmentsURL,
+  cleanUpAttachments,
   submit,
 }) => {
   const [editorState, setEditorState] = useState(() =>
@@ -103,7 +105,12 @@ const ChatBarInput = ({
       const msg = raw.blocks[0].text;
 
       try {
-        await submit(msg, replyToMsgID, mentionArr);
+        if (!isAttachments && !msg) return;
+        console.log(getAttachmentsURL);
+        let attachmentsURL;
+        if (isAttachments) attachmentsURL = await getAttachmentsURL();
+        await submit(msg, replyToMsgID, mentionArr, attachmentsURL);
+        cleanUpAttachments();
         setReplyTo();
 
         //clear draftjs input

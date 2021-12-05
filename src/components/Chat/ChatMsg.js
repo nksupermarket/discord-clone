@@ -3,6 +3,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import Avatar from '../Avatar';
 import MsgButtons from './MsgButtons';
 import MentionWrapper from './MentionWrapper';
+import AttachmentWrapper from '../Upload/AttachmentWrapper';
 
 import '../../styles/ChatMsg.css';
 import ReplyContext from './ReplyContext';
@@ -15,6 +16,7 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
     timestamp,
     msgId,
     mentions,
+    attachments,
     replyTo: replyContext,
   } = content;
 
@@ -51,6 +53,7 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
       text.split('').forEach((val, i) => {
         const mentionIndex = mentionOffsets.indexOf(i); //find which mention has offset i
         if (mentionIndex !== -1)
+          //marks beginning of mention
           content.push(
             <MentionWrapper
               key={mentionIndex}
@@ -62,9 +65,9 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
             />
           );
 
-        if (mentionRanges.includes(i)) return; // rest of the mention
+        if (mentionRanges.includes(i)) return; // rest of the mention, can skip because mentionWrapper already inserted
 
-        if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of non-mentioin string
+        if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of non-mention string
 
         content[content.length - 1] = content[content.length - 1].concat(val); // string continues
       });
@@ -98,6 +101,13 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
           <div className="msg-content">
             {convertPlaintextToHTML(msg, mentions)}
           </div>
+          {attachments && (
+            <div className="attachments-ctn">
+              {attachments.map((a) => {
+                return <AttachmentWrapper url={a.url} name={a.name} />;
+              })}
+            </div>
+          )}
           {isShowBtns && (
             <MsgButtons
               msgId={msgId}

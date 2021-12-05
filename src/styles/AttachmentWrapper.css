@@ -29,6 +29,10 @@
   margin: 0 5px;
 }
 
+.attachment-wrapper .content .link-wrapper:hover {
+  text-decoration: underline;
+}
+
 .attachment-wrapper .actions {
   display: flex;
 }

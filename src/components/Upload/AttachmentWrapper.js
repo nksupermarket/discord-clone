@@ -7,18 +7,26 @@ import paperclipSVG from '../../assets/svg/attach_file_black_24dp.svg';
 
 import '../../styles/AttachmentWrapper.css';
 
-const AttachmentWrapper = ({ file, cancel }) => {
+const AttachmentWrapper = ({ name, url, cancel }) => {
   return (
     <div className="attachment-wrapper">
       <div className="content">
         <div className="icon-wrapper">
           <img src={paperclipSVG} alt="uploaded file icon" />
         </div>
-        <div className="text-wrapper">{file.name}</div>
+        {url ? (
+          <a className="link-wrapper text-wrapper" href={url}>
+            {name}
+          </a>
+        ) : (
+          <div className="text-wrapper">{name}</div>
+        )}
       </div>
-      <div className="actions">
-        <IconBtn svg={closeSVG} onClick={cancel} />
-      </div>
+      {cancel && (
+        <div className="actions">
+          <IconBtn svg={closeSVG} onClick={cancel} />
+        </div>
+      )}
     </div>
   );
 };
