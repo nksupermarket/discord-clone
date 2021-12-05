@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const RoomLink = ({ channel, room }) => {
+import MentionCounter from '../ChannelNav/MentionCounter';
+
+const RoomLink = ({ channel, room, mentionCount }) => {
   return (
     <li className="room-link-item">
       <NavLink
@@ -10,6 +12,7 @@ const RoomLink = ({ channel, room }) => {
         activeClassName="active"
       >
         <span>{room.name}</span>
+        {mentionCount && <MentionCounter count={mentionCount} />}
       </NavLink>
     </li>
   );

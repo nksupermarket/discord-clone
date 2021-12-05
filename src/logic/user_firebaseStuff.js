@@ -151,14 +151,19 @@ async function subscribeToChannel(user, channelID) {
   await update(ref(db), updates);
 }
 
-async function getUserInfo(uid, setChannelList, setUserProfileColor) {
+async function getUserInfo(
+  uid,
+  setChannelList,
+  setUserProfileColor,
+  setMentioned
+) {
   const userRef = ref(db, `users/${uid}/`);
 
   onValue(userRef, async (snap) => {
     const data = snap.val();
-
     setUserProfileColor(data.color);
     updateChannelList();
+    setMentioned(data.mentions);
 
     //helper
     async function updateChannelList() {
@@ -234,20 +239,6 @@ function updateMentions(uid, channelID, roomID, msgID) {
   set(mentionsRef, true);
 }
 
-async function getMentions(uid, channelID, setRoomsMentioned, setError) {
-  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}`);
-
-  try {
-    onValue(mentionsRef, (snap) => {
-      const data = snap.val();
-      console.log(data);
-      setRoomsMentioned(data);
-    });
-  } catch (error) {
-    setError(error.message);
-  }
-}
-
 async function dealWithReadMentions(uid, channelID, roomID) {
   const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}/${roomID}`);
   set(mentionsRef, null);
@@ -290,7 +281,6 @@ export {
   signIn,
   isUserOnline,
   getRoleOfUser,
-  getMentions,
   dealWithReadMentions,
   subscribeToChannel,
   updateUserOnline,

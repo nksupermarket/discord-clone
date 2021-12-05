@@ -5,8 +5,15 @@
 }
 
 .channel-list .channelLink-wrapper {
+  display: flex;
   position: relative;
 }
+.channel-list .channelLink-wrapper .mention-counter-wrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
 .channel-list .channelLink-wrapper .tooltip {
   right: -10px;
 }

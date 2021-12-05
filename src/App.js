@@ -30,7 +30,10 @@ function App() {
   const { error, setError } = useError();
   const [loading, setLoading] = useState(true);
 
-  const { user, setUser, channelList } = useLoginUser(setLoading, setError);
+  const { user, mentioned, setUser, channelList } = useLoginUser(
+    setLoading,
+    setError
+  );
 
   const {
     isMobileCheck: { current: isMobile },
@@ -50,7 +53,9 @@ function App() {
         </Route>
         {user && (
           <>
-            <UserContext.Provider value={{ user, setUser, channelList }}>
+            <UserContext.Provider
+              value={{ user, setUser, channelList, mentioned }}
+            >
               <div className="app">
                 <Route path={'/explore'}>
                   <Import

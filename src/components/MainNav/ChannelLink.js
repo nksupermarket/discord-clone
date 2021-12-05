@@ -2,9 +2,10 @@ import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Avatar from '../Avatar';
+import MentionCounter from '../ChannelNav/MentionCounter';
 import Tooltip from '../Tooltip';
 
-const ChannelLink = ({ channelID, icon, name }) => {
+const ChannelLink = ({ channelID, mentionCount, icon, name }) => {
   const linkRef = useRef();
 
   const [isTooltip, setIsTooltip] = useState(false);
@@ -23,6 +24,7 @@ const ChannelLink = ({ channelID, icon, name }) => {
         <div className="avatar-wrapper list-item">
           <Avatar img={icon} channelName={name} />
         </div>
+        {mentionCount > 0 && <MentionCounter count={mentionCount} />}
       </NavLink>
       {isTooltip && (
         <Tooltip

@@ -1,12 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useContext } from 'react';
 
-import '../../styles/ChannelNav.css';
+import { UserContext } from '../../logic/contexts/UserContext';
+
 import UserInfo from '../UserInfo/UserInfo_desktop';
 import CatList from '../CatList';
 import RoomLink from './RoomLink';
 
+import '../../styles/ChannelNav.css';
+
 const ChannelNav = ({ channel, categories, list }) => {
   categories = categories || [];
+
+  const { mentioned } = useContext(UserContext);
 
   return (
     <nav className="channel-nav sidebar">
@@ -26,7 +31,20 @@ const ChannelNav = ({ channel, categories, list }) => {
                 return false;
               })
               .map((room) => {
-                return <RoomLink key={room.id} channel={channel} room={room} />;
+                const hasMentions = !!mentioned[channel.id]?.[room.id];
+                let mentionCount;
+                if (hasMentions)
+                  mentionCount = Object.keys(
+                    mentioned[channel.id][room.id]
+                  ).length;
+                return (
+                  <RoomLink
+                    key={room.id}
+                    channel={channel}
+                    room={room}
+                    mentionCount={mentionCount}
+                  />
+                );
               })}
           </CatList>
         ))}

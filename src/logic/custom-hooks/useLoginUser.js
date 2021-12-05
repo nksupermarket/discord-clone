@@ -6,6 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 export default function useLoginUser(setLoading, setError) {
   const [user, setUser] = useState();
   const [channelList, setChannelList] = useState();
+  const [mentioned, setMentioned] = useState();
 
   const location = useLocation();
   const history = useHistory();
@@ -28,7 +29,10 @@ export default function useLoginUser(setLoading, setError) {
             await getUserInfo(
               currUser.uid,
               setChannelList,
-              (val) => (currUser['color'] = val)
+              function getUserColor(val) {
+                currUser['color'] = val;
+              },
+              setMentioned
             );
             setUser(currUser);
           } catch (error) {
@@ -60,5 +64,5 @@ export default function useLoginUser(setLoading, setError) {
     [user, channelList, history, location.pathname, setError]
   );
 
-  return { user, setUser, channelList };
+  return { user, mentioned, setUser, channelList };
 }

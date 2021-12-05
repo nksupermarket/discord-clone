@@ -25,7 +25,7 @@ import CreateChannel from './CreateChannel/CreateChannel';
 import '../styles/ChannelView.css';
 
 const ChannelView = ({ finishLoading, setError }) => {
-  const { user, channelList } = useContext(UserContext);
+  const { user, mentioned, channelList } = useContext(UserContext);
   const { channelID, roomID } = useParams();
   const [channel, setChannel] = useState({ id: channelID });
   const [room, setRoom] = useState({ id: roomID });
