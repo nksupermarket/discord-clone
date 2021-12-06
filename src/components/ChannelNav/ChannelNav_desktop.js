@@ -31,7 +31,7 @@ const ChannelNav = ({ channel, categories, list }) => {
                 return false;
               })
               .map((room) => {
-                const hasMentions = !!mentioned[channel.id]?.[room.id];
+                const hasMentions = !!mentioned?.[channel.id]?.[room.id];
                 let mentionCount;
                 if (hasMentions)
                   mentionCount = Object.keys(

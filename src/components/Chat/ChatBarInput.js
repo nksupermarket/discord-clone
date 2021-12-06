@@ -51,12 +51,13 @@ const ChatBarInput = ({
     setSuggestions(queryUserList(value));
 
     function queryUserList(query) {
+      console.log(userList);
       return userList
         .sort((a, b) => {
           if (a.displayName === b.displayName) return 0;
           return a.displayName > b.displayName ? 1 : -1;
         })
-        .filter((obj) => obj.displayName.includes(query))
+        .filter((u) => u?.displayName?.includes(query))
         .filter((obj, i) => i < 5);
     }
   }

@@ -13,7 +13,7 @@ const ChannelList = () => {
     <ul className="channel-list">
       {list &&
         list.map((channel) => {
-          const hasMentions = !!mentioned[channel.id];
+          const hasMentions = !!mentioned?.[channel.id];
           let mentionCount = 0;
           if (hasMentions) {
             for (const room in mentioned[channel.id]) {

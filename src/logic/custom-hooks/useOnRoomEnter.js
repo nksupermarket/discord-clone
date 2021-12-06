@@ -26,13 +26,14 @@ export default function useOnRoomEnter(
     async function onRoomEnter() {
       try {
         await getRoomStuff(roomID, setRoomName, setMsgList, finishLoading);
-        dealWithReadMentions();
+        dealWithReadMentions(user.uid, channelID, roomID);
       } catch (error) {
         setError(error.message);
       }
     }
     return function () {
       detachListenersForRoom(roomID);
+      dealWithReadMentions(user.uid, channelID, roomID);
       setMsgList([]);
     };
   }, [roomID, channelID, user, setRoomName, finishLoading, setError]);

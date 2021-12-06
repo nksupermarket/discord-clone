@@ -30,9 +30,20 @@ const ChannelNav = ({ channel, categories, list, showUserSettings }) => {
                 return false;
               })
               .map((room) => {
-                const hasMentions = !!mentioned[channel.id][room.id];
-                console.log(hasMentions);
-                return <RoomLink key={room.id} channel={channel} room={room} />;
+                const hasMentions = !!mentioned?.[channel.id]?.[room.id];
+                let mentionCount;
+                if (hasMentions)
+                  mentionCount = Object.keys(
+                    mentioned[channel.id][room.id]
+                  ).length;
+                return (
+                  <RoomLink
+                    key={room.id}
+                    channel={channel}
+                    room={room}
+                    mentionCount={mentionCount}
+                  />
+                );
               })}
           </CatList>
         ))}
