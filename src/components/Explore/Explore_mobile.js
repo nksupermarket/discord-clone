@@ -128,7 +128,7 @@ const Explore = ({ finishLoading }) => {
               </header>
               <Sidebar
                 btnList={[
-                  { text: 'Home' },
+                  { text: 'Home', isDefault: true },
                   { text: 'Gaming' },
                   { text: 'Technology' },
                 ]}

@@ -25,7 +25,6 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
-import { version } from 'react-dom';
 import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
@@ -33,11 +32,6 @@ async function createChannel(name, isPublic, icon) {
   const channelListRef = ref(db, 'Channels');
   const newChannelRef = push(channelListRef);
   await set(newChannelRef, { name });
-  console.log({
-    name,
-    description:
-      'This is a new channel and there is no description for it at the moment.',
-  });
 
   let iconURL = icon ? await changeChannelIcon(newChannelRef.key, icon) : '';
   if (isPublic)
@@ -51,20 +45,23 @@ async function createChannel(name, isPublic, icon) {
   return newChannelRef.key;
 }
 
-// async function deleteChannels() {
-//   const snap = await get(
-//     query(ref(db, 'Channels'), orderByKey(), startAfter('-MpYw7QHcb5u99muczqb'))
-//   );
-//   const data = snap.val();
+async function deleteChannels() {
+  let updates = {};
 
-//   let updates = {};
-//   Object.keys(data).forEach((key) => {
-//     updates[`public_channels/${key}`] = null;
-//     updates[`Channels/${key}`] = null;
-//   });
+  [
+    '-Mp9N-JNC7jgBKurBZCn',
+    '-MpYOwEQmhBEBW7zWIWL',
+    '-MqCDfO8KLUpNbHiuP9q',
+    '-MqCG7RuBJ53MGGTuu7O',
+    '-MqCGdvGmSp57SUBYdVp',
+    '-MqCGh4rVYnMIiCOeokE',
+  ].forEach((key) => {
+    updates[`public_channels/${key}`] = null;
+    updates[`Channels/${key}`] = null;
+  });
 
-//   update(ref(db), updates);
-// }
+  update(ref(db), updates);
+}
 
 async function searchPublicChannels(searchVal) {
   const snap = await get(
@@ -329,7 +326,7 @@ export {
   createUserRole,
   updateRoleOfUser,
   detachListenersForChannel,
-  // deleteChannels,
+  deleteChannels,
   searchPublicChannels,
   beginUpload,
   cancelUpload,

@@ -31,6 +31,7 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
                       <ListItem
                         key={uniqid()}
                         onClick={() => {
+                          if (!dispatch) return;
                           setActiveBtn(btn.text);
                           dispatch({ type: 'swap_to', payload: btn.text });
                         }}
@@ -53,7 +54,10 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
             return (
               <ListItem
                 key={uniqid()}
-                onClick={() => dispatch({ type: 'swap_to', payload: btn.text })}
+                onClick={() => {
+                  dispatch && dispatch({ type: 'swap_to', payload: btn.text });
+                }}
+                active={activeBtn ? activeBtn === btn.text : btn.isDefault}
               >
                 {capitalize(btn.text)}
               </ListItem>

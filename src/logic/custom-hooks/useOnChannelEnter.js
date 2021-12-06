@@ -18,7 +18,6 @@ export default function useOnChannelEnter(
   const [roleList, setRoleList] = useState(['Online']);
   const [roomCategories, setRoomCategories] = useState(['none']);
   const [roomList, setRoomList] = useState([]);
-  const [roomsMentioned, setRoomsMentioned] = useState([]);
   const [userList, setUserList] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [userRole, setUserRole] = useState();
@@ -37,7 +36,6 @@ export default function useOnChannelEnter(
         if (!channelID || !isVisiting) return setVisitingChannel();
         if (visitingChannel) return;
         try {
-          console.log('async running');
           const data = await getInfoForVisitingChannel(channelID);
           const channelInfo = {
             name: data[0],
@@ -66,7 +64,6 @@ export default function useOnChannelEnter(
           setUserList,
           setOnlineUsers
         );
-        //getRoleOfUser(channelID, user.uid, setUserRole, setError);
       } catch (error) {
         setError(error.message);
       }
@@ -76,6 +73,10 @@ export default function useOnChannelEnter(
       detachListenersForChannel(channelID, user.uid);
     };
   }, [channelID, isVisiting, updateChannel, user, setError]);
+
+  useEffect(() => {
+    setUserRole(userList.find((u) => u.uid === user.uid)?.role);
+  }, [user, userList]);
 
   useEffect(
     function redirectToDefaultRoom() {
@@ -114,7 +115,6 @@ export default function useOnChannelEnter(
     visitingChannel,
     roleList,
     roomCategories,
-    roomsMentioned,
     roomList,
     userList,
     onlineUsers,

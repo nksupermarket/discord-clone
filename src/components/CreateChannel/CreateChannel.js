@@ -38,15 +38,18 @@ const CreateChannel = ({ close, isMobile }) => {
       try {
         let channelID;
         if (channelInfo.icon instanceof File) {
-          channelID = createChannel(
+          channelID = await createChannel(
             channelInfo.name,
             channelInfo.isPublic,
             channelInfo.icon
           );
         } else {
-          channelID = createChannel(channelInfo.name, channelInfo.isPublic);
+          channelID = await createChannel(
+            channelInfo.name,
+            channelInfo.isPublic
+          );
         }
-        await subscribeToChannel(user, channelID);
+        await subscribeToChannel(user, channelID, 'owner');
       } catch (error) {
         setError(error.message);
       }

@@ -1,17 +1,11 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  useContext,
-} from 'react';
-import { useHistory, useParams } from 'react-router';
+import React, { useState, useCallback, useContext } from 'react';
+import { useParams } from 'react-router';
 
 import { UserContext } from '../logic/contexts/UserContext';
 import useTouchEvents from '../logic/custom-hooks/useTouchEvents';
 import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
-import { getRoomName } from '../logic/room_firebaseStuff';
+import { UserRoleContext } from '../logic/contexts/UserRoleContext';
 
 import ChannelNav from './ChannelNav/ChannelNav_mobile';
 import UserSettings from './UserInfo/UserSettings_mobile';
@@ -25,7 +19,7 @@ import CreateChannel from './CreateChannel/CreateChannel';
 import '../styles/ChannelView.css';
 
 const ChannelView = ({ finishLoading, setError }) => {
-  const { user, mentioned, channelList } = useContext(UserContext);
+  const { user, channelList } = useContext(UserContext);
   const { channelID, roomID } = useParams();
   const [channel, setChannel] = useState({ id: channelID });
   const [room, setRoom] = useState({ id: roomID });
@@ -76,7 +70,7 @@ const ChannelView = ({ finishLoading, setError }) => {
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [isCreateChannel, setIsCreateChannel] = useState(false);
   return (
-    <>
+    <UserRoleContext.Provider value={{ userRole }}>
       {isCreateChannel && (
         <CreateChannel
           isMobile={true}
@@ -138,7 +132,7 @@ const ChannelView = ({ finishLoading, setError }) => {
           )}
         </div>
       )}
-    </>
+    </UserRoleContext.Provider>
   );
 };
 

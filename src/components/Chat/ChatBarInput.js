@@ -57,7 +57,7 @@ const ChatBarInput = ({
           if (a.displayName === b.displayName) return 0;
           return a.displayName > b.displayName ? 1 : -1;
         })
-        .filter((u) => u?.displayName?.includes(query))
+        .filter((u) => u.displayName?.includes(query)) // bug in firebase where
         .filter((obj, i) => i < 5);
     }
   }
@@ -107,7 +107,6 @@ const ChatBarInput = ({
 
       try {
         if (!isAttachments && !msg) return;
-        console.log(getAttachmentsURL);
         let attachmentsURL;
         if (isAttachments) attachmentsURL = await getAttachmentsURL();
         await submit(msg, replyToMsgID, mentionArr, attachmentsURL);

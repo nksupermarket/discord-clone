@@ -23,7 +23,7 @@ const UserProfile = ({ isMobile }) => {
   const [loading, setLoading] = useState();
   const avatarFileRef = useRef();
   const { setError } = useContext(ErrorContext);
-
+  console.log(avatarPreview);
   const isMounted = useRef(false);
   useEffect(() => {
     isMounted.current = true;
@@ -93,8 +93,9 @@ const UserProfile = ({ isMobile }) => {
                 <div className="btn-ctn">
                   <UploadFile
                     handlePreview={handleAvatarChange}
-                    handleUpload={(file) => (avatarFileRef.current = file)}
+                    handleFile={(file) => (avatarFileRef.current = file)}
                     isPreview={false}
+                    actionOnChange={'set img preview'}
                   >
                     <div className="flat-btn filled">Change Avatar</div>
                   </UploadFile>

@@ -138,11 +138,12 @@ async function signIn(email, password) {
   await signInWithEmailAndPassword(auth, email, password);
 }
 
-async function subscribeToChannel(user, channelID) {
+async function subscribeToChannel(user, channelID, role) {
   let updates = {};
-  updates[`users/${user.uid}/channels/${channelID}`] = '';
+  updates[`users/${user.uid}/channels/${channelID}`] = ``;
 
   updates[`Channels/${channelID}/users/${user.uid}`] = {
+    role: role || '',
     displayName: user.displayName,
     avatar: user.photoURL || '',
     color: user.color,
@@ -194,20 +195,6 @@ async function getUserInfo(
       }
     }
   });
-}
-
-async function getRoleOfUser(channelID, userId, setRole, setError) {
-  try {
-    const userRoleRef = ref(db, `users/${userId}/channels/${channelID}`);
-    onValue(userRoleRef, (snap) => {
-      const data = snap.val();
-
-      setRole(data);
-    });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
 }
 
 function updateUserOnline(uid, userChannelList) {
@@ -280,7 +267,6 @@ export {
   createUser,
   signIn,
   isUserOnline,
-  getRoleOfUser,
   dealWithReadMentions,
   subscribeToChannel,
   updateUserOnline,

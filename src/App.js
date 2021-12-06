@@ -1,13 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-  Suspense,
-} from 'react';
-import { Route, useHistory, useLocation } from 'react-router-dom';
-import { getAuth, signOut } from '@firebase/auth';
+import React, { useState, useCallback } from 'react';
+import { Route } from 'react-router-dom';
 
 import useError from './logic/custom-hooks/useError';
 import useLoginUser from './logic/custom-hooks/useLoginUser';
@@ -34,7 +26,6 @@ function App() {
     setLoading,
     setError
   );
-
   const {
     isMobileCheck: { current: isMobile },
   } = useMobileCheck();

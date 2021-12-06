@@ -1,12 +1,7 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  useContext,
-} from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import React, { useState, useCallback, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 
+import { UserRoleContext } from '../logic/contexts/UserRoleContext';
 import { UserContext } from '../logic/contexts/UserContext';
 
 import ChannelNav from './ChannelNav/ChannelNav_desktop';
@@ -55,33 +50,35 @@ const ChannelView = ({ finishLoading, setError }) => {
   );
 
   return (
-    <div className="channel-view">
-      <MainNav visitingChannel={visitingChannel} />
-      {channel && (
-        <ChannelNav
-          channel={channel}
-          categories={roomCategories}
-          list={roomList}
-          setRoom={setRoom}
-          currentRoom={room}
-        />
-      )}
-      {room && (
-        <div className="content">
-          <TopBar room={room} />
-          <div className="chat-ctn">
-            <ChatWrapper
-              room={room}
-              msgList={msgList}
-              userList={userList}
-              submitMsg={submitMsg}
-              isVisitor={!!visitingChannel}
-            />
-            <OnlineUsers list={onlineUsers} roles={roleList} />
+    <UserRoleContext.Provider value={{ userRole }}>
+      <div className="channel-view">
+        <MainNav visitingChannel={visitingChannel} />
+        {channel && (
+          <ChannelNav
+            channel={channel}
+            categories={roomCategories}
+            list={roomList}
+            setRoom={setRoom}
+            currentRoom={room}
+          />
+        )}
+        {room && (
+          <div className="content">
+            <TopBar room={room} />
+            <div className="chat-ctn">
+              <ChatWrapper
+                room={room}
+                msgList={msgList}
+                userList={userList}
+                submitMsg={submitMsg}
+                isVisitor={!!visitingChannel}
+              />
+              <OnlineUsers list={onlineUsers} roles={roleList} />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </UserRoleContext.Provider>
   );
 };
 

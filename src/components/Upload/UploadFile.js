@@ -23,7 +23,7 @@ const UploadFile = ({
     switch (action) {
       case 'set img preview': {
         if (!checkIfFileIsImg(file)) return setError('not an image');
-        return setImgPreview();
+        return setImgPreview(file);
       }
       case 'set attachment': {
         return handleFile(file);
