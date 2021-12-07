@@ -9,20 +9,27 @@
   user-select: none;
   border-radius: 4px;
 }
-.tooltip-wrapper:before {
+.tooltip-wrapper::before {
   content: '';
   position: absolute;
-  bottom: 50%;
-  left: 0%;
   height: 10px;
   width: 10px;
-  /* border-left: 1px solid var(--form-accent);
-  border-top: 1px solid var(--form-accent); */
   background-color: rgba(22, 24, 35, 0.9);
+  z-index: 1;
+}
+.tooltip-wrapper.right:before {
+  bottom: 50%;
+  left: 0%;
   margin-bottom: -5px;
   margin-left: -5px;
   transform: rotate(45deg);
-  z-index: 1;
+}
+.tooltip-wrapper.top:before {
+  bottom: 0%;
+  left: 50%;
+  margin-bottom: -5px;
+  margin-left: -5px;
+  transform: rotate(45deg);
 }
 
 .tooltip-wrapper .text-wrapper {

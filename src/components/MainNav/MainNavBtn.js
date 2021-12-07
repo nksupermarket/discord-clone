@@ -15,16 +15,12 @@ const MainNavBtn = ({ tooltipText, icon, svg, active, onClick }) => {
       onMouseEnter={() => setIsTooltip(true)}
       onMouseLeave={() => setIsTooltip(false)}
     >
-      <IconBtn
-        icon={icon}
-        svg={svg}
-        className={active ? 'active' : null}
-        isCircle={true}
-      />
+      <IconBtn icon={icon} svg={svg} className={active ? 'active' : null} />
       {isTooltip && (
         <Tooltip
           text={tooltipText}
           posInfo={btnRef.current.getBoundingClientRect()}
+          direction={'right'}
         />
       )}
     </div>

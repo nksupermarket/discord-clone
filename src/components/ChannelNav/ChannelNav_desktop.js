@@ -82,6 +82,7 @@ const ChannelNav = ({ channel, categories, list }) => {
                       channel={channel}
                       room={room}
                       mentionCount={mentionCount}
+                      isAdmin={userRole === 'owner'}
                     />
                   );
                 })}

@@ -83,6 +83,16 @@
   cursor: pointer;
 }
 
+.room-link-item .content .actions {
+  opacity: 0;
+  position: absolute;
+}
+.room-link-item .content.active .actions,
+.room-link-item:hover .content .actions {
+  opacity: 1;
+  position: relative;
+}
+
 .room-link-item .content span {
   display: block;
   padding: 6px 0;
@@ -98,6 +108,11 @@
 .new_room-btn .content img {
   filter: var(--text-normal-filter);
   margin-right: 5px;
+}
+.room-link-item .content .actions img {
+  filter: var(--interactive-normal-filter);
+  width: 16px;
+  height: 16px;
 }
 
 .room-link-item .content:hover {
@@ -116,4 +131,8 @@
   display: block;
   width: 18px;
   height: 18px;
+}
+
+.room-link-item .mention-counter-wrapper {
+  margin-left: 8px;
 }

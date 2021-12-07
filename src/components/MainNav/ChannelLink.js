@@ -30,6 +30,7 @@ const ChannelLink = ({ channelID, mentionCount, icon, name }) => {
         <Tooltip
           text={name}
           posInfo={linkRef.current.getBoundingClientRect()}
+          direction={'right'}
         />
       )}
     </>
