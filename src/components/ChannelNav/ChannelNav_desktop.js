@@ -43,6 +43,9 @@ const ChannelNav = ({ channel, categories, list }) => {
       await createRoomCategory(channel.id, newRoomInfo.room_category);
     }
   }
+
+  const [isEditRoom, setIsEditRoom] = useState(false);
+
   return (
     <>
       <nav className="channel-nav sidebar">

@@ -248,14 +248,16 @@ async function createRoomCategory(channelID, name) {
   await update(channelRoomCategoriesRef, { [name]: true });
 }
 
-function updateCategoryOfRoom(channelID, roomId, category, setError) {
-  try {
-    const channelRoomRef = ref(db, `Channels/${channelID}/rooms/${roomId}`);
-    update(channelRoomRef, { category });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
+async function updateCategoryOfRoom(channelID, roomID, category) {
+  const channelRoomRef = ref(db, `Channels/${channelID}/rooms/${roomID}`);
+  await update(channelRoomRef, { category });
+}
+
+async function deleteRoom(channelID, roomID) {
+  let updates = {};
+  updates[`Channels/${channelID}/rooms/${roomID}`] = null;
+  updates[`Rooms/${roomID}`] = null;
+  await update(ref(db), updates);
 }
 
 async function createUserRole(channelID, role) {
@@ -315,4 +317,5 @@ export {
   beginUpload,
   cancelUpload,
   listenToUploadProgress,
+  deleteRoom,
 };
