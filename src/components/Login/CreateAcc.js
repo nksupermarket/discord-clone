@@ -6,7 +6,14 @@ import { createUser } from '../../logic/user_firebaseStuff';
 
 import Form from '../Form';
 
-const CreateAcc = ({ newUserInfo, handleChange, channel, setUser, goBack }) => {
+const CreateAcc = ({
+  newUserInfo,
+  handleChange,
+  channel,
+  setUser,
+  goBack,
+  inputValues,
+}) => {
   const history = useHistory();
   const { setError } = useContext(ErrorContext);
 
@@ -37,6 +44,7 @@ const CreateAcc = ({ newUserInfo, handleChange, channel, setUser, goBack }) => {
           if (channel) history.push(`/channels/${channel}`);
         }}
         setError={setError}
+        inputValues={inputValues}
       />
     </div>
   );

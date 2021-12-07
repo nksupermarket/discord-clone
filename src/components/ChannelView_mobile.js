@@ -5,7 +5,9 @@ import { UserContext } from '../logic/contexts/UserContext';
 import useTouchEvents from '../logic/custom-hooks/useTouchEvents';
 import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
-import { UserRoleContext } from '../logic/contexts/UserRoleContext';
+import { ChannelContext } from '../logic/contexts/ChannelContext';
+import useInputValues from '../logic/custom-hooks/useInputValues';
+import { createRoom, createRoomCategory } from '../logic/channel_firebaseStuff';
 
 import ChannelNav from './ChannelNav/ChannelNav_mobile';
 import UserSettings from './UserInfo/UserSettings_mobile';
@@ -15,6 +17,8 @@ import TopBar from './TopBar';
 import ChatWrapper from './Chat/ChatWrapper';
 import MainNav from './MainNav/MainNav_mobile';
 import CreateChannel from './CreateChannel/CreateChannel';
+import Modal from './Modal';
+import Popup from './Popup';
 
 import '../styles/ChannelView.css';
 
@@ -69,8 +73,55 @@ const ChannelView = ({ finishLoading, setError }) => {
 
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [isCreateChannel, setIsCreateChannel] = useState(false);
+
+  const [isCreateRoom, setIsCreateRoom] = useState(false);
+  const {
+    inputValues: newRoomInfo,
+    handleChange,
+    resetInputValues,
+  } = useInputValues();
+
+  async function onCreateRoom() {
+    await createRoom(
+      channel.id,
+      newRoomInfo.room_name,
+      newRoomInfo.room_category || null
+    );
+    if (roomCategories.indexOf(newRoomInfo.room_category) === -1) {
+      await createRoomCategory(channel.id, newRoomInfo.room_category);
+    }
+  }
   return (
-    <UserRoleContext.Provider value={{ userRole }}>
+    <ChannelContext.Provider value={{ userRole }}>
+      {isCreateRoom && (
+        <Modal
+          close={() => {
+            setIsCreateRoom(false);
+            resetInputValues();
+          }}
+        >
+          <Popup
+            close={() => {
+              setIsCreateRoom(false);
+              resetInputValues();
+            }}
+            handleChange={handleChange}
+            className="settings-popup"
+            title="Create a new room"
+            fields={[
+              { label: 'Room Name', name: 'room_name', type: 'text' },
+              {
+                label: 'Room Category',
+                name: 'room_category',
+                type: 'text',
+              },
+            ]}
+            submitAction={onCreateRoom}
+            setError={setError}
+            inputValues={newRoomInfo}
+          ></Popup>
+        </Modal>
+      )}
       {isCreateChannel && (
         <CreateChannel
           isMobile={true}
@@ -103,6 +154,9 @@ const ChannelView = ({ finishLoading, setError }) => {
                 showUserSettings={() => {
                   setShowUserSettings(true);
                 }}
+                showCreateRoom={() => {
+                  setIsCreateRoom(true);
+                }}
               />
             </MobileSidebar>
           )}
@@ -132,7 +186,7 @@ const ChannelView = ({ finishLoading, setError }) => {
           )}
         </div>
       )}
-    </UserRoleContext.Provider>
+    </ChannelContext.Provider>
   );
 };
 

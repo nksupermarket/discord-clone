@@ -16,7 +16,7 @@ import Divider from '../Settings/Divider';
 import PasswordSection from './PasswordSection';
 import AccountRemoval from './AccountRemoval';
 import Modal from '../Modal';
-import Popup from '../Popup_desktop';
+import Popup from '../Popup';
 
 const MyAccount = ({ editProfile }) => {
   const { setUser } = useContext(UserContext);
@@ -164,6 +164,7 @@ const MyAccount = ({ editProfile }) => {
             className="settings-popup"
             {...popupDetails}
             submitAction={getSubmitAction()}
+            inputValues={inputValues}
             setError={setError}
           ></Popup>
         </Modal>

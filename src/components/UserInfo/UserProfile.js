@@ -23,7 +23,7 @@ const UserProfile = ({ isMobile }) => {
   const [loading, setLoading] = useState();
   const avatarFileRef = useRef();
   const { setError } = useContext(ErrorContext);
-  console.log(avatarPreview);
+
   const isMounted = useRef(false);
   useEffect(() => {
     isMounted.current = true;
@@ -37,7 +37,7 @@ const UserProfile = ({ isMobile }) => {
       setTimeout(() => {
         if (isMounted.current) setChangesSaved(false);
       }, 3500);
-  });
+  }, [changesSaved, setChangesSaved]);
   // event listeners
   function onChangeColor(e) {
     setIsDefaultActive(false);

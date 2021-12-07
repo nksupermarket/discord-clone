@@ -15,6 +15,7 @@ const Popup = ({
   children,
   footerContent,
   close,
+  isMobile,
   ...props
 }) => {
   return (
@@ -24,9 +25,11 @@ const Popup = ({
     >
       <header>
         <h3>{title}</h3>
-        <div className="subheader">
-          <span>{subheader}</span>
-        </div>
+        {subheader && (
+          <div className="subheader">
+            <span>{subheader}</span>
+          </div>
+        )}
         <IconBtn svg={closeSVG} onClick={close} className="close-btn" />
       </header>
       {fields && <Form fields={fields} close={close} {...props} />}

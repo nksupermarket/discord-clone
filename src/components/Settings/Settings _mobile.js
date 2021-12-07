@@ -13,6 +13,7 @@ import '../../styles/Settings.css';
 
 const Settings = ({ close, children, ...props }) => {
   const [showSidebar, setShowSidebar] = useState(true);
+
   const closeSidebar = useCallback(() => {
     setShowSidebar(false);
   }, []);

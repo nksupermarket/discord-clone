@@ -1,7 +1,7 @@
 import React from 'react';
 
 import FlatBtn from '../FlatBtn';
-import Popup from '../Popup_desktop';
+import Popup from '../Popup';
 
 import '../../styles/CreateChannelNodeOne.css';
 

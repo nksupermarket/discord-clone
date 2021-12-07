@@ -1,6 +1,4 @@
-import { updatePassword } from '@firebase/auth';
 import {
-  getDatabase,
   ref,
   push,
   set,
@@ -16,7 +14,6 @@ import {
   endBefore,
   limitToFirst,
   limitToLast,
-  onDisconnect,
 } from 'firebase/database';
 import {
   ref as store,
@@ -41,7 +38,7 @@ async function createChannel(name, isPublic, icon) {
       description:
         'This is a new channel and there is no description for it at the moment.',
     });
-  await createRoom(newChannelRef.key, 'general');
+  await createRoom(newChannelRef.key, 'general', null);
   return newChannelRef.key;
 }
 
@@ -193,13 +190,13 @@ async function getRoomList(channelID, setRoomList, setError) {
   }
 }
 
-async function createRoom(channelID, name) {
+async function createRoom(channelID, name, category) {
   const channelRoomListRef = ref(db, `Channels/${channelID}/rooms`);
   const newRoomRef = push(channelRoomListRef);
 
-  set(newRoomRef, { name });
+  await set(newRoomRef, { name, category });
 
-  set(ref(db, `Rooms/${newRoomRef.key}`), {
+  await set(ref(db, `Rooms/${newRoomRef.key}`), {
     name,
   });
 }
@@ -243,17 +240,12 @@ async function getInfoForVisitingChannel(channelID) {
   return resultArr.map((result) => result.val());
 }
 
-function createRoomCategory(channelID, name, setError) {
-  try {
-    const channelRoomCategoriesRef = ref(
-      db,
-      `Channels/${channelID}/room_categories`
-    );
-    update(channelRoomCategoriesRef, { [name]: true });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
+async function createRoomCategory(channelID, name) {
+  const channelRoomCategoriesRef = ref(
+    db,
+    `Channels/${channelID}/room_categories`
+  );
+  await update(channelRoomCategoriesRef, { [name]: true });
 }
 
 function updateCategoryOfRoom(channelID, roomId, category, setError) {
@@ -266,17 +258,9 @@ function updateCategoryOfRoom(channelID, roomId, category, setError) {
   }
 }
 
-async function createUserRole(channelID, role, setError) {
-  try {
-    const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
-    /* const newRoleRef = push(channelUserRolesRef);
-    set(newRoleRef, { role }); */
-
-    update(channelUserRolesRef, { [role]: true });
-  } catch (error) {
-    setError && setError(error.message);
-    console.log(error);
-  }
+async function createUserRole(channelID, role) {
+  const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
+  update(channelUserRolesRef, { [role]: true });
 }
 
 async function updateRoleOfUser(channelID, userId, role, setError) {

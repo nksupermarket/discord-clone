@@ -218,17 +218,17 @@ function updateUserOnline(uid, userChannelList) {
   });
 }
 
-function updateMentions(uid, channelID, roomID, msgID) {
+async function updateMentions(uid, channelID, roomID, msgID) {
   const mentionsRef = ref(
     db,
     `users/${uid}/mentions/${channelID}/${roomID}/${msgID}`
   );
-  set(mentionsRef, true);
+  await set(mentionsRef, true);
 }
 
 async function dealWithReadMentions(uid, channelID, roomID) {
   const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}/${roomID}`);
-  set(mentionsRef, null);
+  await set(mentionsRef, null);
 }
 
 function isUserOnline(uid) {

@@ -51,11 +51,15 @@
   overflow: hidden;
 }
 
+.room-list > .room-link-item:first-of-type {
+  margin-top: 16px;
+}
 .room-link-item {
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
+  margin-top: 4px;
 }
 
 .room-link-item .content {
@@ -86,6 +90,14 @@
   line-height: 20px;
   flex: 1 1 auto;
   white-space: normal;
+}
+.new_room-btn .content span {
+  text-align: start;
+}
+
+.new_room-btn .content img {
+  filter: var(--text-normal-filter);
+  margin-right: 5px;
 }
 
 .room-link-item .content:hover {

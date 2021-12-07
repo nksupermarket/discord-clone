@@ -2,8 +2,7 @@ import React, { useState, useCallback, useContext } from 'react';
 
 import {
   createChannel,
-  uploadChannelIcon,
-  changeChannelIcon,
+  createUserRole,
 } from '../../logic/channel_firebaseStuff';
 import { subscribeToChannel } from '../../logic/user_firebaseStuff';
 
@@ -50,7 +49,9 @@ const CreateChannel = ({ close, isMobile }) => {
           );
         }
         await subscribeToChannel(user, channelID, 'owner');
+        await createUserRole(channelID, 'owner');
       } catch (error) {
+        console.log(error);
         setError(error.message);
       }
     },

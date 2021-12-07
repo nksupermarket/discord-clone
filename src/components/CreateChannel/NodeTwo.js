@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import UploadFile from '../Upload/UploadFile';
-import Popup from '../Popup_desktop';
+import Popup from '../Popup';
 import FlatBtn from '../FlatBtn';
 import InputField from '../InputField';
 

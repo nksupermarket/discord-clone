@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 import useInputError from '../logic/custom-hooks/useInputError';
+import uniqid from 'uniqid';
 
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
 
 const Form = ({
   fields,
+  inputValues,
   actionBtnText,
   noCancelBtn,
   cancelBtnText,
@@ -26,7 +28,7 @@ const Form = ({
   useEffect(() => {
     isMounted.current = true;
     return () => (isMounted.current = false);
-  });
+  }, []);
 
   return (
     <form
@@ -42,27 +44,30 @@ const Form = ({
       <div className="content">
         <input type="password" hidden />
         {/*need this to turn off autocomplete */}
-        {fields.map((f, idx) => (
-          <InputField
-            key={idx}
-            type={f.type}
-            autoFocus={idx === 0 ? true : false}
-            onBlur={
-              f.name === 'confirm_password'
-                ? (e) =>
-                    validateInput(
-                      e.target,
-                      false,
-                      formRef.current.elements.namedItem('new_password').value
-                    )
-                : (e) => validateInput(e.target)
-            }
-            error={inputError[f.name]}
-            label={f.label}
-            name={f.name}
-            onChange={handleChange}
-          />
-        ))}
+        {fields.map((f, idx) => {
+          return (
+            <InputField
+              key={idx}
+              type={f.type}
+              autoFocus={idx === 0 ? true : false}
+              onBlur={
+                f.name === 'confirm_password'
+                  ? (e) =>
+                      validateInput(
+                        e.target,
+                        false,
+                        formRef.current.elements.namedItem('new_password').value
+                      )
+                  : (e) => validateInput(e.target)
+              }
+              error={inputError[f.name]}
+              label={f.label}
+              name={f.name}
+              onChange={handleChange}
+              value={inputValues[f.name]}
+            />
+          );
+        })}
       </div>
       <footer>
         <div className={loading ? 'btn-ctn no-pointer-events' : 'btn-ctn'}>
@@ -82,10 +87,10 @@ const Form = ({
         </div>
         {textBtns && (
           <div className="text-btn-ctn">
-            {textBtns.map((t) => {
+            {textBtns.map((b) => {
               return (
-                <span className="link" onClick={t.onClick}>
-                  {t.text}
+                <span key={uniqid()} className="link" onClick={b.onClick}>
+                  {b.text}
                 </span>
               );
             })}

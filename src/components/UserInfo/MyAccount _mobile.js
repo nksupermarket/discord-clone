@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useContext,
-} from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 
 import { updateUserInfo, removeUser } from '../../logic/user_firebaseStuff';
 import useInputValues from '../../logic/custom-hooks/useInputValues';
@@ -16,7 +10,7 @@ import Divider from '../Settings/Divider';
 import PasswordSection from './PasswordSection';
 import AccountRemoval from './AccountRemoval';
 import Modal from '../Modal';
-import Popup from '../Popup_mobile';
+import Popup from '../Popup';
 
 const MyAccount = () => {
   const { user, setUser } = useContext(UserContext);
@@ -167,6 +161,8 @@ const MyAccount = () => {
             className="settings-popup"
             {...popupDetails}
             submitAction={getSubmitAction()}
+            isMobile={true}
+            inputValues={inputValues}
             setError={setError}
           ></Popup>
         </Modal>

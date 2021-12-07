@@ -8,6 +8,7 @@ const LoginNewUser = ({
   onContinue,
   onReturningUser,
   close,
+  inputValues,
 }) => {
   return (
     <div className="login new-user-username">
@@ -31,6 +32,7 @@ const LoginNewUser = ({
         submitAction={onContinue}
         cleanUp={() => 'do nothing'}
         close={close}
+        inputValues={inputValues}
       />
     </div>
   );

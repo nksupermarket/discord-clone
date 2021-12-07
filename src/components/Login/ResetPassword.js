@@ -33,6 +33,7 @@ const ResetPassword = ({ close }) => {
           handleChange={(e) => setEmail(e.target.value)}
           cleanUp={() => setSuccess(true)}
           close={close}
+          inputValues={{ email }}
         />
       </div>
     </>

@@ -50,7 +50,6 @@ export default function useOnChannelEnter(
     },
     [user, channelID, channelList, visitingChannel, isVisiting, setError]
   );
-
   useEffect(() => {
     if (!channelID || !user) return;
     (async () => {

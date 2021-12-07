@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
   detachListenersForRoom,
-  getMsgList,
   pushToMsgList,
   getRoomStuff,
 } from '../room_firebaseStuff';
@@ -20,21 +19,24 @@ export default function useOnRoomEnter(
 
   useEffect(() => {
     if (!user || !channelID || !roomID) return;
-    detachListenersForRoom(roomID);
     onRoomEnter();
 
     async function onRoomEnter() {
       try {
         await getRoomStuff(roomID, setRoomName, setMsgList, finishLoading);
-        dealWithReadMentions(user.uid, channelID, roomID);
+        await dealWithReadMentions(user.uid, channelID, roomID);
       } catch (error) {
         setError(error.message);
       }
     }
-    return function () {
-      detachListenersForRoom(roomID);
-      dealWithReadMentions(user.uid, channelID, roomID);
-      setMsgList([]);
+    return async function () {
+      try {
+        detachListenersForRoom(roomID);
+        await dealWithReadMentions(user.uid, channelID, roomID); // for any mentions that occur when user is in room
+        setMsgList([]);
+      } catch (error) {
+        setError(error.message);
+      }
     };
   }, [roomID, channelID, user, setRoomName, finishLoading, setError]);
 
@@ -52,8 +54,12 @@ export default function useOnRoomEnter(
     const msgID = await pushToMsgList(roomID, msgObj);
 
     if (mentions.length > 0)
-      mentions.forEach((mention) =>
-        updateMentions(mention.uid, channelID, roomID, msgID)
-      );
+      mentions.forEach(async (mention) => {
+        try {
+          await updateMentions(mention.uid, channelID, roomID, msgID);
+        } catch (error) {
+          setError(error.message);
+        }
+      });
   }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 
 import { logout } from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
@@ -14,15 +14,9 @@ const UserSettings = ({ close }) => {
     if (action.type === 'swap_to') {
       switch (action.payload) {
         case 'my account':
-          return (
-            <MyAccount
-              editProfile={() =>
-                dispatch({ type: 'swap_to', payload: 'user profile' })
-              }
-            />
-          );
+          return 'my account';
         case 'user profile':
-          return <UserProfile />;
+          return 'user profile';
         case 'log out':
           onLogout();
           async function onLogout() {
@@ -37,7 +31,7 @@ const UserSettings = ({ close }) => {
           throw new Error("that doesn't exist!");
       }
     }
-  }, <MyAccount editProfile={() => dispatch({ type: 'swap_to', payload: 'user profile' })} />);
+  }, 'my account');
 
   return (
     <Settings
@@ -50,7 +44,17 @@ const UserSettings = ({ close }) => {
       ]}
       dispatch={dispatch}
     >
-      {state && state}
+      {state &&
+        {
+          'my account': (
+            <MyAccount
+              editProfile={() =>
+                dispatch({ type: 'swap_to', payload: 'user profile' })
+              }
+            />
+          ),
+          'user profile': <UserProfile />,
+        }[state]}
     </Settings>
   );
 };

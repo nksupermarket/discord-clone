@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { UserRoleContext } from '../logic/contexts/UserRoleContext';
+import { ChannelContext } from '../logic/contexts/ChannelContext';
 import { UserContext } from '../logic/contexts/UserContext';
 
 import ChannelNav from './ChannelNav/ChannelNav_desktop';
@@ -50,7 +50,7 @@ const ChannelView = ({ finishLoading, setError }) => {
   );
 
   return (
-    <UserRoleContext.Provider value={{ userRole }}>
+    <ChannelContext.Provider value={{ userRole, roomCategories }}>
       <div className="channel-view">
         <MainNav visitingChannel={visitingChannel} />
         {channel && (
@@ -78,7 +78,7 @@ const ChannelView = ({ finishLoading, setError }) => {
           </div>
         )}
       </div>
-    </UserRoleContext.Provider>
+    </ChannelContext.Provider>
   );
 };
 

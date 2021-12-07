@@ -33,6 +33,7 @@ const LoginEmail = ({ onRegister, onForgotPW }) => {
         submitAction={() => signIn(inputValues.email, inputValues.password)}
         setError={setError}
         cleanUp={() => history.push('/')}
+        inputValues={inputValues}
       />
     </div>
   );

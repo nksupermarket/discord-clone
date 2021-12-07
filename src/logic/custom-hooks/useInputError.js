@@ -45,7 +45,6 @@ function useInputError(inputNames) {
       if (errors) return;
 
       await submitAction();
-      console.log('should come after display name');
       cleanUp();
     } catch (error) {
       setError && setError(error.message);

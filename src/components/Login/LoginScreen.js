@@ -40,6 +40,7 @@ const LoginScreen = ({ setUser, isMobile }) => {
                 onReturningUser={() => setNode('returning user')}
                 handleChange={handleChange}
                 close={goHome}
+                inputValues={newUserInfo}
               />
             ),
             'create acc': (
@@ -49,6 +50,7 @@ const LoginScreen = ({ setUser, isMobile }) => {
                 handleChange={handleChange}
                 channel={channel}
                 setUser={setUser}
+                inputValues={newUserInfo}
               />
             ),
             'reset pw': <ResetPassword close={goHome} />,
