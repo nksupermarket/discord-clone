@@ -24,14 +24,7 @@ const MyAccount = ({ editProfile }) => {
   const { channelList } = useContext(UserContext);
 
   const [popupDetails, setPopupDetails] = useState();
-  const { inputValues, handleChange, resetInputValues } = useInputValues([
-    'new_username',
-    'current_password',
-    'new_email',
-    'new_password',
-    'confirm_password',
-    'password',
-  ]);
+  const { inputValues, handleChange, resetInputValues } = useInputValues();
 
   const editUsername = useCallback(() => {
     setPopupDetails({

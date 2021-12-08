@@ -64,7 +64,7 @@ const Form = ({
               label={f.label}
               name={f.name}
               onChange={handleChange}
-              value={inputValues[f.name]}
+              value={inputValues[f.name] || ''}
             />
           );
         })}

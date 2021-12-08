@@ -16,11 +16,7 @@ import '../../styles/LoginScreen.css';
 
 const LoginScreen = ({ setUser, isMobile }) => {
   const [node, setNode] = useState('returning user');
-  const { inputValues: newUserInfo, handleChange } = useInputValues([
-    'username',
-    'email',
-    'password',
-  ]); //sending input names to useInputValues to inititialize state
+  const { inputValues: newUserInfo, handleChange } = useInputValues();
   const { channelID: channel } = useParams();
 
   function goHome() {
