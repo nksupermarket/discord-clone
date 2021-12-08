@@ -24,7 +24,14 @@ const MyAccount = ({ editProfile }) => {
   const { channelList } = useContext(UserContext);
 
   const [popupDetails, setPopupDetails] = useState();
-  const { inputValues, handleChange, resetInputValues } = useInputValues();
+  const { inputValues, handleChange, resetInputValues } = useInputValues([
+    'new_username',
+    'current_password',
+    'new_email',
+    'new_password',
+    'confirm_password',
+    'password',
+  ]);
 
   const editUsername = useCallback(() => {
     setPopupDetails({
@@ -106,13 +113,18 @@ const MyAccount = ({ editProfile }) => {
         },
       ],
       actionBtnText: 'Delete Account',
-      submitAction: removeUser,
+      inputsToSubmit: 'delete',
     });
   }, []);
 
+  const deleteUser = useCallback(
+    () => removeUser(channelList, setError),
+    [channelList, setError]
+  );
+
   const getSubmitAction = useCallback(() => {
     switch (
-      popupDetails.inputsToSubmit //get submit action based which popupDetails is active
+      popupDetails?.inputsToSubmit //get submit action based which popupDetails is active
     ) {
       case 'new_username':
         return updateUsername;
@@ -120,6 +132,8 @@ const MyAccount = ({ editProfile }) => {
         return updateEmail;
       case 'new_password':
         return updatePassword;
+      case 'delete':
+        return deleteUser;
       default:
         return;
     }
@@ -127,6 +141,7 @@ const MyAccount = ({ editProfile }) => {
     updateUsername,
     updatePassword,
     updateEmail,
+    deleteUser,
     popupDetails?.inputsToSubmit,
   ]);
 

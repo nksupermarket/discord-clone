@@ -112,6 +112,8 @@ async function removeUser(channelList, setError) {
   const user = auth.currentUser;
   try {
     await deleteUser(user);
+    set(ref(db, `users/${user.uid}`), null);
+    updateUserInfoForAllChannels(user.uid, channelList, null);
   } catch (error) {
     setError && setError(error.message);
   }
@@ -158,19 +160,21 @@ async function getUserInfo(
   setUserProfileColor,
   setMentioned
 ) {
+  if (!uid) return;
+
   const userRef = ref(db, `users/${uid}/`);
-
   onValue(userRef, async (snap) => {
+    console.log(snap.exists());
     const data = snap.val();
-    setUserProfileColor(data.color);
-    updateChannelList();
-    setMentioned(data.mentions);
 
+    setUserProfileColor(data?.color);
+    updateChannelList();
+    setMentioned(data?.mentions);
     //helper
     async function updateChannelList() {
       let channelList = [];
       for (const id in data.channels) {
-        channelList.push({ id, role: data.channels[id] });
+        channelList.push({ id, role: data?.channels[id] });
       }
       await getInfoForChannelList(
         'icon',

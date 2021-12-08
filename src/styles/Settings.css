@@ -7,6 +7,7 @@
   display: flex;
   z-index: 5;
   background-color: var(--bg-color);
+  z-index: 11;
 }
 
 .settings .sidebar-region {

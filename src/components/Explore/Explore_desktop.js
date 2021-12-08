@@ -43,6 +43,7 @@ const Explore = ({ finishLoading }) => {
       try {
         setLoading(true);
         const data = await getPublicChannels(status, key);
+        console.log(data);
         if (status === 'init') firstChannelID.current = data[0].id;
         setPublicChannelList(data);
         setLoading(false);

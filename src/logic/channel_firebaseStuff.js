@@ -103,6 +103,7 @@ async function getPublicChannels(status, key) {
       return;
   }
   const data = snap.val();
+  if (!data) return;
   const processed = Object.keys(data).map((key) => ({ ...data[key], id: key }));
   return processed;
 }

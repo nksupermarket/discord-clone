@@ -80,7 +80,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     inputValues: newRoomInfo,
     handleChange,
     resetInputValues,
-  } = useInputValues();
+  } = useInputValues(['room_name', 'room_category']);
 
   async function onCreateRoom() {
     await createRoom(

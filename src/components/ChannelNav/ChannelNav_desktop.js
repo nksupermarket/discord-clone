@@ -32,7 +32,7 @@ const ChannelNav = ({ channel, categories, list }) => {
     inputValues: newRoomInfo,
     handleChange,
     resetInputValues,
-  } = useInputValues();
+  } = useInputValues(['room_name', 'room_category']);
 
   async function onCreateRoom() {
     await createRoom(
