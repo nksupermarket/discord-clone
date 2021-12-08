@@ -259,6 +259,7 @@ form .input-wrapper input {
   box-shadow: none;
   background-color: inherit;
   color: var(--text-normal);
+  transition: all 0.2s ease;
 }
 
 form .input-wrapper input:focus {

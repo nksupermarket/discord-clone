@@ -3,14 +3,18 @@ import { useParams } from 'react-router-dom';
 
 import { ErrorContext } from '../../../logic/contexts/ErrorContext';
 import { deleteRoom } from '../../../logic/channel_firebaseStuff';
+import useMobileCheck from '../../../logic/custom-hooks/useMobileCheck';
 
-import Settings from '../Settings_desktop';
 import RoomOverview from './RoomOverview';
 import Error from '../../Error';
+import Import from '../../../logic/Import';
 
 const RoomSettings = ({ room, close }) => {
   const { SetError } = useContext(ErrorContext);
   const { channelID, roomID } = useParams();
+  const {
+    isMobileCheck: { current: isMobile },
+  } = useMobileCheck();
 
   const [state, dispatch] = useReducer((state, action) => {
     if (action.type === 'swap_to') {
@@ -21,6 +25,7 @@ const RoomSettings = ({ room, close }) => {
           (async function () {
             try {
               await deleteRoom(channelID, roomID);
+              close();
             } catch (error) {
               SetError(error.message);
             }
@@ -30,23 +35,31 @@ const RoomSettings = ({ room, close }) => {
           throw new Error("that doesn't exist!");
       }
     }
-  }, 'my account');
+  }, 'overview');
 
   return (
-    <Settings
-      close={close}
-      categories={[`${room.name}`, 'none']}
-      btnList={[
-        createSettingsButtonDetails('my account', `${room.name}`, true),
-        createSettingsButtonDetails('delete room', 'none'),
-      ]}
-      dispatch={dispatch}
+    <Import
+      mobile={() => import('../Settings _mobile')}
+      desktop={() => import('../Settings_desktop')}
+      isMobile={isMobile}
     >
-      {state &&
-        {
-          overview: <RoomOverview room={room} />,
-        }[state]}
-    </Settings>
+      {(Settings) => (
+        <Settings
+          close={close}
+          categories={[`${room.name}`, 'none']}
+          btnList={[
+            createSettingsButtonDetails('overview', `${room.name}`, true),
+            createSettingsButtonDetails('delete room', 'none'),
+          ]}
+          dispatch={dispatch}
+        >
+          {state &&
+            {
+              overview: <RoomOverview room={room} />,
+            }[state]}
+        </Settings>
+      )}
+    </Import>
   );
 };
 

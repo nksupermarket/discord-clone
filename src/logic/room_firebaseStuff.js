@@ -39,7 +39,6 @@ async function getRoomStuff(roomID, setRoomName, setMsgList, finishLoading) {
       }
     }
     function changeReplyFromIDtoMsgObj(arr) {
-      // iterate over entire msgList
       // if msg has replyTo, replace the msgId with actual msgObj
       return arr.map((obj, i, thisArr) => {
         if (!obj.replyTo) return obj;

@@ -14,6 +14,7 @@ import CatList from '../CatList';
 import RoomLink from './RoomLink';
 import Modal from '../Modal';
 import Popup from '../Popup';
+import RoomSettings from '../Settings/RoomSettings/RoomSettings';
 
 import addSVG from '../../assets/svg/add-line.svg';
 
@@ -44,7 +45,7 @@ const ChannelNav = ({ channel, categories, list }) => {
     }
   }
 
-  const [isEditRoom, setIsEditRoom] = useState(false);
+  const [editRoomInfo, setEditRoomInfo] = useState();
 
   return (
     <>
@@ -86,6 +87,7 @@ const ChannelNav = ({ channel, categories, list }) => {
                       room={room}
                       mentionCount={mentionCount}
                       isAdmin={userRole === 'owner'}
+                      editRoom={() => setEditRoomInfo(room)}
                     />
                   );
                 })}
@@ -122,6 +124,9 @@ const ChannelNav = ({ channel, categories, list }) => {
             inputValues={newRoomInfo}
           ></Popup>
         </Modal>
+      )}
+      {editRoomInfo && (
+        <RoomSettings room={editRoomInfo} close={() => setEditRoomInfo()} />
       )}
     </>
   );

@@ -253,6 +253,11 @@ async function updateCategoryOfRoom(channelID, roomID, category) {
   await update(channelRoomRef, { category });
 }
 
+async function updateRoomName(channelID, roomID, name) {
+  await update(ref(db, `Channels/${channelID}/rooms/${roomID}`), { name });
+  await update(ref(db, `Rooms/${roomID}`), { name });
+}
+
 async function deleteRoom(channelID, roomID) {
   let updates = {};
   updates[`Channels/${channelID}/rooms/${roomID}`] = null;
@@ -318,4 +323,5 @@ export {
   cancelUpload,
   listenToUploadProgress,
   deleteRoom,
+  updateRoomName,
 };

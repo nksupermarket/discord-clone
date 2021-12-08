@@ -1,0 +1,25 @@
+.room_overview .inner-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.room_overview .fields-ctn {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  row-gap: 20px;
+}
+.room_overview .fields-ctn .input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.room_overview .fields-ctn .input-wrapper input {
+  background-color: var(--fg-color);
+  display: flex;
+  align-items: center;
+  color: var(--text-normal);
+}
+.room_overview .fields-ctn .btn-ctn {
+  margin-top: 10px;
+}

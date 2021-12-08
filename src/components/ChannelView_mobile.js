@@ -19,6 +19,7 @@ import MainNav from './MainNav/MainNav_mobile';
 import CreateChannel from './CreateChannel/CreateChannel';
 import Modal from './Modal';
 import Popup from './Popup';
+import RoomSettings from './Settings/RoomSettings/RoomSettings';
 
 import '../styles/ChannelView.css';
 
@@ -91,8 +92,14 @@ const ChannelView = ({ finishLoading, setError }) => {
       await createRoomCategory(channel.id, newRoomInfo.room_category);
     }
   }
+
+  const [editRoomInfo, setEditRoomInfo] = useState();
+
   return (
     <ChannelContext.Provider value={{ userRole }}>
+      {editRoomInfo && (
+        <RoomSettings room={editRoomInfo} close={() => setEditRoomInfo()} />
+      )}
       {isCreateRoom && (
         <Modal
           close={() => {

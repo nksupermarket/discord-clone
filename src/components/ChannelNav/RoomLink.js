@@ -7,7 +7,7 @@ import Tooltip from '../Tooltip';
 
 import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
-const RoomLink = ({ channel, room, mentionCount, isAdmin }) => {
+const RoomLink = ({ channel, room, mentionCount, isAdmin, editRoom }) => {
   const [toolTipInfo, setToolTipInfo] = useState();
   const actionsRef = useRef({});
   return (
@@ -31,6 +31,7 @@ const RoomLink = ({ channel, room, mentionCount, isAdmin }) => {
                   })
                 }
                 onMouseLeave={() => setToolTipInfo()}
+                onClick={editRoom}
               />
             </div>
           )}
