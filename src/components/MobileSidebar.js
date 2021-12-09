@@ -7,13 +7,13 @@ const MobileSidebar = ({ isVisible, isLeft, className, children, hide }) => {
   const transitions = useTransition(isVisible, {
     key: (item) => item,
     from: {
-      transform: 'translate3d(-100%,0,0)',
+      transform: isLeft ? 'translate3d(-100%,0,0)' : 'translate3d(100%,0,0)',
     },
     enter: {
       transform: 'translate3d(0%,0,0)',
     },
     leave: {
-      transform: 'translate3d(-100%,0,0)',
+      transform: isLeft ? 'translate3d(-100%,0,0)' : 'translate3d(100%,0,0)',
     },
     // key: true,
     expires: 0,

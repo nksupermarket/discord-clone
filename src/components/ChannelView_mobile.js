@@ -135,18 +135,21 @@ const ChannelView = ({ finishLoading, setError }) => {
           close={() => setIsCreateChannel(false)}
         />
       )}
-      {showUserSettings && (
+      {showUserSettings ? (
         <UserSettings close={() => setShowUserSettings(false)} />
-      )}
-      {!showUserSettings && (
+      ) : (
         <div
           className="channel-view"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {channel && showLeftSidebar && (
-            <MobileSidebar isLeft={true} hide={() => setShowLeftSidebar(false)}>
+          {channel && (
+            <MobileSidebar
+              isVisible={showLeftSidebar}
+              isLeft={true}
+              hide={() => setShowLeftSidebar(false)}
+            >
               <MainNav
                 visitingChannel={visitingChannel}
                 beginCreateChannel={() => setIsCreateChannel(true)}
@@ -181,14 +184,13 @@ const ChannelView = ({ finishLoading, setError }) => {
                   />
                 </div>
               </div>
-              {showRightSidebar && (
-                <MobileSidebar
-                  isLeft={false}
-                  hide={() => setShowRightSidebar(false)}
-                >
-                  <OnlineUsers list={onlineUsers} roles={roleList} />
-                </MobileSidebar>
-              )}
+              <MobileSidebar
+                isLeft={false}
+                hide={() => setShowRightSidebar(false)}
+                isVisible={showRightSidebar}
+              >
+                <OnlineUsers list={onlineUsers} roles={roleList} />
+              </MobileSidebar>
             </>
           )}
         </div>

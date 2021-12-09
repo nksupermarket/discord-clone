@@ -31,17 +31,16 @@ const Settings = ({ close, children, ...props }) => {
       onTouchMove={handleTouchMove}
       onTouchStart={handleTouchStart}
     >
-      {showSidebar && (
-        <MobileSidebar
-          isLeft={true}
-          className="sidebar-region"
-          hide={closeSidebar}
-        >
-          <div className="sidebar-scroller">
-            <Sidebar {...props}></Sidebar>
-          </div>
-        </MobileSidebar>
-      )}
+      <MobileSidebar
+        isLeft={true}
+        className="sidebar-region"
+        hide={closeSidebar}
+        isVisible={showSidebar}
+      >
+        <div className="sidebar-scroller">
+          <Sidebar {...props}></Sidebar>
+        </div>
+      </MobileSidebar>
       <div className="content-region">
         <div className="content-transition-wrapper">
           <div className="content-scroller">
