@@ -48,7 +48,7 @@ const Explore = ({ finishLoading }) => {
       try {
         setLoading(true);
         const data = await getPublicChannels(status, key);
-        if (status === 'init') firstChannelID.current = data[0].id;
+        if (data && status === 'init') firstChannelID.current = data[0].id;
         setPublicChannelList(data);
         setLoading(false);
         if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
@@ -94,7 +94,6 @@ const Explore = ({ finishLoading }) => {
 
   const [isCreateChannel, setIsCreateChannel] = useState(false);
   const [showUserSettings, setShowUserSettings] = useState(false);
-
   return (
     <>
       {isCreateChannel && (
@@ -112,31 +111,30 @@ const Explore = ({ finishLoading }) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {showSidebar && (
-          <MobileSidebar
-            isLeft={true}
-            className="nav-ctn mobile"
-            hide={hideLeftSidebar}
-          >
-            <MainNav
-              beginCreateChannel={() => setIsCreateChannel(true)}
-              isCreateChannel={isCreateChannel}
+        <MobileSidebar
+          isLeft={true}
+          className="nav-ctn mobile"
+          hide={hideLeftSidebar}
+          isVisible={showSidebar}
+        >
+          <MainNav
+            beginCreateChannel={() => setIsCreateChannel(true)}
+            isCreateChannel={isCreateChannel}
+          />
+          <nav className="sidebar view-sidebar">
+            <header>
+              <h2>Discover</h2>
+            </header>
+            <Sidebar
+              btnList={[
+                { text: 'Home', isDefault: true },
+                { text: 'Gaming' },
+                { text: 'Technology' },
+              ]}
             />
-            <nav className="sidebar view-sidebar">
-              <header>
-                <h2>Discover</h2>
-              </header>
-              <Sidebar
-                btnList={[
-                  { text: 'Home', isDefault: true },
-                  { text: 'Gaming' },
-                  { text: 'Technology' },
-                ]}
-              />
-              <UserInfo showSettings={() => setShowUserSettings(true)} />
-            </nav>
-          </MobileSidebar>
-        )}
+            <UserInfo showSettings={() => setShowUserSettings(true)} />
+          </nav>
+        </MobileSidebar>
         <main>
           <header>
             <BannerSearch
@@ -162,9 +160,11 @@ const Explore = ({ finishLoading }) => {
                     icon={prevSVG}
                     text={'Prev'}
                     className={
-                      publicChannelList.find(
-                        (c) => c.id === firstChannelID.current
-                      )
+                      !publicChannelList
+                        ? 'default_transition inactive'
+                        : publicChannelList.find(
+                            (c) => c.id === firstChannelID.current
+                          )
                         ? 'default_transition inactive'
                         : 'default_transition'
                     }
@@ -176,8 +176,10 @@ const Explore = ({ finishLoading }) => {
                     icon={nextSVG}
                     text={'Next'}
                     className={
-                      publicChannelList.length % 20 !== 0 ||
-                      publicChannelList.length === 0
+                      !publicChannelList
+                        ? 'flex-reverse default_transition inactive'
+                        : publicChannelList.length % 20 !== 0 ||
+                          publicChannelList.length === 0
                         ? 'flex-reverse default_transition inactive'
                         : 'flex-reverse default_transition'
                     }
@@ -198,11 +200,12 @@ const Explore = ({ finishLoading }) => {
                 <div className="scroller" ref={scrollerRef}>
                   <div className="scroller-content">
                     <ol>
-                      {publicChannelList.map((c) => (
-                        <Link to={`/channels/${c.id}`} key={c.id}>
-                          <ChannelCard channel={c} />
-                        </Link>
-                      ))}
+                      {publicChannelList &&
+                        publicChannelList.map((c) => (
+                          <Link to={`/channels/${c.id}`} key={c.id}>
+                            <ChannelCard channel={c} />
+                          </Link>
+                        ))}
                     </ol>
                   </div>
                 </div>

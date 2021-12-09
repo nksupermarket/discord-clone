@@ -101,6 +101,7 @@ const MyAccount = () => {
       ],
       actionBtnText: 'Delete Account',
       inputsToSubmit: 'delete',
+      cleanUp: () => '', // need to feed a cleanup function to avoid state update on unmounted component
     });
   }, []);
 

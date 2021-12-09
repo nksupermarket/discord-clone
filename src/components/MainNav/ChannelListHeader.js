@@ -1,20 +1,25 @@
 import React from 'react';
+import { useSpring, animated } from 'react-spring';
 
 import Avatar from '../Avatar';
 
 const ChannelListHeader = ({ visitingChannel }) => {
+  const animate = useSpring({
+    from: { transform: 'scale(0)' },
+    to: [{ transform: 'scale(1.2)' }, { transform: 'scale(1)' }],
+  });
   return (
     <header>
       <div className="list-item home-icon">
         <Avatar color="#cb3e5b" />
       </div>
       {visitingChannel && (
-        <div className="list-item avatar-wrapper">
+        <animated.div style={animate} className="list-item avatar-wrapper">
           <Avatar
             channelName={visitingChannel.name}
             img={visitingChannel.icon}
           />
-        </div>
+        </animated.div>
       )}
       <div className="header-underline-wrapper list-item">
         <div className="header-underline"></div>

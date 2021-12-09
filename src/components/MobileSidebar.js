@@ -1,28 +1,49 @@
 import React, { useRef } from 'react';
+import { useTransition, animated } from 'react-spring';
 
-const MobileSidebar = ({ isLeft, className, children, hide }) => {
+const MobileSidebar = ({ isVisible, isLeft, className, children, hide }) => {
   const defaultClassName = isLeft ? 'left-sidebar' : 'right-sidebar';
   const contentRef = useRef();
-
-  return (
-    <div
-      className={
-        className ? `${className} ${defaultClassName}` : `${defaultClassName}`
-      }
-      onClick={hide}
-    >
-      <div
-        className="content-wrapper"
-        ref={contentRef}
-        onClick={(e) => {
-          e.stopPropagation();
-          if (e.target.closest('li') || e.target.closest('button')) hide();
-        }}
-      >
-        {children}
-      </div>
-    </div>
-  );
+  const transitions = useTransition(isVisible, {
+    key: (item) => item,
+    from: {
+      transform: 'translate3d(-100%,0,0)',
+    },
+    enter: {
+      transform: 'translate3d(0%,0,0)',
+    },
+    leave: {
+      transform: 'translate3d(-100%,0,0)',
+    },
+    // key: true,
+    expires: 0,
+  });
+  return transitions((styles, item, t, i) => {
+    return (
+      item && (
+        <animated.div
+          className={
+            className
+              ? `${className} ${defaultClassName}`
+              : `${defaultClassName}`
+          }
+          onClick={hide}
+        >
+          <animated.div
+            className="content-wrapper"
+            ref={contentRef}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (e.target.closest('li') || e.target.closest('button')) hide();
+            }}
+            style={styles}
+          >
+            {children}
+          </animated.div>
+        </animated.div>
+      )
+    );
+  });
 };
 
 export default MobileSidebar;
