@@ -7,7 +7,6 @@ import '../../styles/ChatDisplay.css';
 const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
   const messagesEndRef = useRef();
   const scrollerRef = useRef();
-
   const [isScrolled, setIsScrolled] = useState(true);
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({

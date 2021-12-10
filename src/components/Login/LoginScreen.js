@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { getAuth } from '@firebase/auth';
+import React, { useState } from 'react';
 
 import useInputValues from '../../logic/custom-hooks/useInputValues';
 
@@ -7,14 +6,14 @@ import LoginEmail from './LoginEmail';
 
 import LoginNewUser from './LoginNewUser';
 import CreateAcc from './CreateAcc';
-import { useParams, useHistory } from 'react-router';
+import { useParams } from 'react-router';
 import ResetPassword from './ResetPassword';
 
 import loginArtwork from '../../assets/png/Waffle_Coffee_Dessert.png';
 
 import '../../styles/LoginScreen.css';
 
-const LoginScreen = ({ setUser, isMobile }) => {
+const LoginScreen = ({ setUser, isMobile, setLoading }) => {
   const [node, setNode] = useState('returning user');
   const { inputValues: newUserInfo, handleChange } = useInputValues();
   const { channelID: channel } = useParams();
@@ -31,6 +30,8 @@ const LoginScreen = ({ setUser, isMobile }) => {
               <LoginEmail
                 onRegister={() => setNode('new user')}
                 onForgotPW={() => setNode('reset pw')}
+                setUser={setUser}
+                setLoading={setLoading}
               />
             ),
             'new user': (

@@ -51,7 +51,6 @@ const ChatBarInput = ({
     setSuggestions(queryUserList(value));
 
     function queryUserList(query) {
-      console.log(userList);
       return userList
         .sort((a, b) => {
           if (a.displayName === b.displayName) return 0;

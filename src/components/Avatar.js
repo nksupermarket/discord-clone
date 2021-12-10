@@ -11,12 +11,12 @@ const Avatar = ({ img, color, userStatus, channelName, onClick }) => {
     <span></span>
   );
   const style = img
-    ? { background: `url(${img})`, backgroundSize: 'cover' }
+    ? { backgroundImage: `url(${img})`, backgroundSize: 'cover' }
     : color
     ? {
-        background: color,
+        backgroundColor: color,
       }
-    : { background: 'var(--bg-color' };
+    : { backgroundColor: 'var(--bg-color' };
 
   return (
     <div className="avatar" style={style} onClick={onClick}>

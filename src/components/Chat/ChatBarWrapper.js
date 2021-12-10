@@ -34,7 +34,6 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, ...props }) => {
     return Promise.all(
       copy.map(async (f) => {
         const task = beginUpload(f);
-        console.log({ f, task });
         const id = uniqid();
         setUploadTasks((prev) => [
           ...prev,

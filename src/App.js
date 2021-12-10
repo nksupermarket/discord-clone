@@ -40,7 +40,13 @@ function App() {
       {loading && <LoadingScreen />}
       <ErrorContext.Provider value={{ setError }}>
         <Route path={['/login/:channelID', '/login']}>
-          {!user && <LoginScreen setUser={setUser} isMobile={isMobile} />}
+          {!user && (
+            <LoginScreen
+              setUser={setUser}
+              isMobile={isMobile}
+              setLoading={setLoading}
+            />
+          )}
         </Route>
         {user && (
           <>

@@ -25,6 +25,12 @@ import {
 import { db, storage } from '../firebaseStuff';
 import { isUserOnline } from './user_firebaseStuff';
 
+async function createSampleChannels(num) {
+  for (let i = 0; i < num; i++) {
+    await createChannel(`sample channel ${i}`, true);
+  }
+}
+
 async function createChannel(name, isPublic, icon) {
   const channelListRef = ref(db, 'Channels');
   const newChannelRef = push(channelListRef);
@@ -296,7 +302,6 @@ function deleteFile(ref) {
   deleteObject(ref);
 }
 function listenToUploadProgress(task, setProgress) {
-  console.log(task);
   task.on('state_changed', (snap) => {
     const progress = Math.round(
       (snap.bytesTransferred / snap.totalBytes) * 100
@@ -325,4 +330,5 @@ export {
   listenToUploadProgress,
   deleteRoom,
   updateRoomName,
+  createSampleChannels,
 };

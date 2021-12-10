@@ -1,15 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useContext, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { subscribeToChannel } from '../../logic/user_firebaseStuff';
+import { UserContext } from '../../logic/contexts/UserContext';
+import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 import ChatDisplay from './ChatDisplay';
 import ChatBarWrapper from './ChatBarWrapper';
+import FlatBtn from '../FlatBtn';
 
 const ChatWrapper = ({ room, msgList, userList, submitMsg, isVisitor }) => {
+  const { user } = useContext(UserContext);
+  const { setError } = useContext(ErrorContext);
+  const { channelID } = useParams();
   const [replyTo, setReplyTo] = useState();
   const chatBarInputRef = useRef();
 
   function onReplyTo(displayName, msgID) {
     setReplyTo({ displayName, msgID });
     chatBarInputRef.current.focus();
+  }
+
+  async function onSubscribe() {
+    try {
+      await subscribeToChannel(user, channelID);
+    } catch (error) {
+      setError(error.message);
+    }
   }
 
   return (
@@ -21,7 +38,7 @@ const ChatWrapper = ({ room, msgList, userList, submitMsg, isVisitor }) => {
         setReplyTo={setReplyTo}
         onReplyTo={onReplyTo}
       />
-      {!isVisitor && (
+      {!isVisitor ? (
         <ChatBarWrapper
           userList={userList}
           submit={submitMsg}
@@ -30,6 +47,11 @@ const ChatWrapper = ({ room, msgList, userList, submitMsg, isVisitor }) => {
           setReplyTo={setReplyTo}
           chatBarInputRef={chatBarInputRef}
         />
+      ) : (
+        <div className="subscribe-banner">
+          <FlatBtn className="filler" text="Subscribe" onClick={onSubscribe} />
+          to this channel to chat
+        </div>
       )}
     </main>
   );

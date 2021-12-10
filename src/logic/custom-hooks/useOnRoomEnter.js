@@ -33,7 +33,6 @@ export default function useOnRoomEnter(
       try {
         detachListenersForRoom(roomID);
         await dealWithReadMentions(user.uid, channelID, roomID); // for any mentions that occur when user is in room
-        setMsgList([]);
       } catch (error) {
         setError(error.message);
       }

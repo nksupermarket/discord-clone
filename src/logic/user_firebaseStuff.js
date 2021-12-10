@@ -1,7 +1,5 @@
 import {
-  getDatabase,
   ref,
-  push,
   set,
   get,
   update,
@@ -24,13 +22,27 @@ import {
   signOut,
 } from 'firebase/auth';
 import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
-import {
-  getChannelIcons,
-  getChannelNames,
-  getInfoForChannelList,
-} from './channel_firebaseStuff';
+import { getInfoForChannelList } from './channel_firebaseStuff';
 import { db, storage } from '../firebaseStuff';
-import getUnixTime from 'date-fns/getUnixTime';
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from 'unique-names-generator';
+
+async function generateRandomUser(setUser) {
+  const rdmName = uniqueNamesGenerator({
+    dictionaries: [adjectives, colors, animals],
+  });
+  return await createUser(
+    `${rdmName}@email.com`,
+    rdmName,
+    rdmName,
+    null,
+    setUser
+  );
+}
 
 function sendPWResetEmail(email) {
   const auth = getAuth();
@@ -132,7 +144,9 @@ async function createUser(email, password, displayName, channelID, setUser) {
 
   if (channelID) subscribeToChannel(userCredential.user, channelID);
 
-  setUser(userCredential.user);
+  setUser && setUser(userCredential.user);
+
+  return userCredential.user;
 }
 
 async function signIn(email, password) {
@@ -145,7 +159,7 @@ async function subscribeToChannel(user, channelID, role) {
   updates[`users/${user.uid}/channels/${channelID}`] = ``;
 
   updates[`Channels/${channelID}/users/${user.uid}`] = {
-    role: role || '',
+    role: role || null,
     displayName: user.displayName,
     avatar: user.photoURL || '',
     color: user.color,
@@ -167,7 +181,7 @@ async function getUserInfo(
     const data = snap.val();
     if (!data) return;
     setUserProfileColor(data.color);
-    updateChannelList(data);
+    updateChannelList();
     setMentioned(data.mentions);
     //helper
     async function updateChannelList() {
@@ -175,22 +189,17 @@ async function getUserInfo(
       for (const id in data.channels) {
         channelList.push({ id, role: data.channels[id] });
       }
-      await getInfoForChannelList(
-        'icon',
-        channelList,
-        updateChannelListWithInfo
-      );
-      await getInfoForChannelList(
-        'name',
-        channelList,
-        updateChannelListWithInfo
-      );
-      await getInfoForChannelList(
-        'defaultRoom',
-        channelList,
-        updateChannelListWithInfo
-      );
-      await setChannelList(channelList);
+      await Promise.all([
+        getInfoForChannelList('icon', channelList, updateChannelListWithInfo),
+        getInfoForChannelList('name', channelList, updateChannelListWithInfo),
+        getInfoForChannelList(
+          'defaultRoom',
+          channelList,
+          updateChannelListWithInfo
+        ),
+      ]);
+
+      setChannelList(channelList);
 
       //helpers
       function updateChannelListWithInfo(type, vals) {
@@ -278,4 +287,5 @@ export {
   verifyPW,
   removeUser,
   logout,
+  generateRandomUser,
 };

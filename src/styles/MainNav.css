@@ -17,6 +17,10 @@
   align-items: stretch;
 }
 
+#main-nav header .avatar-wrapper .avatar {
+  border-radius: 10px;
+}
+
 #main-nav .header-underline {
   height: 2px;
   width: 30px;

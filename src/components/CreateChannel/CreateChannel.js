@@ -51,7 +51,6 @@ const CreateChannel = ({ close, isMobile }) => {
         await subscribeToChannel(user, channelID, 'owner');
         await createUserRole(channelID, 'owner');
       } catch (error) {
-        console.log(error);
         setError(error.message);
       }
     },

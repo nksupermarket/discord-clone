@@ -5,6 +5,8 @@ import uniqid from 'uniqid';
 import CatList from '../CatList';
 import ListItem from './ListItem';
 
+let count = 0;
+
 const Sidebar = ({ btnList, categories, dispatch }) => {
   const [activeBtn, setActiveBtn] = useState();
 
@@ -15,7 +17,7 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
           categories.map((category) => (
             <>
               <CatList
-                key={uniqid()}
+                key={count++}
                 cat={category}
                 className="settings-category-wrapper"
                 isHeader={category !== 'none'}
@@ -27,9 +29,10 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
                     return false;
                   })
                   .map((btn, i) => {
+                    const id = uniqid();
                     return (
                       <ListItem
-                        key={uniqid()}
+                        key={count++}
                         onClick={() => {
                           if (!dispatch) return;
                           setActiveBtn(btn.text);
@@ -51,9 +54,10 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
           ))}
         {!categories &&
           btnList.map((btn) => {
+            const id = uniqid();
             return (
               <ListItem
-                key={uniqid()}
+                key={count++}
                 onClick={() => {
                   dispatch && dispatch({ type: 'swap_to', payload: btn.text });
                 }}

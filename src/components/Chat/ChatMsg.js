@@ -31,7 +31,6 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
     () => userList.find((uObj) => uObj.uid === senderID),
     [userList, senderID]
   );
-
   const replyUser = useMemo(
     () => userList.find((uObj) => uObj.uid === replyContext?.user),
     [userList, replyContext]
@@ -40,7 +39,6 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
   const convertPlaintextToHTML = useCallback(
     (text, mentions) => {
       if (!mentions || mentions.length === 0) return text;
-
       let mentionRanges = []; // text indexes that contain a mention
       let mentionOffsets = []; //beginning index of each mention
       mentions.forEach((mention) => {
@@ -72,16 +70,15 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
 
         if (mentionRanges.includes(i)) return; // rest of the mention, can skip because mentionWrapper already inserted
 
-        if (i === 0 || mentionRanges.includes(i - 1)) content.push(val); // marks beginning of non-mention string
+        if (i === 0 || mentionRanges.includes(i - 1)) return content.push(val); // marks beginning of non-mention string
 
-        content[content.length - 1] = content[content.length - 1].concat(val); // string continues
+        return (content[content.length - 1] =
+          content[content.length - 1].concat(val)); // string continues
       });
-
       return content;
     },
     [userList]
   );
-
   return (
     <li
       className={isMentioned ? 'chat-msg mentioned' : 'chat-msg'}

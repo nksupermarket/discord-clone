@@ -74,6 +74,7 @@ export default function useOnChannelEnter(
   }, [channelID, isVisiting, updateChannel, user, setError]);
 
   useEffect(() => {
+    if (!user || !userList) return;
     setUserRole(userList.find((u) => u.uid === user.uid)?.role);
   }, [user, userList]);
 

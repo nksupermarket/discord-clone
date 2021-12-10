@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { updateUserOnline, getUserInfo } from '../user_firebaseStuff';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -11,10 +11,17 @@ export default function useLoginUser(setLoading, setError) {
   const location = useLocation();
   const history = useHistory();
 
+  const isMounted = useRef();
+  useEffect(() => {
+    isMounted.current = true;
+    return () => (isMounted.current = false);
+  });
+
   useEffect(
     function getCurrentUser() {
       const auth = getAuth();
       onAuthStateChanged(auth, async (currUser) => {
+        if (!isMounted.current) return;
         if (!currUser) {
           //on logout stuff
           setUser(currUser);
@@ -47,6 +54,7 @@ export default function useLoginUser(setLoading, setError) {
   useEffect(
     function afterSetChannelList() {
       if (!user || !channelList) return;
+      console.log(channelList);
       if (location.pathname === '/' || location.pathname === '/login')
         if (channelList[0]) {
           const defaultRoomID = Object.keys(channelList[0].defaultRoom)[0];
