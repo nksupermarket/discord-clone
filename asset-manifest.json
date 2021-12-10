@@ -1,6 +1,6 @@
 {
   "files": {
-    "static/css/0.9127b9dd.chunk.css": "/discord-clone/static/css/0.9127b9dd.chunk.css",
+    "static/css/0.4b246f44.chunk.css": "/discord-clone/static/css/0.4b246f44.chunk.css",
     "static/js/0.e1900b19.chunk.js": "/discord-clone/static/js/0.e1900b19.chunk.js",
     "static/js/0.e1900b19.chunk.js.map": "/discord-clone/static/js/0.e1900b19.chunk.js.map",
     "static/js/1.f5e7589f.chunk.js": "/discord-clone/static/js/1.f5e7589f.chunk.js",
@@ -12,10 +12,10 @@
     "static/js/3.cc681e4c.chunk.js": "/discord-clone/static/js/3.cc681e4c.chunk.js",
     "static/js/3.cc681e4c.chunk.js.map": "/discord-clone/static/js/3.cc681e4c.chunk.js.map",
     "main.css": "/discord-clone/static/css/main.9d3e95f0.chunk.css",
-    "main.js": "/discord-clone/static/js/main.2d252661.chunk.js",
-    "main.js.map": "/discord-clone/static/js/main.2d252661.chunk.js.map",
-    "runtime-main.js": "/discord-clone/static/js/runtime-main.f8d9a9b2.js",
-    "runtime-main.js.map": "/discord-clone/static/js/runtime-main.f8d9a9b2.js.map",
+    "main.js": "/discord-clone/static/js/main.ebf38b4a.chunk.js",
+    "main.js.map": "/discord-clone/static/js/main.ebf38b4a.chunk.js.map",
+    "runtime-main.js": "/discord-clone/static/js/runtime-main.1d5e96b4.js",
+    "runtime-main.js.map": "/discord-clone/static/js/runtime-main.1d5e96b4.js.map",
     "static/js/6.9d4ce282.chunk.js": "/discord-clone/static/js/6.9d4ce282.chunk.js",
     "static/js/6.9d4ce282.chunk.js.map": "/discord-clone/static/js/6.9d4ce282.chunk.js.map",
     "static/css/7.d34fac05.chunk.css": "/discord-clone/static/css/7.d34fac05.chunk.css",
@@ -33,7 +33,7 @@
     "static/js/12.e6acb941.chunk.js": "/discord-clone/static/js/12.e6acb941.chunk.js",
     "static/js/12.e6acb941.chunk.js.map": "/discord-clone/static/js/12.e6acb941.chunk.js.map",
     "index.html": "/discord-clone/index.html",
-    "static/css/0.9127b9dd.chunk.css.map": "/discord-clone/static/css/0.9127b9dd.chunk.css.map",
+    "static/css/0.4b246f44.chunk.css.map": "/discord-clone/static/css/0.4b246f44.chunk.css.map",
     "static/css/2.e426f036.chunk.css.map": "/discord-clone/static/css/2.e426f036.chunk.css.map",
     "static/css/3.ddf253c5.chunk.css.map": "/discord-clone/static/css/3.ddf253c5.chunk.css.map",
     "static/css/7.d34fac05.chunk.css.map": "/discord-clone/static/css/7.d34fac05.chunk.css.map",
@@ -59,9 +59,9 @@
     "static/media/settings-3-fill.svg": "/discord-clone/static/media/settings-3-fill.710a4eb7.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.f8d9a9b2.js",
+    "static/js/runtime-main.1d5e96b4.js",
     "static/js/6.9d4ce282.chunk.js",
     "static/css/main.9d3e95f0.chunk.css",
-    "static/js/main.2d252661.chunk.js"
+    "static/js/main.ebf38b4a.chunk.js"
   ]
 }
