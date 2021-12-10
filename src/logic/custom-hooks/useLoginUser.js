@@ -54,7 +54,6 @@ export default function useLoginUser(setLoading, setError) {
   useEffect(
     function afterSetChannelList() {
       if (!user || !channelList) return;
-      console.log(channelList);
       if (location.pathname === '/' || location.pathname === '/login')
         if (channelList[0]) {
           const defaultRoomID = Object.keys(channelList[0].defaultRoom)[0];

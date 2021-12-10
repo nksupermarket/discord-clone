@@ -22,6 +22,8 @@
 .user-info-panel .ctn .name-tag {
   flex-grow: 1;
   margin-right: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .user-info-panel .ctn .name-tag .username-wrapper {
   font-size: 14px;
