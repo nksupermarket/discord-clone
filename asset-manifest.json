@@ -12,8 +12,8 @@
     "static/js/3.85fbe455.chunk.js": "/discord-clone/static/js/3.85fbe455.chunk.js",
     "static/js/3.85fbe455.chunk.js.map": "/discord-clone/static/js/3.85fbe455.chunk.js.map",
     "main.css": "/discord-clone/static/css/main.0e1285f5.chunk.css",
-    "main.js": "/discord-clone/static/js/main.bcfa7b0e.chunk.js",
-    "main.js.map": "/discord-clone/static/js/main.bcfa7b0e.chunk.js.map",
+    "main.js": "/discord-clone/static/js/main.0a2d42fa.chunk.js",
+    "main.js.map": "/discord-clone/static/js/main.0a2d42fa.chunk.js.map",
     "runtime-main.js": "/discord-clone/static/js/runtime-main.ebd65bfc.js",
     "runtime-main.js.map": "/discord-clone/static/js/runtime-main.ebd65bfc.js.map",
     "static/js/6.734a77f8.chunk.js": "/discord-clone/static/js/6.734a77f8.chunk.js",
@@ -62,6 +62,6 @@
     "static/js/runtime-main.ebd65bfc.js",
     "static/js/6.734a77f8.chunk.js",
     "static/css/main.0e1285f5.chunk.css",
-    "static/js/main.bcfa7b0e.chunk.js"
+    "static/js/main.0a2d42fa.chunk.js"
   ]
 }
