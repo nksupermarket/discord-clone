@@ -32,7 +32,6 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
   const isMentioned =
     mentions?.some((m) => m.uid === currentUser.uid) ||
     replyContext?.user === currentUser.uid;
-
   const sender = useMemo(
     () => userList.find((uObj) => uObj.uid === senderID),
     [userList, senderID],

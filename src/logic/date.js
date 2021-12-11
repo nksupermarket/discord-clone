@@ -6,11 +6,11 @@ import format from 'date-fns/format';
 function convertTimestampToString(timestamp) {
   const dateObj = fromUnixTime(timestamp);
 
-  if (isToday(dateObj))
-    return `Today at ${format(dateObj, "K':'m a")}`;
-
+  if (isToday(dateObj)) {
+    return `Today at ${format(dateObj, "K':'mm a")}`;
+  }
   if (isYesterday(dateObj))
-    return `Yesterday at ${format(dateObj, "K':'m a")}`;
+    return `Yesterday at ${format(dateObj, "K':'mm a")}`;
 
   return format(dateObj, "M'/'d'/'y");
 }
