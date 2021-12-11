@@ -49,6 +49,6 @@ export default MainNav;
 
 MainNav.propTypes = {
   beginCreateChannel: PropTypes.func,
-  isCreateChannel: PropTypes.func,
+  isCreateChannel: PropTypes.bool,
   visitingChannel: PropTypes.object,
 };

@@ -9,6 +9,8 @@ const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
   const messagesEndRef = useRef();
   const scrollerRef = useRef();
   const [isScrolled, setIsScrolled] = useState(true);
+  const [firstRender, setFirstRender] = useState(true);
+
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({
       behavior: 'auto',
@@ -19,7 +21,10 @@ const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
   }
 
   useEffect(() => {
-    return () => setIsScrolled(false);
+    setFirstRender(true);
+    return () => {
+      setIsScrolled(false);
+    };
   }, [roomID]);
 
   useEffect(() => {
@@ -32,9 +37,11 @@ const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
         className="scroller"
         ref={scrollerRef}
         style={{ opacity: isScrolled ? 1 : 0 }}
-        onLoad={async () => {
+        onScroll={async () => {
+          if (!firstRender) return;
           await notifyWhenScrollingIsFinished(scrollerRef.current);
           setIsScrolled(true);
+          setFirstRender(false);
         }}
       >
         <div className="scroller-content">

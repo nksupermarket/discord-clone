@@ -80,16 +80,9 @@ const ChannelNav = ({
 export default ChannelNav;
 
 ChannelNav.propTypes = {
-  channel: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  }),
+  channel: PropTypes.object,
   categories: PropTypes.array,
-  list: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  ),
+  list: PropTypes.array,
   showUserSettings: PropTypes.func,
   showCreateRoom: PropTypes.func,
 };

@@ -67,6 +67,6 @@ MobileSidebar.propTypes = {
   isVisible: PropTypes.bool,
   isLeft: PropTypes.bool,
   className: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
   hide: PropTypes.func,
 };
