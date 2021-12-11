@@ -1,6 +1,6 @@
 {
   "files": {
-    "static/css/0.4b246f44.chunk.css": "/discord-clone/static/css/0.4b246f44.chunk.css",
+    "static/css/0.6f5e541e.chunk.css": "/discord-clone/static/css/0.6f5e541e.chunk.css",
     "static/js/0.8ae19d8e.chunk.js": "/discord-clone/static/js/0.8ae19d8e.chunk.js",
     "static/js/0.8ae19d8e.chunk.js.map": "/discord-clone/static/js/0.8ae19d8e.chunk.js.map",
     "static/js/1.b9880d17.chunk.js": "/discord-clone/static/js/1.b9880d17.chunk.js",
@@ -14,8 +14,8 @@
     "main.css": "/discord-clone/static/css/main.0e1285f5.chunk.css",
     "main.js": "/discord-clone/static/js/main.0a2d42fa.chunk.js",
     "main.js.map": "/discord-clone/static/js/main.0a2d42fa.chunk.js.map",
-    "runtime-main.js": "/discord-clone/static/js/runtime-main.fafdefd6.js",
-    "runtime-main.js.map": "/discord-clone/static/js/runtime-main.fafdefd6.js.map",
+    "runtime-main.js": "/discord-clone/static/js/runtime-main.91d62f32.js",
+    "runtime-main.js.map": "/discord-clone/static/js/runtime-main.91d62f32.js.map",
     "static/js/6.734a77f8.chunk.js": "/discord-clone/static/js/6.734a77f8.chunk.js",
     "static/js/6.734a77f8.chunk.js.map": "/discord-clone/static/js/6.734a77f8.chunk.js.map",
     "static/css/7.d34fac05.chunk.css": "/discord-clone/static/css/7.d34fac05.chunk.css",
@@ -33,7 +33,7 @@
     "static/js/12.e0591a4f.chunk.js": "/discord-clone/static/js/12.e0591a4f.chunk.js",
     "static/js/12.e0591a4f.chunk.js.map": "/discord-clone/static/js/12.e0591a4f.chunk.js.map",
     "index.html": "/discord-clone/index.html",
-    "static/css/0.4b246f44.chunk.css.map": "/discord-clone/static/css/0.4b246f44.chunk.css.map",
+    "static/css/0.6f5e541e.chunk.css.map": "/discord-clone/static/css/0.6f5e541e.chunk.css.map",
     "static/css/2.e426f036.chunk.css.map": "/discord-clone/static/css/2.e426f036.chunk.css.map",
     "static/css/3.ddf253c5.chunk.css.map": "/discord-clone/static/css/3.ddf253c5.chunk.css.map",
     "static/css/7.d34fac05.chunk.css.map": "/discord-clone/static/css/7.d34fac05.chunk.css.map",
@@ -59,7 +59,7 @@
     "static/media/settings-3-fill.svg": "/discord-clone/static/media/settings-3-fill.710a4eb7.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.fafdefd6.js",
+    "static/js/runtime-main.91d62f32.js",
     "static/js/6.734a77f8.chunk.js",
     "static/css/main.0e1285f5.chunk.css",
     "static/js/main.0a2d42fa.chunk.js"
