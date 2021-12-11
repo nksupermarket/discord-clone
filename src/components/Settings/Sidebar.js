@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-import uniqid from 'uniqid';
+import PropTypes from 'prop-types';
 
 import CatList from '../CatList';
 import ListItem from './ListItem';
@@ -22,24 +21,29 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
                 className="settings-category-wrapper"
                 isHeader={category !== 'none'}
               >
-                {btnList //grab btns that fall under the category
+                {btnList // grab btns that fall under the category
                   .filter((btn) => {
                     if (btn.category === category) return true;
-                    if (!btn.category && category === 'none') return true;
+                    if (!btn.category && category === 'none')
+                      return true;
                     return false;
                   })
-                  .map((btn, i) => {
-                    const id = uniqid();
+                  .map((btn) => {
                     return (
                       <ListItem
                         key={count++}
                         onClick={() => {
                           if (!dispatch) return;
                           setActiveBtn(btn.text);
-                          dispatch({ type: 'swap_to', payload: btn.text });
+                          dispatch({
+                            type: 'swap_to',
+                            payload: btn.text,
+                          });
                         }}
                         active={
-                          activeBtn ? activeBtn === btn.text : btn.isDefault
+                          activeBtn
+                            ? activeBtn === btn.text
+                            : btn.isDefault
                         }
                       >
                         {capitalize(btn.text)}
@@ -54,14 +58,16 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
           ))}
         {!categories &&
           btnList.map((btn) => {
-            const id = uniqid();
             return (
               <ListItem
                 key={count++}
                 onClick={() => {
-                  dispatch && dispatch({ type: 'swap_to', payload: btn.text });
+                  dispatch &&
+                    dispatch({ type: 'swap_to', payload: btn.text });
                 }}
-                active={activeBtn ? activeBtn === btn.text : btn.isDefault}
+                active={
+                  activeBtn ? activeBtn === btn.text : btn.isDefault
+                }
               >
                 {capitalize(btn.text)}
               </ListItem>
@@ -80,3 +86,9 @@ function capitalize(str) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+Sidebar.propTypes = {
+  btnList: PropTypes.arrayOf(PropTypes.object),
+  categories: PropTypes.arrayOf(PropTypes.string),
+  dispatch: PropTypes.func,
+};

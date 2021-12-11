@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useContext, useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
+import PropTypes from 'prop-types';
 
 import { logout } from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
@@ -18,14 +19,13 @@ const UserSettings = ({ close }) => {
         case 'user profile':
           return 'user profile';
         case 'log out':
-          onLogout();
-          async function onLogout() {
+          (async function onLogout() {
             try {
               await logout();
             } catch (error) {
               SetError(error.message);
             }
-          }
+          })();
           break;
         default:
           throw new Error("that doesn't exist!");
@@ -67,3 +67,7 @@ function createSettingsButtonDetails(text, category) {
     category,
   };
 }
+
+UserSettings.propTypes = {
+  close: PropTypes.func,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const CatList = ({
   cat,
@@ -24,3 +25,12 @@ const CatList = ({
 };
 
 export default CatList;
+
+CatList.propTypes = {
+  cat: PropTypes.string,
+  catRef: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  className: PropTypes.string,
+  isHeader: PropTypes.bool,
+  headerSubtext: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+};

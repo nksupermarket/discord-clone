@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { useParams } from 'react-router';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../logic/contexts/UserContext';
 import useTouchEvents from '../logic/custom-hooks/useTouchEvents';
@@ -7,7 +8,10 @@ import useOnChannelEnter from '../logic/custom-hooks/useOnChannelEnter';
 import useOnRoomEnter from '../logic/custom-hooks/useOnRoomEnter';
 import { ChannelContext } from '../logic/contexts/ChannelContext';
 import useInputValues from '../logic/custom-hooks/useInputValues';
-import { createRoom, createRoomCategory } from '../logic/channel_firebaseStuff';
+import {
+  createRoom,
+  createRoomCategory,
+} from '../logic/channel_firebaseStuff';
 
 import ChannelNav from './ChannelNav/ChannelNav_mobile';
 import UserSettings from './UserInfo/UserSettings_mobile';
@@ -31,7 +35,7 @@ const ChannelView = ({ finishLoading, setError }) => {
 
   const updateChannel = useCallback(
     (name, icon) => setChannel({ name, icon, id: channelID }),
-    [channelID]
+    [channelID],
   );
   const {
     visitingChannel,
@@ -41,12 +45,18 @@ const ChannelView = ({ finishLoading, setError }) => {
     userList,
     onlineUsers,
     userRole,
-  } = useOnChannelEnter(user, channelID, channelList, updateChannel, setError);
+  } = useOnChannelEnter(
+    user,
+    channelID,
+    channelList,
+    updateChannel,
+    setError,
+  );
 
   // room stuff
   const updateRoom = useCallback(
     (name) => setRoom({ name, id: roomID }),
-    [roomID]
+    [roomID],
   );
   const { msgList, submitMsg } = useOnRoomEnter(
     user,
@@ -54,23 +64,22 @@ const ChannelView = ({ finishLoading, setError }) => {
     roomID,
     updateRoom,
     finishLoading,
-    setError
+    setError,
   );
 
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const onLeftSwipe = useCallback(() => {
-    if (!showLeftSidebar && !showRightSidebar) return setShowLeftSidebar(true);
+    if (!showLeftSidebar && !showRightSidebar)
+      return setShowLeftSidebar(true);
     if (showRightSidebar) return setShowRightSidebar(false);
   }, [showLeftSidebar, showRightSidebar]);
   const onRightSwipe = useCallback(() => {
     if (showLeftSidebar) return setShowLeftSidebar(false);
     if (!showRightSidebar) return setShowRightSidebar(true);
   }, [showLeftSidebar, showRightSidebar]);
-  const { handleTouchStart, handleTouchMove, handleTouchEnd } = useTouchEvents(
-    onRightSwipe,
-    onLeftSwipe
-  );
+  const { handleTouchStart, handleTouchMove, handleTouchEnd } =
+    useTouchEvents(onRightSwipe, onLeftSwipe);
 
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [isCreateChannel, setIsCreateChannel] = useState(false);
@@ -86,7 +95,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     await createRoom(
       channel.id,
       newRoomInfo.room_name,
-      newRoomInfo.room_category || null
+      newRoomInfo.room_category || null,
     );
     if (roomCategories.indexOf(newRoomInfo.room_category) === -1) {
       await createRoomCategory(channel.id, newRoomInfo.room_category);
@@ -98,7 +107,10 @@ const ChannelView = ({ finishLoading, setError }) => {
   return (
     <ChannelContext.Provider value={{ userRole }}>
       {editRoomInfo && (
-        <RoomSettings room={editRoomInfo} close={() => setEditRoomInfo()} />
+        <RoomSettings
+          room={editRoomInfo}
+          close={() => setEditRoomInfo()}
+        />
       )}
       {isCreateRoom && (
         <Modal
@@ -200,3 +212,8 @@ const ChannelView = ({ finishLoading, setError }) => {
 };
 
 export default ChannelView;
+
+ChannelView.propTypes = {
+  finishLoading: PropTypes.func,
+  setError: PropTypes.func,
+};

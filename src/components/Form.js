@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import useInputError from '../logic/custom-hooks/useInputError';
 import uniqid from 'uniqid';
@@ -21,7 +22,8 @@ const Form = ({
 }) => {
   const formRef = useRef();
   const fieldNames = fields.map((f) => f.name);
-  const { inputError, validateInput, submitForm } = useInputError(fieldNames);
+  const { inputError, validateInput, submitForm } =
+    useInputError(fieldNames);
   const [loading, setLoading] = useState(false);
 
   const isMounted = useRef(false);
@@ -36,27 +38,29 @@ const Form = ({
       autoComplete="nope"
       onSubmit={async (e) => {
         setLoading(true);
-        cleanUp = cleanUp ? cleanUp : close;
+        cleanUp = cleanUp || close;
         await submitForm(e, submitAction, cleanUp, setError);
         if (isMounted.current) setLoading(false);
       }}
     >
       <div className="content">
         <input type="password" hidden />
-        {/*need this to turn off autocomplete */}
+        {/* need this to turn off autocomplete */}
         {fields.map((f, idx) => {
           return (
             <InputField
               key={idx}
               type={f.type}
-              autoFocus={idx === 0 ? true : false}
+              autoFocus={idx === 0}
               onBlur={
                 f.name === 'confirm_password'
                   ? (e) =>
                       validateInput(
                         e.target,
                         false,
-                        formRef.current.elements.namedItem('new_password').value
+                        formRef.current.elements.namedItem(
+                          'new_password',
+                        ).value,
                       )
                   : (e) => validateInput(e.target)
               }
@@ -70,17 +74,21 @@ const Form = ({
         })}
       </div>
       <footer>
-        <div className={loading ? 'btn-ctn no-pointer-events' : 'btn-ctn'}>
+        <div
+          className={
+            loading ? 'btn-ctn no-pointer-events' : 'btn-ctn'
+          }
+        >
           {!noCancelBtn && (
             <FlatBtn
-              text={cancelBtnText ? cancelBtnText : 'Cancel'}
+              text={cancelBtnText || 'Cancel'}
               isUnderline={true}
               onClick={close}
             />
           )}
           <FlatBtn
             type="submit"
-            text={actionBtnText ? actionBtnText : 'Done'}
+            text={actionBtnText || 'Done'}
             className="filled small"
             loading={loading}
           />
@@ -89,7 +97,11 @@ const Form = ({
           <div className="text-btn-ctn">
             {textBtns.map((b) => {
               return (
-                <span key={uniqid()} className="link" onClick={b.onClick}>
+                <span
+                  key={uniqid()}
+                  className="link"
+                  onClick={b.onClick}
+                >
                   {b.text}
                 </span>
               );
@@ -102,3 +114,17 @@ const Form = ({
 };
 
 export default Form;
+
+Form.propTypes = {
+  fields: PropTypes.arrayOf(PropTypes.object),
+  inputValues: PropTypes.object,
+  actionBtnText: PropTypes.string,
+  noCancelBtn: PropTypes.bool,
+  cancelBtnText: PropTypes.string,
+  textBtns: PropTypes.arrayOf(PropTypes.object),
+  handleChange: PropTypes.func,
+  submitAction: PropTypes.func,
+  cleanUp: PropTypes.func,
+  close: PropTypes.func,
+  setError: PropTypes.func,
+};

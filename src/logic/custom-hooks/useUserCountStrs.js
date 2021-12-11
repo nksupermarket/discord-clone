@@ -15,7 +15,10 @@ export default function useUserCountStrs(list, roles, rolesRef) {
         ? rolesRef.current[role].classList.add('hidden')
         : rolesRef.current[role].classList.remove('hidden');
 
-      setUserCountStrs((prev) => ({ ...prev, [role]: ` - ${userCount}` }));
+      setUserCountStrs((prev) => ({
+        ...prev,
+        [role]: ` - ${userCount}`,
+      }));
     });
   }, [roles, rolesRef, list]);
 

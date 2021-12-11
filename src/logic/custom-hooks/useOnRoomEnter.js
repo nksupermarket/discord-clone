@@ -5,7 +5,10 @@ import {
   getRoomStuff,
 } from '../room_firebaseStuff';
 import getUnixTime from 'date-fns/getUnixTime';
-import { dealWithReadMentions, updateMentions } from '../user_firebaseStuff';
+import {
+  dealWithReadMentions,
+  updateMentions,
+} from '../user_firebaseStuff';
 
 export default function useOnRoomEnter(
   user,
@@ -13,7 +16,7 @@ export default function useOnRoomEnter(
   roomID,
   setRoomName,
   finishLoading,
-  setError
+  setError,
 ) {
   const [msgList, setMsgList] = useState([]);
 
@@ -23,7 +26,12 @@ export default function useOnRoomEnter(
 
     async function onRoomEnter() {
       try {
-        await getRoomStuff(roomID, setRoomName, setMsgList, finishLoading);
+        await getRoomStuff(
+          roomID,
+          setRoomName,
+          setMsgList,
+          finishLoading,
+        );
         await dealWithReadMentions(user.uid, channelID, roomID);
       } catch (error) {
         setError(error.message);

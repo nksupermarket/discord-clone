@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import AttachmentWrapper from '../Upload/AttachmentWrapper';
 import ChatBarInput from './ChatBarInput';
@@ -16,7 +17,7 @@ const ChatBar = ({
   removeAttachment,
   ...props
 }) => {
-  let style = replyTo
+  const style = replyTo
     ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
     : { borderTopLeftRadius: '8px', borderTopRightRadius: '8px' };
   return (
@@ -56,3 +57,14 @@ const ChatBar = ({
 };
 
 export default ChatBar;
+
+ChatBar.propTypes = {
+  replyTo: PropTypes.objectOf(PropTypes.string),
+  attachments: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+    }),
+  ),
+  handleNewAttachments: PropTypes.func,
+  removeAttachment: PropTypes.func,
+};

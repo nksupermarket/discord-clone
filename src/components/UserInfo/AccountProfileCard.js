@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 
@@ -24,7 +25,7 @@ const AccountProfileCard = ({
     <div className="account-profile-card">
       <div
         className="banner"
-        style={{ background: bannerColor ? bannerColor : user.color }}
+        style={{ background: bannerColor || user.color }}
       ></div>
       <div className="user-info">
         {isSmall ? (
@@ -39,7 +40,9 @@ const AccountProfileCard = ({
         ) : (
           <Avatar img={user.photoURL} color={user.color} />
         )}
-        <div className="profile-card-username">{user.displayName}</div>
+        <div className="profile-card-username">
+          {user.displayName}
+        </div>
         {!isSmall && (
           <FlatBtn
             text={'Edit User Profile'}
@@ -56,7 +59,11 @@ const AccountProfileCard = ({
               display={user.displayName}
               onClick={editUsername}
             />
-            <Field item="email" display={user.email} onClick={editEmail} />
+            <Field
+              item="email"
+              display={user.email}
+              onClick={editEmail}
+            />
           </div>
         </div>
       )}
@@ -65,3 +72,14 @@ const AccountProfileCard = ({
 };
 
 export default AccountProfileCard;
+
+AccountProfileCard.propTypes = {
+  editProfile: PropTypes.func,
+  editUsername: PropTypes.func,
+  editEmail: PropTypes.func,
+  isSmall: PropTypes.bool,
+  handleAvatarChange: PropTypes.func,
+  avatarPreview: PropTypes.string,
+  bannerColor: PropTypes.string,
+  handleImg: PropTypes.func,
+};

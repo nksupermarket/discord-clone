@@ -1,11 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import IconBtn from '../IconBtn';
 
 import closeSVG from '../../assets/svg/close-circle-fill.svg';
 
 import '../../styles/UploadProgress.css';
 
-const UploadProgressWrapper = ({ isCompleted, task, cancel }) => {
+const UploadProgressWrapper = ({ task, cancel }) => {
   return (
     <div className="upload-progress-wrapper">
       <div className="content">
@@ -21,3 +23,8 @@ const UploadProgressWrapper = ({ isCompleted, task, cancel }) => {
 };
 
 export default UploadProgressWrapper;
+
+UploadProgressWrapper.propTypes = {
+  task: PropTypes.object,
+  cancel: PropTypes.func,
+};

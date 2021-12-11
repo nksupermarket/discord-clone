@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 
@@ -26,3 +27,7 @@ const UserInfo = ({ showSettings }) => {
 };
 
 export default UserInfo;
+
+UserInfo.propTypes = {
+  showSettings: PropTypes.func,
+};

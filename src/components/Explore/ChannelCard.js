@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from '../Avatar';
+import PropTypes from 'prop-types';
 
 import '../../styles/ChannelCard.css';
 
@@ -13,10 +14,16 @@ const ChannelCard = ({ channel }) => {
         </div>
       </header>
       <div className="content">
-        <div className="channel-desc-wrapper">{channel.description}</div>
+        <div className="channel-desc-wrapper">
+          {channel.description}
+        </div>
       </div>
     </div>
   );
 };
 
 export default ChannelCard;
+
+ChannelCard.propTypes = {
+  channel: PropTypes.objectOf(PropTypes.string),
+};

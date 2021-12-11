@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import Sidebar from './Sidebar';
 import IconBtn from '../IconBtn';
@@ -21,14 +22,23 @@ const Settings = ({ close, children, ...props }) => {
           <div className="content-scroller">
             <main className="content">{children}</main>
             <div className="actions">
-              <IconBtn svg={closeSVG} onClick={close} className={'close-btn'} />
+              <IconBtn
+                svg={closeSVG}
+                onClick={close}
+                className={'close-btn'}
+              />
             </div>
           </div>
         </div>
       </div>
     </div>,
-    document.querySelector('body')
+    document.querySelector('body'),
   );
 };
 
 export default Settings;
+
+Settings.propTypes = {
+  close: PropTypes.func,
+  children: PropTypes.element,
+};

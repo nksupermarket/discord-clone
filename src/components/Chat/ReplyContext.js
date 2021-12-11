@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 
@@ -15,3 +16,10 @@ const ReplyContext = ({ displayName, avatar, color, msg }) => {
 };
 
 export default ReplyContext;
+
+ReplyContext.propTypes = {
+  displayName: PropTypes.string,
+  avatar: PropTypes.string,
+  color: PropTypes.string,
+  msg: PropTypes.string,
+};

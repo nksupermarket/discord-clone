@@ -1,10 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import searchSVG from '../../assets/svg/search-line.svg';
 import bannerBG from '../../assets/png/Waffle_Coffee_Dessert.png';
 import closeSVG from '../../assets/svg/close-circle-fill.svg';
 
-const BannerSearch = ({ query, onSearch, handleChange, cancelSearch }) => {
+const BannerSearch = ({
+  query,
+  onSearch,
+  handleChange,
+  cancelSearch,
+}) => {
   return (
     <div
       className="container"
@@ -14,7 +20,8 @@ const BannerSearch = ({ query, onSearch, handleChange, cancelSearch }) => {
     >
       <h3>Find your community on bread</h3>
       <div className="subheader">
-        From gaming, to music, to learning, there's a place for you
+        From gaming, to music, to learning, there&apos;s a place for
+        you
       </div>
       <div className="search">
         <div className="searchBar">
@@ -45,3 +52,10 @@ const BannerSearch = ({ query, onSearch, handleChange, cancelSearch }) => {
 };
 
 export default BannerSearch;
+
+BannerSearch.propTypes = {
+  query: PropTypes.string,
+  onSearch: PropTypes.func,
+  handleChange: PropTypes.func,
+  cancelSearch: PropTypes.func,
+};

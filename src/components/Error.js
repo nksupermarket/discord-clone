@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import '../styles/Error.css';
 
@@ -10,8 +11,12 @@ const Error = ({ errorMsg }) => {
         <i className="ri-close-fill"></i> {errorMsg}
       </p>
     </div>,
-    document.querySelector('body')
+    document.querySelector('body'),
   );
 };
 
 export default Error;
+
+Error.propTypes = {
+  errorMsg: PropTypes.string,
+};

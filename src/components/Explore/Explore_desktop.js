@@ -6,6 +6,7 @@ import React, {
   useContext,
 } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 import {
@@ -43,7 +44,8 @@ const Explore = ({ finishLoading }) => {
       try {
         setLoading(true);
         const data = await getPublicChannels(status, key);
-        if (data && status === 'init') firstChannelID.current = data[0].id;
+        if (data && status === 'init')
+          firstChannelID.current = data[0].id;
         setPublicChannelList(data);
         setLoading(false);
         if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
@@ -51,7 +53,7 @@ const Explore = ({ finishLoading }) => {
         setError(error.message);
       }
     },
-    [setError]
+    [setError],
   );
   useEffect(() => {
     getBatchOfChannels('init');
@@ -110,7 +112,10 @@ const Explore = ({ finishLoading }) => {
         <div className="content">
           {isSearch ? (
             <div className="text-wrapper">
-              <h3>Search results for: "{searchedQuery.current}"</h3>
+              <h3>
+                Search results for: &#8220;{searchedQuery.current}
+                &#8221;
+              </h3>
             </div>
           ) : (
             <div className="page-navigation">
@@ -122,13 +127,16 @@ const Explore = ({ finishLoading }) => {
                     !publicChannelList
                       ? 'default_transition inactive'
                       : publicChannelList.find(
-                          (c) => c.id === firstChannelID.current
+                          (c) => c.id === firstChannelID.current,
                         )
                       ? 'default_transition inactive'
                       : 'default_transition'
                   }
                   onClick={() =>
-                    getBatchOfChannels('prev', publicChannelList[0].id)
+                    getBatchOfChannels(
+                      'prev',
+                      publicChannelList[0].id,
+                    )
                   }
                 />
                 <NavBtn
@@ -145,7 +153,8 @@ const Explore = ({ finishLoading }) => {
                   onClick={() =>
                     getBatchOfChannels(
                       'next',
-                      publicChannelList[publicChannelList.length - 1].id
+                      publicChannelList[publicChannelList.length - 1]
+                        .id,
                     )
                   }
                 />
@@ -177,3 +186,7 @@ const Explore = ({ finishLoading }) => {
 };
 
 export default Explore;
+
+Explore.propTypes = {
+  finishLoading: PropTypes.func,
+};

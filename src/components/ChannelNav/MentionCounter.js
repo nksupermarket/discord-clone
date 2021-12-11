@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import '../../styles/MentionCounter.css';
 
@@ -7,3 +8,7 @@ const MentionCounter = ({ count }) => {
 };
 
 export default MentionCounter;
+
+MentionCounter.propTypes = {
+  count: PropTypes.number,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FlatBtn from '../FlatBtn';
 import Popup from '../Popup';
@@ -47,3 +48,10 @@ const NodeOne = ({ nextNode, setChannelInfo, close, isMobile }) => {
 };
 
 export default NodeOne;
+
+NodeOne.propTypes = {
+  nextNode: PropTypes.func,
+  setChannelInfo: PropTypes.func,
+  close: PropTypes.func,
+  isMobile: PropTypes.bool,
+};

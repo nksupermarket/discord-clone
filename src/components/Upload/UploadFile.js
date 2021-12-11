@@ -1,4 +1,6 @@
 import React, { useContext, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
 const UploadFile = ({
@@ -13,7 +15,7 @@ const UploadFile = ({
   const { setError } = useContext(ErrorContext);
 
   function checkIfFileIsImg(file) {
-    return file['type'].includes('image');
+    return file.type.includes('image');
   }
 
   function handleChange(action) {
@@ -29,10 +31,9 @@ const UploadFile = ({
         return handleFile(file);
       }
       default:
-        return;
     }
 
-    //helpers
+    // helpers
     function setImgPreview(file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -45,7 +46,9 @@ const UploadFile = ({
   }
 
   return (
-    <label className={imgPreview ? 'upload-file' : 'upload-file init'}>
+    <label
+      className={imgPreview ? 'upload-file' : 'upload-file init'}
+    >
       {isPreview && imgPreview && (
         <img
           src={imgPreview}
@@ -66,3 +69,12 @@ const UploadFile = ({
 };
 
 export default UploadFile;
+
+UploadFile.propTypes = {
+  children: PropTypes.element,
+  handleFile: PropTypes.func,
+  handlePreview: PropTypes.func,
+  imgPreview: PropTypes.string,
+  isPreview: PropTypes.bool,
+  actionOnChange: PropTypes.string,
+};

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   createChannel,
@@ -40,12 +41,12 @@ const CreateChannel = ({ close, isMobile }) => {
           channelID = await createChannel(
             channelInfo.name,
             channelInfo.isPublic,
-            channelInfo.icon
+            channelInfo.icon,
           );
         } else {
           channelID = await createChannel(
             channelInfo.name,
-            channelInfo.isPublic
+            channelInfo.isPublic,
           );
         }
         await subscribeToChannel(user, channelID, 'owner');
@@ -54,7 +55,7 @@ const CreateChannel = ({ close, isMobile }) => {
         setError(error.message);
       }
     },
-    [channelInfo, user, setError]
+    [channelInfo, user, setError],
   );
 
   return (
@@ -65,7 +66,10 @@ const CreateChannel = ({ close, isMobile }) => {
             <NodeOne
               nextNode={ontoNextNode}
               setChannelInfo={(status) =>
-                setChannelInfo((prev) => ({ ...prev, isPublic: status }))
+                setChannelInfo((prev) => ({
+                  ...prev,
+                  isPublic: status,
+                }))
               }
               close={close}
               isMobile={isMobile}
@@ -96,3 +100,8 @@ const CreateChannel = ({ close, isMobile }) => {
 };
 
 export default CreateChannel;
+
+CreateChannel.propTypes = {
+  close: PropTypes.func,
+  isMobile: PropTypes.bool,
+};

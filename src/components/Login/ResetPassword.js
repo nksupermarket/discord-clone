@@ -1,4 +1,11 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useRef,
+  useEffect,
+  useState,
+} from 'react';
+import PropTypes from 'prop-types';
+
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 import useSuccess from '../../logic/custom-hooks/useSuccess';
 
@@ -41,3 +48,7 @@ const ResetPassword = ({ close }) => {
 };
 
 export default ResetPassword;
+
+ResetPassword.propTypes = {
+  close: PropTypes.func,
+};

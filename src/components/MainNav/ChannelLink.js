@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
+import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 import MentionCounter from '../ChannelNav/MentionCounter';
@@ -31,7 +32,9 @@ const ChannelLink = ({ channelID, mentionCount, icon, name }) => {
           <div className="avatar-wrapper list-item">
             <Avatar img={icon} channelName={name} />
           </div>
-          {mentionCount > 0 && <MentionCounter count={mentionCount} />}
+          {mentionCount > 0 && (
+            <MentionCounter count={mentionCount} />
+          )}
         </NavLink>
       </animated.div>
       {isTooltip && (
@@ -46,3 +49,10 @@ const ChannelLink = ({ channelID, mentionCount, icon, name }) => {
 };
 
 export default ChannelLink;
+
+ChannelLink.propTypes = {
+  channelID: PropTypes.string,
+  mentionCount: PropTypes.number,
+  icon: PropTypes.string,
+  name: PropTypes.string,
+};

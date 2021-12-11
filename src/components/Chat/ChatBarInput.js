@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo, useContext } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
 import createMentionPlugin from '@draft-js-plugins/mention';
+import PropTypes from 'prop-types';
 
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
@@ -21,7 +22,7 @@ const ChatBarInput = ({
   submit,
 }) => {
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+    EditorState.createEmpty(),
   );
 
   const [isMentionPopup, setIsMentionPopup] = useState(false);
@@ -66,7 +67,6 @@ const ChatBarInput = ({
       case 'Enter':
         return 'msg-submit';
       default:
-        return;
     }
   }
 
@@ -76,7 +76,6 @@ const ChatBarInput = ({
         onMsgSubmit();
         break;
       default:
-        return;
     }
 
     async function onMsgSubmit() {
@@ -84,7 +83,7 @@ const ChatBarInput = ({
 
       const raw = convertToRaw(editorState.getCurrentContent());
 
-      let mentionArr = [];
+      const mentionArr = [];
       fillMentionArr();
       function fillMentionArr() {
         for (const key in raw.entityMap) {
@@ -112,15 +111,15 @@ const ChatBarInput = ({
         cleanUpAttachments();
         setReplyTo();
 
-        //clear draftjs input
+        // clear draftjs input
         const newEditorState = EditorState.push(
           editorState,
-          ContentState.createFromText('')
+          ContentState.createFromText(''),
         );
         const currentState = editorState.getSelection();
         const newEditorWithCurrentState = EditorState.forceSelection(
           newEditorState,
-          currentState
+          currentState,
         );
         setEditorState(newEditorWithCurrentState);
       } catch (error) {
@@ -154,3 +153,22 @@ const ChatBarInput = ({
 };
 
 export default ChatBarInput;
+
+ChatBarInput.propTypes = {
+  chatBarInputRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+  roomName: PropTypes.string,
+  userList: PropTypes.arrayOf(
+    PropTypes.shape({
+      displayName: PropTypes.string,
+    }),
+  ),
+  replyTo: PropTypes.objectOf(PropTypes.string),
+  setReplyTo: PropTypes.func,
+  isAttachments: PropTypes.bool,
+  getAttachmentsURL: PropTypes.func,
+  cleanUpAttachments: PropTypes.func,
+  submit: PropTypes.func,
+};

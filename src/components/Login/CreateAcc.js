@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 
@@ -37,7 +38,7 @@ const CreateAcc = ({
             newUserInfo.password,
             newUserInfo.username,
             channel || null,
-            setUser
+            setUser,
           )
         }
         cleanUp={() => {
@@ -51,3 +52,12 @@ const CreateAcc = ({
 };
 
 export default CreateAcc;
+
+CreateAcc.propTypes = {
+  newUserInfo: PropTypes.objectOf(PropTypes.string),
+  handleChange: PropTypes.func,
+  channel: PropTypes.string,
+  setUser: PropTypes.func,
+  goBack: PropTypes.func,
+  inputValues: PropTypes.object,
+};

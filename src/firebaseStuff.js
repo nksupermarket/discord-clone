@@ -23,9 +23,3 @@ const db = getDatabase();
 const storage = getStorage();
 
 export { db, storage };
-
-//login user
-// pull Channels user is subscribed to
-// can pull all the rooms too
-
-// when user clicks on a room, pull messages

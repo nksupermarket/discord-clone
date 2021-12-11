@@ -2,7 +2,9 @@ import { verifyPW } from './user_firebaseStuff';
 
 function validateEmail(email) {
   const regX = /\S+@\S+\.\S+/;
-  return regX.test(email) ? { isValid: true } : { error: 'Not a valid email' };
+  return regX.test(email)
+    ? { isValid: true }
+    : { error: 'Not a valid email' };
 }
 
 function validatePW(pw) {
@@ -41,7 +43,11 @@ function confirmPW(pw, otherPW) {
     : { error: "Passwords don't match" };
 }
 
-function dynamicValidation(el, isSubmit = false, otherPW = undefined) {
+function dynamicValidation(
+  el,
+  isSubmit = false,
+  otherPW = undefined,
+) {
   switch (true) {
     case el.name.includes('username'): {
       return el.value.length > 0
@@ -61,7 +67,8 @@ function dynamicValidation(el, isSubmit = false, otherPW = undefined) {
       const pwValidation = validatePW(el.value);
       if (pwValidation.error) return pwValidation;
 
-      if (el.name === 'confirm_password') return confirmPW(el.value, otherPW);
+      if (el.name === 'confirm_password')
+        return confirmPW(el.value, otherPW);
       if (
         (el.name === 'current_password' || el.name === 'password') &&
         isSubmit

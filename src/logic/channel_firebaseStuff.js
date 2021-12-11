@@ -36,7 +36,9 @@ async function createChannel(name, isPublic, icon) {
   const newChannelRef = push(channelListRef);
   await set(newChannelRef, { name });
 
-  let iconURL = icon ? await changeChannelIcon(newChannelRef.key, icon) : '';
+  const iconURL = icon
+    ? await changeChannelIcon(newChannelRef.key, icon)
+    : '';
   if (isPublic)
     await set(ref(db, `public_channels/${newChannelRef.key}`), {
       name,
@@ -49,7 +51,7 @@ async function createChannel(name, isPublic, icon) {
 }
 
 async function deleteChannels() {
-  let updates = {};
+  const updates = {};
 
   [
     '-Mp9N-JNC7jgBKurBZCn',
@@ -71,11 +73,14 @@ async function searchPublicChannels(searchVal) {
     query(
       ref(db, '/public_channels/'),
       orderByChild('name'),
-      startAt(searchVal)
-    )
+      startAt(searchVal),
+    ),
   );
   const data = snap.val();
-  const processed = Object.keys(data).map((key) => ({ ...data[key], id: key }));
+  const processed = Object.keys(data).map((key) => ({
+    ...data[key],
+    id: key,
+  }));
   return processed;
 }
 
@@ -83,7 +88,9 @@ async function getPublicChannels(status, key) {
   let snap;
   switch (status) {
     case 'init':
-      snap = await get(query(ref(db, `public_channels/`), limitToFirst(20)));
+      snap = await get(
+        query(ref(db, `public_channels/`), limitToFirst(20)),
+      );
       break;
     case 'next':
       snap = await get(
@@ -91,8 +98,8 @@ async function getPublicChannels(status, key) {
           ref(db, `public_channels/`),
           orderByKey(),
           startAfter(key),
-          limitToFirst(20)
-        )
+          limitToFirst(20),
+        ),
       );
       break;
     case 'prev':
@@ -101,8 +108,8 @@ async function getPublicChannels(status, key) {
           ref(db, `public_channels/`),
           orderByKey(),
           endBefore(key),
-          limitToLast(20)
-        )
+          limitToLast(20),
+        ),
       );
       break;
     default:
@@ -110,7 +117,10 @@ async function getPublicChannels(status, key) {
   }
   const data = snap.val();
   if (!data) return;
-  const processed = Object.keys(data).map((key) => ({ ...data[key], id: key }));
+  const processed = Object.keys(data).map((key) => ({
+    ...data[key],
+    id: key,
+  }));
   return processed;
 }
 
@@ -135,7 +145,7 @@ async function getChannelInfo(
   setUserRoles,
   setUserList,
   setOnlineUsers,
-  setError
+  setError,
 ) {
   try {
     const channelRef = ref(db, `Channels/${channelID}`);
@@ -149,20 +159,24 @@ async function getChannelInfo(
         : [];
       setRoomCategories(['none', ...roomCategories]);
 
-      let roomListArr = [];
+      const roomListArr = [];
       pushToRoomListArr(data.rooms);
       setRoomList(roomListArr);
 
-      const userRoles = data.user_roles ? Object.keys(data.user_roles) : [];
+      const userRoles = data.user_roles
+        ? Object.keys(data.user_roles)
+        : [];
       setUserRoles([...userRoles, 'Online']);
 
-      let userList = [];
+      const userList = [];
       pushToUserListArr(data.users);
       setUserList(userList);
-      const onlineUsers = userList.filter((user) => user.status === 'online');
+      const onlineUsers = userList.filter(
+        (user) => user.status === 'online',
+      );
       setOnlineUsers(onlineUsers);
 
-      //helpers
+      // helpers
       function pushToRoomListArr(data) {
         for (const id in data) {
           roomListArr.push({ ...data[id], id });
@@ -187,7 +201,7 @@ async function getRoomList(channelID, setRoomList, setError) {
     const snap = await get(roomListRef);
     const data = snap.val();
 
-    let roomList = [];
+    const roomList = [];
     for (const id in data) {
       roomList.push({ ...data[id], id });
     }
@@ -208,7 +222,11 @@ async function createRoom(channelID, name, category) {
   });
 }
 
-async function getInfoForChannelList(type, channelList, updateChannelList) {
+async function getInfoForChannelList(
+  type,
+  channelList,
+  updateChannelList,
+) {
   const resultArr = await Promise.all(
     channelList.map((channel) => {
       let infoRef;
@@ -222,18 +240,18 @@ async function getInfoForChannelList(type, channelList, updateChannelList) {
         case 'defaultRoom':
           infoRef = query(
             ref(db, `Channels/${channel.id}/rooms`),
-            limitToFirst(1)
+            limitToFirst(1),
           );
           break;
         default:
           throw new Error('not a valid info type');
       }
       return get(infoRef);
-    })
+    }),
   );
   updateChannelList(
     type,
-    resultArr.map((result) => result.val())
+    resultArr.map((result) => result.val()),
   );
 }
 
@@ -241,7 +259,9 @@ async function getInfoForVisitingChannel(channelID) {
   const resultArr = await Promise.all([
     get(ref(db, `Channels/${channelID}/name`)),
     get(ref(db, `Channels/${channelID}/icon`)),
-    get(query(ref(db, `Channels/${channelID}/rooms`), limitToFirst(1))),
+    get(
+      query(ref(db, `Channels/${channelID}/rooms`), limitToFirst(1)),
+    ),
   ]);
 
   return resultArr.map((result) => result.val());
@@ -250,39 +270,48 @@ async function getInfoForVisitingChannel(channelID) {
 async function createRoomCategory(channelID, name) {
   const channelRoomCategoriesRef = ref(
     db,
-    `Channels/${channelID}/room_categories`
+    `Channels/${channelID}/room_categories`,
   );
   await update(channelRoomCategoriesRef, { [name]: true });
 }
 
 async function updateCategoryOfRoom(channelID, roomID, category) {
-  const channelRoomRef = ref(db, `Channels/${channelID}/rooms/${roomID}`);
+  const channelRoomRef = ref(
+    db,
+    `Channels/${channelID}/rooms/${roomID}`,
+  );
   await update(channelRoomRef, { category });
 }
 
 async function updateRoomName(channelID, roomID, name) {
-  await update(ref(db, `Channels/${channelID}/rooms/${roomID}`), { name });
+  await update(ref(db, `Channels/${channelID}/rooms/${roomID}`), {
+    name,
+  });
   await update(ref(db, `Rooms/${roomID}`), { name });
 }
 
 async function deleteRoom(channelID, roomID) {
-  let updates = {};
+  const updates = {};
   updates[`Channels/${channelID}/rooms/${roomID}`] = null;
   updates[`Rooms/${roomID}`] = null;
   await update(ref(db), updates);
 }
 
 async function createUserRole(channelID, role) {
-  const channelUserRolesRef = ref(db, `Channels/${channelID}/user_roles`);
+  const channelUserRolesRef = ref(
+    db,
+    `Channels/${channelID}/user_roles`,
+  );
   update(channelUserRolesRef, { [role]: true });
 }
 
 async function updateRoleOfUser(channelID, userId, role, setError) {
   try {
-    let updates = {};
+    const updates = {};
     updates[`users/${userId}/channels/${channelID}`] = role;
     if (isUserOnline(userId))
-      updates[`Channels/${channelID}/online_users/${userId}/role`] = role;
+      updates[`Channels/${channelID}/online_users/${userId}/role`] =
+        role;
 
     update(ref(db), updates);
   } catch (error) {
@@ -304,7 +333,7 @@ function deleteFile(ref) {
 function listenToUploadProgress(task, setProgress) {
   task.on('state_changed', (snap) => {
     const progress = Math.round(
-      (snap.bytesTransferred / snap.totalBytes) * 100
+      (snap.bytesTransferred / snap.totalBytes) * 100,
     );
     setProgress(progress);
   });

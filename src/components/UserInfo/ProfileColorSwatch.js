@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import checkSVG from '../../assets/svg/check-line.svg';
 
@@ -18,7 +19,11 @@ const ProfileColorSwatch = ({
         style={{ background: color }}
       >
         {!isDefault && (
-          <input type="color" style={{ display: 'none' }} onChange={onChange} />
+          <input
+            type="color"
+            style={{ display: 'none' }}
+            onChange={onChange}
+          />
         )}
         {isActive && <img src={checkSVG} alt="selected" />}
       </label>
@@ -30,3 +35,11 @@ const ProfileColorSwatch = ({
 };
 
 export default ProfileColorSwatch;
+
+ProfileColorSwatch.propTypes = {
+  isDefault: PropTypes.bool,
+  isActive: PropTypes.bool,
+  color: PropTypes.string,
+  onChange: PropTypes.func,
+  onClick: PropTypes.func,
+};

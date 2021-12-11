@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 
@@ -17,7 +18,9 @@ const ChannelList = () => {
           let mentionCount = 0;
           if (hasMentions) {
             for (const room in mentioned[channel.id]) {
-              mentionCount += Object.keys(mentioned[channel.id][room]).length;
+              mentionCount += Object.keys(
+                mentioned[channel.id][room],
+              ).length;
             }
           }
           return (
@@ -36,3 +39,8 @@ const ChannelList = () => {
 };
 
 export default ChannelList;
+
+ChannelList.propTypes = {
+  channeList: PropTypes.arrayOf(PropTypes.object),
+  mentioned: PropTypes.object,
+};

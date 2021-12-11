@@ -1,16 +1,5 @@
-import {
-  ref,
-  push,
-  set,
-  get,
-  update,
-  onValue,
-  off,
-  remove,
-  onDisconnect,
-} from 'firebase/database';
+import { ref, push, set, onValue, off } from 'firebase/database';
 import { db } from '../firebaseStuff';
-import getUnixTime from 'date-fns/getUnixTime';
 
 function detachListenersForRoom(roomID) {
   const roomRef = ref(db, `Rooms/${roomID}`);
@@ -18,7 +7,12 @@ function detachListenersForRoom(roomID) {
   off(roomRef);
 }
 
-async function getRoomStuff(roomID, setRoomName, setMsgList, finishLoading) {
+async function getRoomStuff(
+  roomID,
+  setRoomName,
+  setMsgList,
+  finishLoading,
+) {
   const roomRef = ref(db, `Rooms/${roomID}`);
 
   onValue(roomRef, async (snap) => {
@@ -26,12 +20,12 @@ async function getRoomStuff(roomID, setRoomName, setMsgList, finishLoading) {
 
     await setRoomName(data.name);
 
-    let messages = data.messages || {};
-    let msgList = [];
+    const messages = data.messages || {};
+    const msgList = [];
     updateMsgList();
     await setMsgList(changeReplyFromIDtoMsgObj(msgList));
     finishLoading && finishLoading();
-    //helpers
+    // helpers
     function updateMsgList() {
       for (const id in messages) {
         messages[id].msgId = id; // set msgId
@@ -43,7 +37,9 @@ async function getRoomStuff(roomID, setRoomName, setMsgList, finishLoading) {
       return arr.map((obj, i, thisArr) => {
         if (!obj.replyTo) return obj;
 
-        obj.replyTo = thisArr.find((msgObj) => msgObj.msgId === obj.replyTo);
+        obj.replyTo = thisArr.find(
+          (msgObj) => msgObj.msgId === obj.replyTo,
+        );
         return obj;
       });
     }

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import IconBtn from '../IconBtn';
 import Tooltip from '../Tooltip';
@@ -15,7 +16,11 @@ const MainNavBtn = ({ tooltipText, icon, svg, active, onClick }) => {
       onMouseEnter={() => setIsTooltip(true)}
       onMouseLeave={() => setIsTooltip(false)}
     >
-      <IconBtn icon={icon} svg={svg} className={active ? 'active' : null} />
+      <IconBtn
+        icon={icon}
+        svg={svg}
+        className={active ? 'active' : null}
+      />
       {isTooltip && (
         <Tooltip
           text={tooltipText}
@@ -28,3 +33,11 @@ const MainNavBtn = ({ tooltipText, icon, svg, active, onClick }) => {
 };
 
 export default MainNavBtn;
+
+MainNavBtn.propTypes = {
+  tooltipText: PropTypes.string,
+  icon: PropTypes.string,
+  svg: PropTypes.string,
+  active: PropTypes.bool,
+  onClick: PropTypes.func,
+};

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import UploadFile from '../Upload/UploadFile';
 import Popup from '../Popup';
@@ -58,14 +59,32 @@ const NodeTwo = ({
           alt="upload an icon"
         />
         <div className="add-circle-bg"></div>
-        <img className="camera-fill" src={cameraSVG} alt="upload an icon" />
+        <img
+          className="camera-fill"
+          src={cameraSVG}
+          alt="upload an icon"
+        />
       </UploadFile>
       <form>
         <h5>Channel Name</h5>
-        <InputField name="name" value={channelName} onChange={handleChange} />
+        <InputField
+          name="name"
+          value={channelName}
+          onChange={handleChange}
+        />
       </form>
     </Popup>
   );
 };
 
 export default NodeTwo;
+
+NodeTwo.propTypes = {
+  channelName: PropTypes.string,
+  createChannel: PropTypes.func,
+  prevNode: PropTypes.func,
+  close: PropTypes.func,
+  handleChange: PropTypes.func,
+  handleIcon: PropTypes.func,
+  isMobile: PropTypes.bool,
+};

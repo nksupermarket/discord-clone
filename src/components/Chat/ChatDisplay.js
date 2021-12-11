@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import ChatMsg from './ChatMsg';
 
@@ -72,3 +73,9 @@ function notifyWhenScrollingIsFinished(el) {
     }
   });
 }
+
+ChatDisplay.propTypes = {
+  roomID: PropTypes.string,
+  msgList: PropTypes.arrayOf(PropTypes.object),
+  userList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+};

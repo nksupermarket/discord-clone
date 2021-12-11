@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FlatBtn from '../FlatBtn';
 
@@ -19,3 +20,9 @@ const Field = ({ item, display, onClick }) => {
 };
 
 export default Field;
+
+Field.propTypes = {
+  item: PropTypes.string,
+  display: PropTypes.string,
+  onClick: PropTypes.func,
+};

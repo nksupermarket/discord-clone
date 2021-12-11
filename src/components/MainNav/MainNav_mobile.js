@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import ChannelList from './ChannelList';
 
 import '../../styles/MainNav.css';
 import ChannelListHeader from './ChannelListHeader';
 import MainNavBtn from './MainNavBtn';
-import CreateChannel from '../CreateChannel/CreateChannel';
 
 import plusSVG from '../../assets/svg/add-line.svg';
 import compassSVG from '../../assets/svg/compass-3-fill.svg';
 
-const MainNav = ({ beginCreateChannel, isCreateChannel, visitingChannel }) => {
+const MainNav = ({
+  beginCreateChannel,
+  isCreateChannel,
+  visitingChannel,
+}) => {
   const history = useHistory();
   return (
     <>
@@ -42,3 +46,9 @@ const MainNav = ({ beginCreateChannel, isCreateChannel, visitingChannel }) => {
 };
 
 export default MainNav;
+
+MainNav.propTypes = {
+  beginCreateChannel: PropTypes.func,
+  isCreateChannel: PropTypes.func,
+  visitingChannel: PropTypes.object,
+};

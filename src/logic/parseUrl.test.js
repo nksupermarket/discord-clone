@@ -1,3 +1,4 @@
+import { it, expect } from 'jest';
 const parseUrl = require('./parseUrl');
 
 it('/channels/channel/room to equal room', () => {

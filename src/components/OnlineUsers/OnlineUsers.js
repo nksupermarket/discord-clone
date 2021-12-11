@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import '../../styles/OnlineUsers.css';
 import CatList from '../CatList';
@@ -16,7 +17,7 @@ const OnlineUsers = ({ list, roles }) => {
     <aside className="users-ctn">
       {roles.map((role, i) => {
         return (
-          //each UserRole is given a ref in the rolesRef.current object
+          // each UserRole is given a ref in the rolesRef.current object
           <CatList
             key={i}
             catRef={(el) => (rolesRef.current[role] = el)}
@@ -41,3 +42,8 @@ const OnlineUsers = ({ list, roles }) => {
 };
 
 export default OnlineUsers;
+
+OnlineUsers.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.object),
+  roles: PropTypes.arrayOf(PropTypes.string),
+};

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
   generateRandomUser,
@@ -14,7 +15,12 @@ import { getUnixTime } from 'date-fns';
 import Form from '../Form';
 import { pushToMsgList } from '../../logic/room_firebaseStuff';
 
-const LoginEmail = ({ onRegister, onForgotPW, setUser, setLoading }) => {
+const LoginEmail = ({
+  onRegister,
+  onForgotPW,
+  setUser,
+  setLoading,
+}) => {
   const { inputValues, handleChange } = useInputValues();
   const { setError } = useContext(ErrorContext);
 
@@ -32,7 +38,7 @@ const LoginEmail = ({ onRegister, onForgotPW, setUser, setLoading }) => {
         pushWelcomeMsg(),
       ]);
       setLoading(false);
-      //helper
+      // helper
       async function pushWelcomeMsg() {
         const msgID = await pushToMsgList('-MqVZG54pnPMmqDjLVRc', {
           msg: 'Hello there! undefined',
@@ -53,7 +59,7 @@ const LoginEmail = ({ onRegister, onForgotPW, setUser, setLoading }) => {
           user.uid,
           '-MqVZFTShVKjPVWc-jyE',
           '-MqVZG54pnPMmqDjLVRc',
-          msgID
+          msgID,
         );
       }
     } catch (error) {
@@ -76,10 +82,15 @@ const LoginEmail = ({ onRegister, onForgotPW, setUser, setLoading }) => {
         textBtns={[
           { text: 'Forgot your password?', onClick: onForgotPW },
           { text: 'Need an account? Register', onClick: onRegister },
-          { text: 'Generate account to test', onClick: onCreateTestAcc },
+          {
+            text: 'Generate account to test',
+            onClick: onCreateTestAcc,
+          },
         ]}
         handleChange={handleChange}
-        submitAction={() => signIn(inputValues.email, inputValues.password)}
+        submitAction={() =>
+          signIn(inputValues.email, inputValues.password)
+        }
         setError={setError}
         cleanUp={() => history.push('/')}
         inputValues={inputValues}
@@ -89,3 +100,10 @@ const LoginEmail = ({ onRegister, onForgotPW, setUser, setLoading }) => {
 };
 
 export default LoginEmail;
+
+LoginEmail.propTypes = {
+  onRegister: PropTypes.func,
+  onForgotPW: PropTypes.func,
+  setUser: PropTypes.func,
+  setLoading: PropTypes.func,
+};

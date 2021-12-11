@@ -1,7 +1,16 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+} from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
-import { updateUserInfo, uploadAvatar } from '../../logic/user_firebaseStuff';
+import {
+  updateUserInfo,
+  uploadAvatar,
+} from '../../logic/user_firebaseStuff';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 import useSuccess from '../../logic/custom-hooks/useSuccess';
 
@@ -59,7 +68,7 @@ const UserProfile = ({ isMobile }) => {
   async function saveChanges() {
     try {
       setLoading(true);
-      let photoURL = avatarFileRef.current
+      const photoURL = avatarFileRef.current
         ? await uploadAvatar(user.uid, avatarFileRef.current)
         : '';
       await updateUserInfo('avatar', photoURL, setUser, channelList);
@@ -67,7 +76,7 @@ const UserProfile = ({ isMobile }) => {
         'color',
         isDefaultActive ? defaultColor : customColor,
         setUser,
-        channelList
+        channelList,
       );
       if (isMounted.current) {
         setLoading(false);
@@ -81,7 +90,9 @@ const UserProfile = ({ isMobile }) => {
   return (
     <>
       {changesSaved && <Success text={'Saved changes'} />}
-      <section className={isMobile ? 'user_profile mobile' : 'user_profile'}>
+      <section
+        className={isMobile ? 'user_profile mobile' : 'user_profile'}
+      >
         <header>
           <h2>User Profile</h2>
         </header>
@@ -89,15 +100,21 @@ const UserProfile = ({ isMobile }) => {
           <div className={isMobile ? 'col-layout' : 'row-layout'}>
             <div>
               <div className="customization-wrapper">
-                <h3 className="caps-title header-secondary">Avatar</h3>
+                <h3 className="caps-title header-secondary">
+                  Avatar
+                </h3>
                 <div className="btn-ctn">
                   <UploadFile
                     handlePreview={handleAvatarChange}
-                    handleFile={(file) => (avatarFileRef.current = file)}
+                    handleFile={(file) =>
+                      (avatarFileRef.current = file)
+                    }
                     isPreview={false}
                     actionOnChange={'set img preview'}
                   >
-                    <div className="flat-btn filled">Change Avatar</div>
+                    <div className="flat-btn filled">
+                      Change Avatar
+                    </div>
                   </UploadFile>
                   {avatarPreview && (
                     <FlatBtn
@@ -142,7 +159,9 @@ const UserProfile = ({ isMobile }) => {
                 isSmall={true}
                 handleAvatarChange={handleAvatarChange}
                 avatarPreview={avatarPreview}
-                bannerColor={isDefaultActive ? defaultColor : customColor}
+                bannerColor={
+                  isDefaultActive ? defaultColor : customColor
+                }
                 handleImg={(file) => (avatarFileRef.current = file)}
               />
             </div>
@@ -154,3 +173,7 @@ const UserProfile = ({ isMobile }) => {
 };
 
 export default UserProfile;
+
+UserProfile.propTypes = {
+  isMobile: PropTypes.func,
+};

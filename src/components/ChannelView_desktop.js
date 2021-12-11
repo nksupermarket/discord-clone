@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { ChannelContext } from '../logic/contexts/ChannelContext';
 import { UserContext } from '../logic/contexts/UserContext';
@@ -23,7 +24,7 @@ const ChannelView = ({ finishLoading, setError }) => {
 
   const updateChannel = useCallback(
     (name, icon) => setChannel({ name, icon, id: channelID }),
-    [channelID]
+    [channelID],
   );
   const {
     visitingChannel,
@@ -33,12 +34,18 @@ const ChannelView = ({ finishLoading, setError }) => {
     userList,
     onlineUsers,
     userRole,
-  } = useOnChannelEnter(user, channelID, channelList, updateChannel, setError);
+  } = useOnChannelEnter(
+    user,
+    channelID,
+    channelList,
+    updateChannel,
+    setError,
+  );
 
   // room stuff
   const updateRoom = useCallback(
     (name) => setRoom({ name, id: roomID }),
-    [roomID]
+    [roomID],
   );
   const { msgList, submitMsg } = useOnRoomEnter(
     user,
@@ -46,7 +53,7 @@ const ChannelView = ({ finishLoading, setError }) => {
     roomID,
     updateRoom,
     finishLoading,
-    setError
+    setError,
   );
 
   return (
@@ -83,3 +90,8 @@ const ChannelView = ({ finishLoading, setError }) => {
 };
 
 export default ChannelView;
+
+ChannelView.propTypes = {
+  finishLoading: PropTypes.func,
+  setError: PropTypes.func,
+};

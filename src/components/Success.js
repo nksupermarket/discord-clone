@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import checkSVG from '../assets/svg/check-line.svg';
 
@@ -13,8 +14,12 @@ const Success = ({ text }) => {
       </div>
       <div className="success-msg">{text}</div>
     </div>,
-    document.querySelector('body')
+    document.querySelector('body'),
   );
 };
 
 export default Success;
+
+Success.propTypes = {
+  text: PropTypes.string,
+};

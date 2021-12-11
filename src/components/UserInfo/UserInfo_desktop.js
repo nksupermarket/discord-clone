@@ -31,7 +31,9 @@ const UserInfo = () => {
           </div>
         </div>
       </section>
-      {isSettings && <UserSettings close={() => setIsSettings(false)} />}
+      {isSettings && (
+        <UserSettings close={() => setIsSettings(false)} />
+      )}
     </>
   );
 };

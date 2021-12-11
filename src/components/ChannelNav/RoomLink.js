@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import { NavLink } from 'react-router-dom';
 
 import MentionCounter from '../ChannelNav/MentionCounter';
@@ -7,7 +9,13 @@ import Tooltip from '../Tooltip';
 
 import settingsSVG from '../../assets/svg/settings-3-fill.svg';
 
-const RoomLink = ({ channel, room, mentionCount, isAdmin, editRoom }) => {
+const RoomLink = ({
+  channel,
+  room,
+  mentionCount,
+  isAdmin,
+  editRoom,
+}) => {
   const [toolTipInfo, setToolTipInfo] = useState();
   const actionsRef = useRef({});
   return (
@@ -50,3 +58,16 @@ const RoomLink = ({ channel, room, mentionCount, isAdmin, editRoom }) => {
 };
 
 export default RoomLink;
+
+RoomLink.propTypes = {
+  channel: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+  room: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+  }),
+  mentionCount: PropTypes.number,
+  isAdmin: PropTypes.bool,
+  editRoom: PropTypes.func,
+};

@@ -14,7 +14,7 @@ import LoadingScreen from './components/LoadingScreen';
 
 import './globalStyles.css';
 
-//import icons
+// import icons
 import './assets/font/flaticon.css';
 import './assets/font/remixicon.css';
 
@@ -24,7 +24,7 @@ function App() {
 
   const { user, mentioned, setUser, channelList } = useLoginUser(
     setLoading,
-    setError
+    setError,
   );
   const {
     isMobileCheck: { current: isMobile },
@@ -56,13 +56,17 @@ function App() {
               <div className="app">
                 <Route path={'/explore'}>
                   <Import
-                    mobile={() => import('./components/Explore/Explore_mobile')}
+                    mobile={() =>
+                      import('./components/Explore/Explore_mobile')
+                    }
                     desktop={() =>
                       import('./components/Explore/Explore_desktop')
                     }
                     isMobile={isMobile}
                   >
-                    {(Explore) => <Explore finishLoading={finishLoading} />}
+                    {(Explore) => (
+                      <Explore finishLoading={finishLoading} />
+                    )}
                   </Import>
                 </Route>
                 <Route
@@ -72,8 +76,12 @@ function App() {
                   ]}
                 >
                   <Import
-                    mobile={() => import('./components/ChannelView_mobile')}
-                    desktop={() => import('./components/ChannelView_desktop')}
+                    mobile={() =>
+                      import('./components/ChannelView_mobile')
+                    }
+                    desktop={() =>
+                      import('./components/ChannelView_desktop')
+                    }
                     isMobile={isMobile}
                   >
                     {(ChannelView) => (

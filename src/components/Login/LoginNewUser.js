@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Form from '../Form';
 
@@ -23,10 +24,15 @@ const LoginNewUser = ({
         </header>
       )}
       <Form
-        fields={[{ type: 'text', name: 'username', label: 'username' }]}
+        fields={[
+          { type: 'text', name: 'username', label: 'username' },
+        ]}
         actionBtnText="Continue"
         textBtns={[
-          { text: 'Already have an account?', onClick: onReturningUser },
+          {
+            text: 'Already have an account?',
+            onClick: onReturningUser,
+          },
         ]}
         handleChange={handleChange}
         submitAction={onContinue}
@@ -39,3 +45,12 @@ const LoginNewUser = ({
 };
 
 export default LoginNewUser;
+
+LoginNewUser.propTypes = {
+  channel: PropTypes.objectOf(PropTypes.string),
+  handleChange: PropTypes.func,
+  onContinue: PropTypes.func,
+  onReturningUser: PropTypes.func,
+  close: PropTypes.func,
+  inputValues: PropTypes.object,
+};

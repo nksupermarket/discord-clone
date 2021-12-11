@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import '../../styles/MsgButtons.css';
 
@@ -10,7 +11,11 @@ const MsgButtons = ({ setReplyTo }) => {
     <div className="msg-btns btn-ctn">
       <div className="container">
         <div className="wrapper">
-          <IconBtn svg={replyIcon} alt="reply button" onClick={setReplyTo} />
+          <IconBtn
+            svg={replyIcon}
+            alt="reply button"
+            onClick={setReplyTo}
+          />
         </div>
       </div>
     </div>
@@ -18,3 +23,7 @@ const MsgButtons = ({ setReplyTo }) => {
 };
 
 export default MsgButtons;
+
+MsgButtons.propTypes = {
+  setReplyTo: PropTypes.func,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const NavBtn = ({ icon, text, className, style, onClick }) => {
   return (
@@ -17,3 +18,11 @@ const NavBtn = ({ icon, text, className, style, onClick }) => {
 };
 
 export default NavBtn;
+
+NavBtn.propTypes = {
+  icon: PropTypes.string,
+  text: PropTypes.string,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  onClick: PropTypes.func,
+};

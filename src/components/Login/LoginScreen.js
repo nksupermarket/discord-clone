@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import useInputValues from '../../logic/custom-hooks/useInputValues';
 
@@ -61,7 +62,10 @@ const LoginScreen = ({ setUser, isMobile, setLoading }) => {
       {!isMobile && (
         <div className="login-artwork-wrapper">
           <div className="artwork">
-            <img src={loginArtwork} alt="illustration of bread and coffee" />
+            <img
+              src={loginArtwork}
+              alt="illustration of bread and coffee"
+            />
           </div>
         </div>
       )}
@@ -70,3 +74,9 @@ const LoginScreen = ({ setUser, isMobile, setLoading }) => {
 };
 
 export default LoginScreen;
+
+LoginScreen.propTypes = {
+  setUser: PropTypes.func,
+  isMobile: PropTypes.bool,
+  setLoading: PropTypes.func,
+};

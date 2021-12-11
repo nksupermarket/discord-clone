@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 import { ChannelContext } from '../../logic/contexts/ChannelContext';
@@ -40,21 +41,23 @@ const ChannelNav = ({
             <CatList
               key={i}
               cat={category}
-              isHeader={category === 'none' ? false : true}
+              isHeader={category !== 'none'}
               className="category-room-wrapper"
             >
               {list
                 .filter((room) => {
                   if (room.category === category) return true;
-                  if (!room.category && category === 'none') return true;
+                  if (!room.category && category === 'none')
+                    return true;
                   return false;
                 })
                 .map((room) => {
-                  const hasMentions = !!mentioned?.[channel.id]?.[room.id];
+                  const hasMentions =
+                    !!mentioned?.[channel.id]?.[room.id];
                   let mentionCount;
                   if (hasMentions)
                     mentionCount = Object.keys(
-                      mentioned[channel.id][room.id]
+                      mentioned[channel.id][room.id],
                     ).length;
                   return (
                     <RoomLink
@@ -75,3 +78,18 @@ const ChannelNav = ({
 };
 
 export default ChannelNav;
+
+ChannelNav.propTypes = {
+  channel: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }),
+  categories: PropTypes.array,
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  ),
+  showUserSettings: PropTypes.func,
+  showCreateRoom: PropTypes.func,
+};

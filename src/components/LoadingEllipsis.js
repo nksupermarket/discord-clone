@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import '../styles/LoadingEllipsis.css';
 
@@ -14,3 +15,7 @@ const LoadingEllipsis = ({ size }) => {
 };
 
 export default LoadingEllipsis;
+
+LoadingEllipsis.propTypes = {
+  size: PropTypes.string,
+};

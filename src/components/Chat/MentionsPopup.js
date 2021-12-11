@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import '../../styles/MentionsPopup.css';
 
@@ -22,3 +23,7 @@ const MentionsPopup = ({ children }) => {
 };
 
 export default MentionsPopup;
+
+MentionsPopup.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element),
+};

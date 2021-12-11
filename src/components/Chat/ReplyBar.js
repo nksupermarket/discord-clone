@@ -1,5 +1,6 @@
 import React from 'react';
 import IconBtn from '../IconBtn';
+import PropTypes from 'prop-types';
 
 import '../../styles/ReplyBar.css';
 
@@ -11,11 +12,16 @@ const ReplyBar = ({ displayName, close }) => {
       <div className="container">
         <div>
           <div className="content">
-            Replying to <span className="display-name">{displayName}</span>
+            Replying to{' '}
+            <span className="display-name">{displayName}</span>
           </div>
         </div>
         <div className="actions btn-ctn">
-          <IconBtn onClick={close} svg={closeBtn} className="close-btn" />
+          <IconBtn
+            onClick={close}
+            svg={closeBtn}
+            className="close-btn"
+          />
         </div>
       </div>
     </div>
@@ -23,3 +29,8 @@ const ReplyBar = ({ displayName, close }) => {
 };
 
 export default ReplyBar;
+
+ReplyBar.propTypes = {
+  displayName: PropTypes.string,
+  close: PropTypes.func,
+};

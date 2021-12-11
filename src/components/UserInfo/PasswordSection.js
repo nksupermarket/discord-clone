@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import FlatBtn from '../FlatBtn';
 
 const PasswordSection = ({ editPassword }) => {
@@ -19,3 +21,7 @@ const PasswordSection = ({ editPassword }) => {
 };
 
 export default PasswordSection;
+
+PasswordSection.propTypes = {
+  editPassword: PropTypes.func,
+};

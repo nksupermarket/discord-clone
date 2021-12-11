@@ -1,4 +1,10 @@
-import React, { useContext, useState, useMemo, useCallback } from 'react';
+import React, {
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 
@@ -21,26 +27,26 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
     attachments,
     replyTo: replyContext,
   } = content;
-
-  const [isShowBtns, setIsShowBtns] = useState(false); //buttons on hover
+  const [isShowBtns, setIsShowBtns] = useState(false); // buttons on hover
   const { user: currentUser } = useContext(UserContext);
   const isMentioned =
-    mentions?.some((m) => m.uid === currentUser.uid) || replyContext?.user;
+    mentions?.some((m) => m.uid === currentUser.uid) ||
+    replyContext?.user;
 
   const sender = useMemo(
     () => userList.find((uObj) => uObj.uid === senderID),
-    [userList, senderID]
+    [userList, senderID],
   );
   const replyUser = useMemo(
     () => userList.find((uObj) => uObj.uid === replyContext?.user),
-    [userList, replyContext]
+    [userList, replyContext],
   );
 
   const convertPlaintextToHTML = useCallback(
     (text, mentions) => {
       if (!mentions || mentions.length === 0) return text;
-      let mentionRanges = []; // text indexes that contain a mention
-      let mentionOffsets = []; //beginning index of each mention
+      const mentionRanges = []; // text indexes that contain a mention
+      const mentionOffsets = []; // beginning index of each mention
       mentions.forEach((mention) => {
         mentionOffsets.push(mention.range.offset);
         for (
@@ -52,32 +58,34 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
         }
       });
 
-      let content = [];
+      const content = [];
       text.split('').forEach((val, i) => {
-        const mentionIndex = mentionOffsets.indexOf(i); //find which mention has offset i
+        const mentionIndex = mentionOffsets.indexOf(i); // find which mention has offset i
         if (mentionIndex !== -1)
-          //marks beginning of mention
+          // marks beginning of mention
           content.push(
             <MentionWrapper
               key={mentionIndex}
               displayName={
-                userList.find((u) => u.uid === mentions[mentionIndex].uid)
-                  .displayName
+                userList.find(
+                  (u) => u.uid === mentions[mentionIndex].uid,
+                ).displayName
               }
               uid={mentions[mentionIndex].uid}
-            />
+            />,
           );
 
         if (mentionRanges.includes(i)) return; // rest of the mention, can skip because mentionWrapper already inserted
 
-        if (i === 0 || mentionRanges.includes(i - 1)) return content.push(val); // marks beginning of non-mention string
+        if (i === 0 || mentionRanges.includes(i - 1))
+          return content.push(val); // marks beginning of non-mention string
 
         return (content[content.length - 1] =
           content[content.length - 1].concat(val)); // string continues
       });
       return content;
     },
-    [userList]
+    [userList],
   );
   return (
     <li
@@ -91,15 +99,18 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
             displayName={replyUser.displayName}
             msg={convertPlaintextToHTML(
               replyContext.msg,
-              replyContext.mentions
+              replyContext.mentions,
             )}
             avatar={replyUser.avatar}
             color={replyUser.color}
           />
         )}
         <div className="content">
-          <Avatar img={sender.avatar} color={sender.color} />
-          <MsgHeader displayName={sender.displayName} timestamp={timestamp} />
+          <Avatar img={sender?.avatar} color={sender?.color} />
+          <MsgHeader
+            displayName={sender?.displayName}
+            timestamp={timestamp}
+          />
           <div className="msg-content">
             {convertPlaintextToHTML(msg, mentions)}
           </div>
@@ -107,7 +118,11 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
             <div className="attachments-ctn">
               {attachments.map((a, idx) => {
                 return (
-                  <AttachmentWrapper key={idx} url={a.url} name={a.name} />
+                  <AttachmentWrapper
+                    key={idx}
+                    url={a.url}
+                    name={a.name}
+                  />
                 );
               })}
             </div>
@@ -115,7 +130,7 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
           {isShowBtns && (
             <MsgButtons
               msgId={msgId}
-              setReplyTo={() => onReplyTo(sender.displayName, msgId)}
+              setReplyTo={() => onReplyTo(sender?.displayName, msgId)}
             />
           )}
         </div>
@@ -125,3 +140,9 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
 };
 
 export default ChatMsg;
+
+ChatMsg.propTypes = {
+  content: PropTypes.object,
+  userList: PropTypes.arrayOf(PropTypes.object),
+  onReplyTo: PropTypes.func,
+};

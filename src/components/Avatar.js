@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import defaultBreadPNG from '../assets/png/icons8-bread-58.png';
 
 import '../styles/Avatar.css';
 
 const Avatar = ({ img, color, userStatus, channelName, onClick }) => {
-  let filler = channelName ? (
+  const filler = channelName ? (
     <span>{createInitials(channelName)}</span>
   ) : (
     <span></span>
@@ -21,8 +22,12 @@ const Avatar = ({ img, color, userStatus, channelName, onClick }) => {
   return (
     <div className="avatar" style={style} onClick={onClick}>
       {!img && channelName && filler}
-      {!img && color && <img src={defaultBreadPNG} alt="default avatar" />}
-      {userStatus && <div className={`user-status ${userStatus}`}></div>}
+      {!img && color && (
+        <img src={defaultBreadPNG} alt="default avatar" />
+      )}
+      {userStatus && (
+        <div className={`user-status ${userStatus}`}></div>
+      )}
     </div>
   );
 };
@@ -36,3 +41,11 @@ function createInitials(channelName) {
     .filter((char, i) => i < 3)
     .join('');
 }
+
+Avatar.propTypes = {
+  img: PropTypes.string,
+  color: PropTypes.string,
+  userStatus: PropTypes.string,
+  channelName: PropTypes.string,
+  onClick: PropTypes.func,
+};

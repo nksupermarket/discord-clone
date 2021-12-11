@@ -1,5 +1,6 @@
 import React, { useContext, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { ErrorContext } from '../../../logic/contexts/ErrorContext';
 import { deleteRoom } from '../../../logic/channel_firebaseStuff';
@@ -48,7 +49,11 @@ const RoomSettings = ({ room, close }) => {
           close={close}
           categories={[`${room.name}`, 'none']}
           btnList={[
-            createSettingsButtonDetails('overview', `${room.name}`, true),
+            createSettingsButtonDetails(
+              'overview',
+              `${room.name}`,
+              true,
+            ),
             createSettingsButtonDetails('delete room', 'none'),
           ]}
           dispatch={dispatch}
@@ -72,3 +77,8 @@ function createSettingsButtonDetails(text, category, isDefault) {
     isDefault,
   };
 }
+
+RoomSettings.propTypes = {
+  room: PropTypes.object,
+  close: PropTypes.func,
+};

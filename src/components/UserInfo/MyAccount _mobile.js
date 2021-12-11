@@ -1,6 +1,9 @@
 import React, { useState, useCallback, useContext } from 'react';
 
-import { updateUserInfo, removeUser } from '../../logic/user_firebaseStuff';
+import {
+  updateUserInfo,
+  removeUser,
+} from '../../logic/user_firebaseStuff';
 import useInputValues from '../../logic/custom-hooks/useInputValues';
 import { UserContext } from '../../logic/contexts/UserContext';
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
@@ -18,7 +21,8 @@ const MyAccount = () => {
   const { channelList } = useContext(UserContext);
 
   const [popupDetails, setPopupDetails] = useState();
-  const { inputValues, handleChange, resetInputValues } = useInputValues();
+  const { inputValues, handleChange, resetInputValues } =
+    useInputValues();
 
   const editUsername = useCallback(() => {
     setPopupDetails({
@@ -40,14 +44,15 @@ const MyAccount = () => {
       'displayName',
       inputValues.new_username,
       setUser,
-      channelList
+      channelList,
     );
   }, [inputValues.new_username, setUser, channelList]);
 
   const editEmail = useCallback(() => {
     setPopupDetails({
       title: 'Enter an email address',
-      subheader: 'Enter a new email address and your existing password',
+      subheader:
+        'Enter a new email address and your existing password',
       fields: [
         { label: 'email', name: 'new_email', type: 'email' },
         {
@@ -73,7 +78,11 @@ const MyAccount = () => {
           name: 'current_password',
           type: 'password',
         },
-        { label: 'new password', name: 'new_password', type: 'password' },
+        {
+          label: 'new password',
+          name: 'new_password',
+          type: 'password',
+        },
         {
           label: 'confirm new password',
           name: 'confirm_password',
@@ -107,12 +116,12 @@ const MyAccount = () => {
 
   const deleteUser = useCallback(
     () => removeUser(channelList, setError),
-    [channelList, setError]
+    [channelList, setError],
   );
 
   const getSubmitAction = useCallback(() => {
     switch (
-      popupDetails?.inputsToSubmit //get submit action based which popupDetails is active
+      popupDetails?.inputsToSubmit // get submit action based which popupDetails is active
     ) {
       case 'new_username':
         return updateUsername;
@@ -123,7 +132,6 @@ const MyAccount = () => {
       case 'delete':
         return deleteUser;
       default:
-        return;
     }
   }, [
     updateUsername,
@@ -146,7 +154,11 @@ const MyAccount = () => {
               display={user.displayName}
               onClick={editUsername}
             />
-            <Field item="email" display={user.email} onClick={editEmail} />
+            <Field
+              item="email"
+              display={user.email}
+              onClick={editEmail}
+            />
           </div>
           <Divider />
           <PasswordSection editPassword={editPassword} />

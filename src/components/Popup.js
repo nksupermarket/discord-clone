@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import IconBtn from './IconBtn';
 
@@ -30,7 +31,11 @@ const Popup = ({
             <span>{subheader}</span>
           </div>
         )}
-        <IconBtn svg={closeSVG} onClick={close} className="close-btn" />
+        <IconBtn
+          svg={closeSVG}
+          onClick={close}
+          className="close-btn"
+        />
       </header>
       {fields && <Form fields={fields} close={close} {...props} />}
       {children && (
@@ -44,3 +49,14 @@ const Popup = ({
 };
 
 export default Popup;
+
+Popup.propTypes = {
+  className: PropTypes.string,
+  title: PropTypes.string,
+  subheader: PropTypes.string,
+  fields: PropTypes.array,
+  children: PropTypes.element,
+  footerContent: PropTypes.element,
+  close: PropTypes.func,
+  isMobile: PropTypes.bool,
+};

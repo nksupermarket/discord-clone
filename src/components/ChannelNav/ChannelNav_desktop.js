@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../logic/contexts/UserContext';
 import { ChannelContext } from '../../logic/contexts/ChannelContext';
@@ -38,7 +39,7 @@ const ChannelNav = ({ channel, categories, list }) => {
     await createRoom(
       channel.id,
       newRoomInfo.room_name,
-      newRoomInfo.room_category || null
+      newRoomInfo.room_category || null,
     );
     if (roomCategories.indexOf(newRoomInfo.room_category) === -1) {
       await createRoomCategory(channel.id, newRoomInfo.room_category);
@@ -54,7 +55,10 @@ const ChannelNav = ({ channel, categories, list }) => {
         <div className="room-list">
           {userRole === 'owner' && (
             <li className="room-link-item new_room-btn">
-              <button className="content" onClick={() => setIsCreateRoom(true)}>
+              <button
+                className="content"
+                onClick={() => setIsCreateRoom(true)}
+              >
                 <img src={addSVG} alt="plus icon" />
                 <span>Add new room</span>
               </button>
@@ -64,21 +68,23 @@ const ChannelNav = ({ channel, categories, list }) => {
             <CatList
               key={i}
               cat={category}
-              isHeader={category === 'none' ? false : true}
+              isHeader={category !== 'none'}
               className="category-room-wrapper"
             >
               {list
                 .filter((room) => {
                   if (room.category === category) return true;
-                  if (!room.category && category === 'none') return true;
+                  if (!room.category && category === 'none')
+                    return true;
                   return false;
                 })
                 .map((room) => {
-                  const hasMentions = !!mentioned?.[channel.id]?.[room.id];
+                  const hasMentions =
+                    !!mentioned?.[channel.id]?.[room.id];
                   let mentionCount;
                   if (hasMentions)
                     mentionCount = Object.keys(
-                      mentioned[channel.id][room.id]
+                      mentioned[channel.id][room.id],
                     ).length;
                   return (
                     <RoomLink
@@ -126,10 +132,19 @@ const ChannelNav = ({ channel, categories, list }) => {
         </Modal>
       )}
       {editRoomInfo && (
-        <RoomSettings room={editRoomInfo} close={() => setEditRoomInfo()} />
+        <RoomSettings
+          room={editRoomInfo}
+          close={() => setEditRoomInfo()}
+        />
       )}
     </>
   );
 };
 
 export default ChannelNav;
+
+ChannelNav.propTypes = {
+  channel: PropTypes.object,
+  categories: PropTypes.array,
+  list: PropTypes.array,
+};

@@ -1,5 +1,4 @@
-import { set } from 'date-fns';
-import { useRef, useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   getChannelInfo,
@@ -12,7 +11,7 @@ export default function useOnChannelEnter(
   channelID,
   channelList,
   updateChannel,
-  setError
+  setError,
 ) {
   const [visitingChannel, setVisitingChannel] = useState();
   const [roleList, setRoleList] = useState(['Online']);
@@ -24,7 +23,7 @@ export default function useOnChannelEnter(
 
   const isVisiting = useMemo(
     () => channelList?.every((c) => c.id !== channelID),
-    [channelList, channelID]
+    [channelList, channelID],
   );
   const history = useHistory();
   const location = useLocation();
@@ -48,7 +47,14 @@ export default function useOnChannelEnter(
         }
       })();
     },
-    [user, channelID, channelList, visitingChannel, isVisiting, setError]
+    [
+      user,
+      channelID,
+      channelList,
+      visitingChannel,
+      isVisiting,
+      setError,
+    ],
   );
   useEffect(() => {
     if (!channelID || !user) return;
@@ -61,7 +67,7 @@ export default function useOnChannelEnter(
           setRoomList,
           setRoleList,
           setUserList,
-          setOnlineUsers
+          setOnlineUsers,
         );
       } catch (error) {
         setError(error.message);
@@ -85,16 +91,19 @@ export default function useOnChannelEnter(
         location.pathname === `/channels/${channelID}` ||
         location.pathname === `/channels/${channelID}/`
       ) {
-        //`/channels/${channelID}/` is pathname before user is redirected into default room
+        // `/channels/${channelID}/` is pathname before user is redirected into default room
         if (isVisiting) {
           if (!visitingChannel) return;
-          const defaultRoomID = Object.keys(visitingChannel.defaultRoom)[0];
+          const defaultRoomID = Object.keys(
+            visitingChannel.defaultRoom,
+          )[0];
           history.push(`/channels/${channelID}/${defaultRoomID}`);
         } else {
           const defaultRoomID =
             channelList &&
             Object.keys(
-              channelList?.find((c) => c.id === channelID).defaultRoom
+              channelList?.find((c) => c.id === channelID)
+                .defaultRoom,
             )[0];
           history.replace(`/channels/${channelID}/${defaultRoomID}/`);
         }
@@ -108,7 +117,7 @@ export default function useOnChannelEnter(
       isVisiting,
       visitingChannel,
       location.pathname,
-    ]
+    ],
   );
 
   return {

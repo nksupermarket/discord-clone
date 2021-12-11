@@ -21,7 +21,11 @@ import {
   reload,
   signOut,
 } from 'firebase/auth';
-import { ref as store, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  ref as store,
+  uploadBytes,
+  getDownloadURL,
+} from 'firebase/storage';
 import { getInfoForChannelList } from './channel_firebaseStuff';
 import { db, storage } from '../firebaseStuff';
 import {
@@ -40,7 +44,7 @@ async function generateRandomUser(setUser) {
     rdmName,
     rdmName,
     null,
-    setUser
+    setUser,
   );
 }
 
@@ -98,7 +102,6 @@ async function updateUserInfo(infoType, value, setUser, channelList) {
 
   await reload(user);
   setUser(user);
-  return;
 }
 function updateUserProfileColor(uid, color) {
   const defaultColors = [
@@ -107,7 +110,8 @@ function updateUserProfileColor(uid, color) {
     'rgb(250, 166, 26)',
   ];
   color =
-    color || defaultColors[Math.floor(Math.random() * defaultColors.length)];
+    color ||
+    defaultColors[Math.floor(Math.random() * defaultColors.length)];
 
   const userRef = ref(db, `users/${uid}`);
   update(userRef, { color });
@@ -131,15 +135,23 @@ async function removeUser(channelList, setError) {
   }
 }
 
-async function createUser(email, password, displayName, channelID, setUser) {
+async function createUser(
+  email,
+  password,
+  displayName,
+  channelID,
+  setUser,
+) {
   const auth = getAuth();
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,
-    password
+    password,
   );
   await updateProfile(userCredential.user, { displayName });
-  const profileColor = await updateUserProfileColor(userCredential.user.uid);
+  const profileColor = await updateUserProfileColor(
+    userCredential.user.uid,
+  );
   userCredential.user.color = profileColor;
 
   if (channelID) subscribeToChannel(userCredential.user, channelID);
@@ -155,7 +167,7 @@ async function signIn(email, password) {
 }
 
 async function subscribeToChannel(user, channelID, role) {
-  let updates = {};
+  const updates = {};
   updates[`users/${user.uid}/channels/${channelID}`] = ``;
 
   updates[`Channels/${channelID}/users/${user.uid}`] = {
@@ -172,7 +184,7 @@ async function getUserInfo(
   uid,
   setChannelList,
   setUserProfileColor,
-  setMentioned
+  setMentioned,
 ) {
   if (!uid) return;
 
@@ -183,25 +195,33 @@ async function getUserInfo(
     setUserProfileColor(data.color);
     updateChannelList();
     setMentioned(data.mentions);
-    //helper
+    // helper
     async function updateChannelList() {
-      let channelList = [];
+      const channelList = [];
       for (const id in data.channels) {
         channelList.push({ id, role: data.channels[id] });
       }
       await Promise.all([
-        getInfoForChannelList('icon', channelList, updateChannelListWithInfo),
-        getInfoForChannelList('name', channelList, updateChannelListWithInfo),
+        getInfoForChannelList(
+          'icon',
+          channelList,
+          updateChannelListWithInfo,
+        ),
+        getInfoForChannelList(
+          'name',
+          channelList,
+          updateChannelListWithInfo,
+        ),
         getInfoForChannelList(
           'defaultRoom',
           channelList,
-          updateChannelListWithInfo
+          updateChannelListWithInfo,
         ),
       ]);
 
       setChannelList(channelList);
 
-      //helpers
+      // helpers
       function updateChannelListWithInfo(type, vals) {
         vals.forEach((v, i) => (channelList[i][type] = v));
       }
@@ -213,7 +233,10 @@ function updateUserOnline(uid, userChannelList) {
   const connectedRef = ref(db, '.info/connected');
   // add user to online_users for all channels in their list
   userChannelList.forEach((channel) => {
-    const userStatusRef = ref(db, `Channels/${channel.id}/users/${uid}`);
+    const userStatusRef = ref(
+      db,
+      `Channels/${channel.id}/users/${uid}`,
+    );
 
     onValue(connectedRef, async (snapshot) => {
       if (snapshot.val() === false) {
@@ -233,13 +256,16 @@ function updateUserOnline(uid, userChannelList) {
 async function updateMentions(uid, channelID, roomID, msgID) {
   const mentionsRef = ref(
     db,
-    `users/${uid}/mentions/${channelID}/${roomID}/${msgID}`
+    `users/${uid}/mentions/${channelID}/${roomID}/${msgID}`,
   );
   await set(mentionsRef, true);
 }
 
 async function dealWithReadMentions(uid, channelID, roomID) {
-  const mentionsRef = ref(db, `users/${uid}/mentions/${channelID}/${roomID}`);
+  const mentionsRef = ref(
+    db,
+    `users/${uid}/mentions/${channelID}/${roomID}`,
+  );
   await set(mentionsRef, null);
 }
 
@@ -256,7 +282,10 @@ async function verifyPW(pw) {
   try {
     const credential = EmailAuthProvider.credential(user.email, pw);
 
-    const status = await reauthenticateWithCredential(user, credential);
+    const status = await reauthenticateWithCredential(
+      user,
+      credential,
+    );
     if (status) return { isValid: true };
     return { error: 'something went wrong' };
   } catch (error) {

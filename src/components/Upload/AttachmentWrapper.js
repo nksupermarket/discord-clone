@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import IconBtn from '../IconBtn';
 
@@ -32,3 +33,9 @@ const AttachmentWrapper = ({ name, url, cancel }) => {
 };
 
 export default AttachmentWrapper;
+
+AttachmentWrapper.propTypes = {
+  name: PropTypes.string,
+  url: PropTypes.string,
+  cancel: PropTypes.func,
+};

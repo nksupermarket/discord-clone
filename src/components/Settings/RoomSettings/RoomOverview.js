@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import useInputValues from '../../../logic/custom-hooks/useInputValues';
 import {
   updateRoomName,
   updateCategoryOfRoom,
   createRoomCategory,
-  deleteRoom,
 } from '../../../logic/channel_firebaseStuff';
 import { ChannelContext } from '../../../logic/contexts/ChannelContext';
 import { ErrorContext } from '../../../logic/contexts/ErrorContext';
@@ -24,7 +24,8 @@ const RoomOverview = ({ room }) => {
   const { roomCategories } = useContext(ChannelContext);
   const { setError } = useContext(ErrorContext);
 
-  const { inputValues, setInputValues, handleChange } = useInputValues();
+  const { inputValues, setInputValues, handleChange } =
+    useInputValues();
   useEffect(() => {
     setInputValues({
       room_name: room.name,
@@ -53,15 +54,22 @@ const RoomOverview = ({ room }) => {
               e.preventDefault();
               try {
                 setIsSaving(true);
-                const { room_name, room_category } = inputValues;
-                if (room_name !== room.name)
-                  await updateRoomName(channelID, room.id, room_name);
+                const {
+                  room_Name: roomName,
+                  room_Category: roomCategory,
+                } = inputValues;
+                if (roomName !== room.name)
+                  await updateRoomName(channelID, room.id, roomName);
 
-                if (room_category === room.category) return;
+                if (roomCategory === room.category) return;
 
-                if (roomCategories.indexOf(room_category) === -1)
-                  await createRoomCategory(channelID, room_category);
-                await updateCategoryOfRoom(channelID, room.id, room_category);
+                if (roomCategories.indexOf(roomCategory) === -1)
+                  await createRoomCategory(channelID, roomCategory);
+                await updateCategoryOfRoom(
+                  channelID,
+                  room.id,
+                  roomCategory,
+                );
 
                 if (isMounted.current) {
                   setIsSaving(false);
@@ -100,3 +108,7 @@ const RoomOverview = ({ room }) => {
 };
 
 export default RoomOverview;
+
+RoomOverview.propTypes = {
+  room: PropTypes.object,
+};

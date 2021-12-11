@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { useSpring, animated } from 'react-spring';
 
 import Avatar from '../Avatar';
@@ -14,7 +16,10 @@ const ChannelListHeader = ({ visitingChannel }) => {
         <Avatar color="#cb3e5b" />
       </div>
       {visitingChannel && (
-        <animated.div style={animate} className="list-item avatar-wrapper">
+        <animated.div
+          style={animate}
+          className="list-item avatar-wrapper"
+        >
           <Avatar
             channelName={visitingChannel.name}
             img={visitingChannel.icon}
@@ -29,3 +34,7 @@ const ChannelListHeader = ({ visitingChannel }) => {
 };
 
 export default ChannelListHeader;
+
+ChannelListHeader.propTypes = {
+  visitingChannel: PropTypes.object,
+};

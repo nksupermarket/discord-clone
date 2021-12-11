@@ -1,13 +1,18 @@
-import React, { useState, useLayoutEffect, useRef, useContext } from 'react';
+import React, {
+  useState,
+  useLayoutEffect,
+  useRef,
+  useContext,
+} from 'react';
 
 import { ErrorContext } from '../../logic/contexts/ErrorContext';
 import {
   beginUpload,
-  cancelUpload,
   listenToUploadProgress,
 } from '../../logic/channel_firebaseStuff';
 import { getDownloadURL } from 'firebase/storage';
 import uniqid from 'uniqid';
+import PropTypes from 'prop-types';
 
 import ReplyBar from './ReplyBar';
 import ChatBar from './ChatBar';
@@ -49,7 +54,7 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, ...props }) => {
             prev.map((t) => {
               if (t.id === id) return { ...t, progress };
               return t;
-            })
+            }),
           );
         });
         await task;
@@ -59,7 +64,7 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, ...props }) => {
           name: f.name,
           url: fileURL,
         };
-      })
+      }),
     );
   }
   function handleNewAttachments(file) {
@@ -71,7 +76,11 @@ const ChatBarWrapper = ({ replyTo, setReplyTo, ...props }) => {
     setAttachments((prev) => prev.filter((val) => val !== file));
   }
   return (
-    <form className="chat-bar" name="chat-bar" onSubmit={submitHandler}>
+    <form
+      className="chat-bar"
+      name="chat-bar"
+      onSubmit={submitHandler}
+    >
       <div className="upload-tasks-ctn" ref={uploadTasksCtnRef}>
         {uploadTasks.map((t, idx) => {
           return <UploadProgressWrapper key={idx} task={t} />;
@@ -102,3 +111,8 @@ export default ChatBarWrapper;
 function submitHandler(e) {
   e.preventDefault();
 }
+
+ChatBarWrapper.propTypes = {
+  replyTo: PropTypes.objectOf(PropTypes.string),
+  setReplyTo: PropTypes.func,
+};

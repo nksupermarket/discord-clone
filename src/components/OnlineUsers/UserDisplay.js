@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 
@@ -36,3 +37,15 @@ const UserDisplay = ({
 };
 
 export default UserDisplay;
+
+UserDisplay.propTypes = {
+  className: PropTypes.string,
+  id: PropTypes.string,
+  user: PropTypes.object,
+  onClick: PropTypes.func,
+  selectMention: PropTypes.func,
+  mention: PropTypes.object,
+  theme: PropTypes.object,
+  searchValue: PropTypes.string,
+  isFocused: PropTypes.bool,
+};

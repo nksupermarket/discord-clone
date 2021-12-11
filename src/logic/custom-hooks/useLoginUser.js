@@ -23,7 +23,7 @@ export default function useLoginUser(setLoading, setError) {
       onAuthStateChanged(auth, async (currUser) => {
         if (!isMounted.current) return;
         if (!currUser) {
-          //on logout stuff
+          // on logout stuff
           setUser(currUser);
           setChannelList();
           setLoading(false);
@@ -37,9 +37,9 @@ export default function useLoginUser(setLoading, setError) {
               currUser.uid,
               setChannelList,
               function getUserColor(val) {
-                currUser['color'] = val;
+                currUser.color = val;
               },
-              setMentioned
+              setMentioned,
             );
             setUser(currUser);
           } catch (error) {
@@ -48,7 +48,7 @@ export default function useLoginUser(setLoading, setError) {
         }
       });
     },
-    [history, location.pathname, setLoading, setUser, setError]
+    [history, location.pathname, setLoading, setUser, setError],
   );
 
   useEffect(
@@ -56,8 +56,12 @@ export default function useLoginUser(setLoading, setError) {
       if (!user || !channelList) return;
       if (location.pathname === '/' || location.pathname === '/login')
         if (channelList[0]) {
-          const defaultRoomID = Object.keys(channelList[0].defaultRoom)[0];
-          history.replace(`channels/${channelList[0].id}/${defaultRoomID}`);
+          const defaultRoomID = Object.keys(
+            channelList[0].defaultRoom,
+          )[0];
+          history.replace(
+            `channels/${channelList[0].id}/${defaultRoomID}`,
+          );
         } else {
           history.replace('explore');
         }
@@ -68,7 +72,7 @@ export default function useLoginUser(setLoading, setError) {
         setError(error.message);
       }
     },
-    [user, channelList, history, location.pathname, setError]
+    [user, channelList, history, location.pathname, setError],
   );
 
   return { user, mentioned, setUser, channelList };
