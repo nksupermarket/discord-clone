@@ -1,6 +1,6 @@
 # discord clone
 
-live: https://lookingcoolonavespa.github.io/channels/-MqVZFTShVKjPVWc-jyE/-MqVZG54pnPMmqDjLVRc/
+live: https://lookingcoolonavespa.github.io/discord-clone
 
 - mentiions actived by typing @ in the chat bar
 - reply to a message by hovering over the message and clicking the reply to button
