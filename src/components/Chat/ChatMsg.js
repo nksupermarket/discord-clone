@@ -31,7 +31,7 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
   const { user: currentUser } = useContext(UserContext);
   const isMentioned =
     mentions?.some((m) => m.uid === currentUser.uid) ||
-    replyContext?.user;
+    replyContext?.user === currentUser.uid;
 
   const sender = useMemo(
     () => userList.find((uObj) => uObj.uid === senderID),
@@ -96,13 +96,13 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
       <div className="msg">
         {replyContext && (
           <ReplyContext
-            displayName={replyUser.displayName}
+            displayName={replyUser?.displayName}
             msg={convertPlaintextToHTML(
               replyContext.msg,
               replyContext.mentions,
             )}
-            avatar={replyUser.avatar}
-            color={replyUser.color}
+            avatar={replyUser?.avatar}
+            color={replyUser?.color}
           />
         )}
         <div className="content">
