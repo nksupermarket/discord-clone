@@ -37,7 +37,12 @@ const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
         className="scroller"
         ref={scrollerRef}
         style={{ opacity: isScrolled ? 1 : 0 }}
+        onLoad={async () => {
+          await notifyWhenScrollingIsFinished(scrollerRef.current);
+          setIsScrolled(true);
+        }}
         onScroll={async () => {
+          console.log(firstRender);
           if (!firstRender) return;
           await notifyWhenScrollingIsFinished(scrollerRef.current);
           setIsScrolled(true);
