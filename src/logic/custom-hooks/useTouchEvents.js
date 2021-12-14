@@ -14,10 +14,11 @@ export default function useTouchEvents(onRightSwipe, onLeftSwipe) {
   }
   function handleTouchEnd() {
     if (isMoved) {
+      console.log(touchStart, touchEnd);
       if (touchStart - touchEnd > 150) {
         onRightSwipe && onRightSwipe();
       }
-      if (touchStart - touchEnd < 150) {
+      if (touchStart - touchEnd < -150) {
         onLeftSwipe && onLeftSwipe();
       }
     }
