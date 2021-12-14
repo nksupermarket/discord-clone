@@ -191,6 +191,10 @@ button.inactive,
 .field:not(:first-child) {
   margin-top: 24px;
 }
+.field .constrained-row .item-wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .field .flat-btn {
   margin-top: auto;
   margin-bottom: auto;

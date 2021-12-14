@@ -7,7 +7,7 @@ const Field = ({ item, display, onClick }) => {
   return (
     <div className="field">
       <div className="constrained-row">
-        <div className={`${item}-wrapper`}>
+        <div className={`${item}-wrapper item-wrapper`}>
           <h5 className="caps-title">{item}</h5>
           <div className={`inner_row`}>
             <span>{display}</span>
