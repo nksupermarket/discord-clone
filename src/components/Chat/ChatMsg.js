@@ -66,9 +66,9 @@ const ChatMsg = ({ content, userList, onReplyTo }) => {
             <MentionWrapper
               key={mentionIndex}
               displayName={
-                userList.find(
+                userList?.find(
                   (u) => u.uid === mentions[mentionIndex].uid,
-                ).displayName
+                )?.displayName
               }
               uid={mentions[mentionIndex].uid}
             />,
