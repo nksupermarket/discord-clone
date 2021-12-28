@@ -7,7 +7,6 @@ import { UserContext } from './logic/contexts/UserContext';
 import { ErrorContext } from './logic/contexts/ErrorContext';
 import useMobileCheck from './logic/custom-hooks/useMobileCheck';
 import Import from './logic/Import';
-
 import LoginScreen from './components/Login/LoginScreen';
 import Error from './components/Error';
 import LoadingScreen from './components/LoadingScreen';

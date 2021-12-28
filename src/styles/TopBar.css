@@ -1,15 +1,11 @@
 .top-bar {
   position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
+  justify-content: space-between;
   min-width: 0;
   width: 100%;
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
+  box-sizing: border-box;
   flex: 0 0 auto;
   height: 48px;
   padding: 0 8px;
@@ -19,6 +15,14 @@
   z-index: 2;
   box-shadow: var(--low-shadow);
   color: var(--text-normal);
+}
+.top-bar.mobile {
+  padding: 0 20px;
+}
+
+.top-bar header {
+  display: flex;
+  align-items: center;
 }
 
 .top-bar .room-name-wrapper {
@@ -35,4 +39,15 @@
   margin: 0 8px;
   flex: 0 0 auto;
   background-color: var(--header-primary);
+}
+
+.top-bar .icon-btn {
+  filter: var(--interactive-normal-filter);
+}
+.top-bar .icon-btn:hover {
+  filter: var(--interactive-hover-filter);
+}
+.top-bar .icon-btn img {
+  height: 18px;
+  width: 18px;
 }

@@ -185,7 +185,12 @@ const ChannelView = ({ finishLoading, setError }) => {
           {room && (
             <>
               <div className="content">
-                <TopBar room={room} />
+                <TopBar
+                  room={room}
+                  isMobile={true}
+                  showUserList={() => setShowRightSidebar(true)}
+                  showNav={() => setShowLeftSidebar(true)}
+                />
                 <div className="chat-ctn">
                   <ChatWrapper
                     room={room}
