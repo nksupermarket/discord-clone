@@ -21,5 +21,5 @@ ReplyContext.propTypes = {
   displayName: PropTypes.string,
   avatar: PropTypes.string,
   color: PropTypes.string,
-  msg: PropTypes.string,
+  msg: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 };

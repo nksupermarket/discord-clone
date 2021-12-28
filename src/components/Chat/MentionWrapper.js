@@ -10,8 +10,8 @@ const MentionWrapper = ({
   mention,
   ...props
 }) => {
-  displayName = displayName || mention.displayName;
-  uid = uid || mention.uid;
+  displayName = displayName || mention?.displayName;
+  uid = uid || mention?.uid;
   return (
     <span className="mention-wrapper" data-uid={uid} data-id={id}>
       @{displayName}

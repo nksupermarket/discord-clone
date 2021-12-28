@@ -71,7 +71,7 @@ const UploadFile = ({
 export default UploadFile;
 
 UploadFile.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
   handleFile: PropTypes.func,
   handlePreview: PropTypes.func,
   imgPreview: PropTypes.string,

@@ -27,5 +27,5 @@ IconBtn.propTypes = {
   svg: PropTypes.string,
   alt: PropTypes.string,
   className: PropTypes.string,
-  elRef: PropTypes.object,
+  elRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
