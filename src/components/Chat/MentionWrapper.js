@@ -14,7 +14,7 @@ const MentionWrapper = ({
   uid = uid || mention?.uid;
   return (
     <span className="mention-wrapper" data-uid={uid} data-id={id}>
-      @{displayName}
+      {displayName && <span>@{displayName}</span>}
       <span style={{ display: 'none' }}>{props.children}</span>
     </span>
   );
