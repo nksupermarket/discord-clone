@@ -14,6 +14,7 @@ live: https://lookingcoolonavespa.github.io/discord-clone
 ![screenshot of user settings](https://i.postimg.cc/w38FwyVc/Screenshot-from-2021-12-30-19-17-13.png)
 
 ## features
+- fully responsive
 - customize your avatar and profile color
 - receive and send mentions in chat
 - reply to messages
