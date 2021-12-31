@@ -7,8 +7,9 @@ Features:
 - receive and send mentions in chat
 - reply to messages
 - messages mentioning you are highlighted so you don't miss them
+- upload up to 5 files at a time for chat to download
 - create a channel for the public or just you and your friends
-- easily create rooms and room categories for your new channel
+- create rooms and room categories for your new channel
 
 Tech stack: 
 - javascript
@@ -17,4 +18,9 @@ Tech stack:
 
 Libraries used:
 - date-fns: to create timestamps
-- firebase (realtime database): for backend functionality  
+- firebase (realtime database): for backend functionality
+- unique-names-generator
+
+Resources used:
+- remix icon
+- flaticon
