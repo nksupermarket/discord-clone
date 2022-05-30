@@ -218,7 +218,6 @@ async function getUserInfo(
           updateChannelListWithInfo,
         ),
       ]);
-
       setChannelList(channelList);
 
       // helpers

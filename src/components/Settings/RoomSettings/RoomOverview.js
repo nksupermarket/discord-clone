@@ -28,17 +28,10 @@ const RoomOverview = ({ room }) => {
   const { roomCategories } = useContext(ChannelContext);
   const { setError } = useContext(ErrorContext);
 
-  const { inputValues, setInputValues, handleChange } =
-    useInputValues({
-      room_name: room.name,
-      room_category: room.category,
-    });
-  useEffect(() => {
-    setInputValues({
-      room_name: room.name,
-      room_category: room.category,
-    });
-  }, [room, setInputValues]);
+  const { inputValues, handleChange } = useInputValues({
+    room_name: room.name,
+    room_category: room.category || '',
+  });
 
   const isMounted = useRef();
   useEffect(() => {
@@ -62,8 +55,8 @@ const RoomOverview = ({ room }) => {
               try {
                 setIsSaving(true);
                 const {
-                  room_Name: roomName,
-                  room_Category: roomCategory,
+                  room_name: roomName,
+                  room_category: roomCategory,
                 } = inputValues;
                 if (roomName !== room.name)
                   await updateRoomName(channelID, room.id, roomName);

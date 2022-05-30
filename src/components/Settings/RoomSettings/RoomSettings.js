@@ -1,18 +1,19 @@
-import React, { useContext, useReducer } from 'react';
-import { useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-
-import { ErrorContext } from '../../../logic/contexts/ErrorContext';
-import { deleteRoom } from '../../../logic/channel_firebaseStuff';
+import React, { useReducer } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { useContext } from 'react';
+// import { ErrorContext } from '../../../logic/contexts/ErrorContext';
+// import { deleteRoom } from '../../../logic/channel_firebaseStuff';
 import useMobileCheck from '../../../logic/custom-hooks/useMobileCheck';
+
+import PropTypes from 'prop-types';
 
 import RoomOverview from './RoomOverview';
 import Error from '../../Error';
 import Import from '../../../logic/Import';
 
 const RoomSettings = ({ room, close }) => {
-  const { SetError } = useContext(ErrorContext);
-  const { channelID, roomID } = useParams();
+  // const { SetError } = useContext(ErrorContext);
+  // const { channelID, roomID } = useParams();
   const {
     isMobileCheck: { current: isMobile },
   } = useMobileCheck();
@@ -23,15 +24,16 @@ const RoomSettings = ({ room, close }) => {
         case 'overview':
           return 'overview';
         case 'delete room':
-          (async function () {
-            try {
-              await deleteRoom(channelID, roomID);
-              close();
-            } catch (error) {
-              SetError(error.message);
-            }
-          })();
-          break;
+          return 'overview';
+        // (async function () {
+        //   try {
+        //     await deleteRoom(channelID, roomID);
+        //     close();
+        //   } catch (error) {
+        //     SetError(error.message);
+        //   }
+        // })();
+        // break;
         default:
           throw new Error("that doesn't exist!");
       }
@@ -47,19 +49,20 @@ const RoomSettings = ({ room, close }) => {
       {(Settings) => (
         <Settings
           close={close}
-          categories={[`${room.name}`, 'none']}
+          categories={[`${room.name}`]}
           btnList={[
             createSettingsButtonDetails(
               'overview',
               `${room.name}`,
               true,
             ),
-            createSettingsButtonDetails('delete room', 'none'),
+            // createSettingsButtonDetails('delete room', 'none'),
           ]}
           dispatch={dispatch}
         >
           {state &&
             {
+              // display the contents of the active settings tab
               overview: <RoomOverview room={room} />,
             }[state]}
         </Settings>
