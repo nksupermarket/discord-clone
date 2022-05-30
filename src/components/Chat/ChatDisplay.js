@@ -8,7 +8,7 @@ import '../../styles/ChatDisplay.css';
 const ChatDisplay = ({ roomID, msgList, userList, ...props }) => {
   const messagesEndRef = useRef();
   const scrollerRef = useRef();
-  const [isScrolled, setIsScrolled] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(true); // used to hide display when the auto scroll is in action; the auto scroll only affects display when you move from room to room so isScrolled can be initiated to true
   const [firstRender, setFirstRender] = useState(true);
 
   function scrollToBottom() {
