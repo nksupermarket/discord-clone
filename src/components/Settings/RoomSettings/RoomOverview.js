@@ -25,7 +25,10 @@ const RoomOverview = ({ room }) => {
   const { setError } = useContext(ErrorContext);
 
   const { inputValues, setInputValues, handleChange } =
-    useInputValues();
+    useInputValues({
+      room_name: room.name,
+      room_category: room.category,
+    });
   useEffect(() => {
     setInputValues({
       room_name: room.name,

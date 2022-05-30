@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { dynamicValidation } from '../formValidation';
 
-function useInputError(inputNames) {
+export default function useInputError(inputNames) {
   const [inputError, setInputError] = useState(
     () =>
       inputNames.reduce((acc, curr) => {
@@ -63,5 +63,3 @@ function useInputError(inputNames) {
 
   return { inputError, validateInput, submitForm };
 }
-
-export default useInputError;

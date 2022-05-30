@@ -8,15 +8,14 @@ let count = 0;
 
 const Sidebar = ({ btnList, categories, dispatch }) => {
   const [activeBtn, setActiveBtn] = useState();
-
   return (
     <aside className="sidebar">
       <div className="list-wrapper">
         {categories &&
-          categories.map((category) => (
-            <>
+          categories.map((category, i) => (
+            <React.Fragment key={i}>
               <CatList
-                key={count++}
+                key={`${count++}${new Date().toString()}catList`}
                 cat={category}
                 className="settings-category-wrapper"
                 isHeader={category !== 'none'}
@@ -31,7 +30,7 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
                   .map((btn) => {
                     return (
                       <ListItem
-                        key={count++}
+                        key={`${count++}${new Date().toString()}`}
                         onClick={() => {
                           if (!dispatch) return;
                           setActiveBtn(btn.text);
@@ -54,13 +53,13 @@ const Sidebar = ({ btnList, categories, dispatch }) => {
               <div className="list-underline-wrapper">
                 <div className="list-underline"></div>
               </div>
-            </>
+            </React.Fragment>
           ))}
         {!categories &&
           btnList.map((btn) => {
             return (
               <ListItem
-                key={count++}
+                key={`${count++}${new Date().toString()}withoutCategories`}
                 onClick={() => {
                   dispatch &&
                     dispatch({ type: 'swap_to', payload: btn.text });

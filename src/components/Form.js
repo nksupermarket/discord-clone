@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import useInputError from '../logic/custom-hooks/useInputError';
-import uniqid from 'uniqid';
 
 import InputField from './InputField';
 import FlatBtn from './FlatBtn';
@@ -13,7 +12,6 @@ const Form = ({
   actionBtnText,
   noCancelBtn,
   cancelBtnText,
-  textBtns,
   handleChange,
   submitAction,
   cleanUp,
@@ -47,23 +45,24 @@ const Form = ({
         <input type="password" hidden />
         {/* need this to turn off autocomplete */}
         {fields.map((f, idx) => {
+          console.log(f.type);
+          if (f.type === 'dropdown') {
+            return (
+              <select name={f.name}>
+                {f.options.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.display}
+                  </option>
+                ))}
+              </select>
+            );
+          }
           return (
             <InputField
               key={idx}
               type={f.type}
               autoFocus={idx === 0}
-              onBlur={
-                f.name === 'confirm_password'
-                  ? (e) =>
-                      validateInput(
-                        e.target,
-                        false,
-                        formRef.current.elements.namedItem(
-                          'new_password',
-                        ).value,
-                      )
-                  : (e) => validateInput(e.target)
-              }
+              onBlur={(e) => validateInput(e.currentTarget)}
               error={inputError[f.name]}
               label={f.label}
               name={f.name}
@@ -93,21 +92,6 @@ const Form = ({
             loading={loading}
           />
         </div>
-        {textBtns && (
-          <div className="text-btn-ctn">
-            {textBtns.map((b) => {
-              return (
-                <span
-                  key={uniqid()}
-                  className="link"
-                  onClick={b.onClick}
-                >
-                  {b.text}
-                </span>
-              );
-            })}
-          </div>
-        )}
       </footer>
     </form>
   );
