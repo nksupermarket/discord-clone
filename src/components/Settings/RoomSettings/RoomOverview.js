@@ -1,4 +1,9 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -17,7 +22,6 @@ import InputField from '../../InputField';
 import Success from '../../Success';
 
 import '../../../styles/RoomOverview.css';
-import { useState } from 'react/cjs/react.development';
 
 const RoomOverview = ({ room }) => {
   const { channelID } = useParams();
