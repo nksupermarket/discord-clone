@@ -45,7 +45,6 @@ const Form = ({
         <input type="password" hidden />
         {/* need this to turn off autocomplete */}
         {fields.map((f, idx) => {
-          console.log(f.type);
           if (f.type === 'dropdown') {
             return (
               <select name={f.name}>
