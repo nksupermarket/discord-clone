@@ -41,7 +41,10 @@ const ChannelNav = ({ channel, categories, list }) => {
       newRoomInfo.room_name,
       newRoomInfo.room_category || null,
     );
-    if (roomCategories.indexOf(newRoomInfo.room_category) === -1) {
+    if (
+      newRoomInfo.room_category &&
+      roomCategories.indexOf(newRoomInfo.room_category) === -1
+    ) {
       await createRoomCategory(channel.id, newRoomInfo.room_category);
     }
   }
