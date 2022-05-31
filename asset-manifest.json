@@ -14,8 +14,8 @@
     "main.css": "/discord-clone/static/css/main.471df99d.chunk.css",
     "main.js": "/discord-clone/static/js/main.0c84fe55.chunk.js",
     "main.js.map": "/discord-clone/static/js/main.0c84fe55.chunk.js.map",
-    "runtime-main.js": "/discord-clone/static/js/runtime-main.e4606b7d.js",
-    "runtime-main.js.map": "/discord-clone/static/js/runtime-main.e4606b7d.js.map",
+    "runtime-main.js": "/discord-clone/static/js/runtime-main.10ab594a.js",
+    "runtime-main.js.map": "/discord-clone/static/js/runtime-main.10ab594a.js.map",
     "static/js/6.4e51eb8b.chunk.js": "/discord-clone/static/js/6.4e51eb8b.chunk.js",
     "static/js/6.4e51eb8b.chunk.js.map": "/discord-clone/static/js/6.4e51eb8b.chunk.js.map",
     "static/css/7.d34fac05.chunk.css": "/discord-clone/static/css/7.d34fac05.chunk.css",
@@ -26,8 +26,8 @@
     "static/js/8.70d639ec.chunk.js.map": "/discord-clone/static/js/8.70d639ec.chunk.js.map",
     "static/js/9.9156bdcd.chunk.js": "/discord-clone/static/js/9.9156bdcd.chunk.js",
     "static/js/9.9156bdcd.chunk.js.map": "/discord-clone/static/js/9.9156bdcd.chunk.js.map",
-    "static/js/10.334ea7dd.chunk.js": "/discord-clone/static/js/10.334ea7dd.chunk.js",
-    "static/js/10.334ea7dd.chunk.js.map": "/discord-clone/static/js/10.334ea7dd.chunk.js.map",
+    "static/js/10.159384fe.chunk.js": "/discord-clone/static/js/10.159384fe.chunk.js",
+    "static/js/10.159384fe.chunk.js.map": "/discord-clone/static/js/10.159384fe.chunk.js.map",
     "static/js/11.4b500139.chunk.js": "/discord-clone/static/js/11.4b500139.chunk.js",
     "static/js/11.4b500139.chunk.js.map": "/discord-clone/static/js/11.4b500139.chunk.js.map",
     "static/js/12.28e1230f.chunk.js": "/discord-clone/static/js/12.28e1230f.chunk.js",
@@ -60,7 +60,7 @@
     "static/media/user-3-fill.173d960e.svg": "/discord-clone/static/media/user-3-fill.173d960e.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e4606b7d.js",
+    "static/js/runtime-main.10ab594a.js",
     "static/js/6.4e51eb8b.chunk.js",
     "static/css/main.471df99d.chunk.css",
     "static/js/main.0c84fe55.chunk.js"
