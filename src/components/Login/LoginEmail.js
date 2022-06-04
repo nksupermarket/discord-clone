@@ -68,34 +68,54 @@ const LoginEmail = ({
   }
 
   return (
-    <div className="login login-email">
-      <header>
-        <h3>Welcome to bread!</h3>
-        <h4>a discord clone</h4>
-      </header>
-      <Form
-        fields={[
-          { label: 'Email', type: 'email', name: 'email' },
-          { label: 'Password', type: 'password', name: 'password' },
-        ]}
-        noCancelBtn={true}
-        textBtns={[
-          { text: 'Forgot your password?', onClick: onForgotPW },
-          { text: 'Need an account? Register', onClick: onRegister },
-          {
-            text: 'Generate account to test',
-            onClick: onCreateTestAcc,
-          },
-        ]}
-        handleChange={handleChange}
-        submitAction={() =>
-          signIn(inputValues.email, inputValues.password)
-        }
-        setError={setError}
-        cleanUp={() => history.push('/')}
-        inputValues={inputValues}
-      />
-    </div>
+    <>
+      <div className="login login-email">
+        <header>
+          <h3>Welcome to bread!</h3>
+          <h4>a discord clone</h4>
+        </header>
+        <Form
+          fields={[
+            { label: 'Email', type: 'email', name: 'email' },
+            { label: 'Password', type: 'password', name: 'password' },
+          ]}
+          noCancelBtn={true}
+          textBtns={[
+            { text: 'Forgot your password?', onClick: onForgotPW },
+            {
+              text: 'Need an account? Register',
+              onClick: onRegister,
+            },
+            {
+              text: 'Generate account to test',
+              onClick: onCreateTestAcc,
+            },
+          ]}
+          handleChange={handleChange}
+          submitAction={() =>
+            signIn(inputValues.email, inputValues.password)
+          }
+          setError={setError}
+          cleanUp={() => history.push('/')}
+          inputValues={inputValues}
+        />
+      </div>
+      {textBtns && (
+        <div className="text-btn-ctn">
+          {textBtns.map((b) => {
+            return (
+              <span
+                key={uniqid()}
+                className="link"
+                onClick={b.onClick}
+              >
+                {b.text}
+              </span>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 };
 

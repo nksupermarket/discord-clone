@@ -12,6 +12,7 @@ const Form = ({
   actionBtnText,
   noCancelBtn,
   cancelBtnText,
+  textBtns,
   handleChange,
   submitAction,
   cleanUp,
@@ -91,6 +92,17 @@ const Form = ({
             loading={loading}
           />
         </div>
+        {textBtns && (
+          <div className="text-btn-ctn">
+            {textBtns.map((b, i) => {
+              return (
+                <span key={i} className="link" onClick={b.onClick}>
+                  {b.text}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </footer>
     </form>
   );
